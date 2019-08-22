@@ -3,7 +3,7 @@
 echo `date`
 
 echo "Changing into ~/curw_sim_utils"
-cd /home/uwcc-admin/curw_sim_utils
+cd /home/uwcc-admin/curw_sim_db_utils
 echo "Inside `pwd`"
 
 
@@ -32,7 +32,7 @@ fi
 
 # Update fcst data in curw_sim for flo2d grids
 echo "Running update_fcst_rainfall.py"
-python update_fcst_rainfall.py >> curw_sim_fcst_hechms.log 2>&1
+python /rain/hechms/fcst/update_fcst_rainfall.py >> /rain/hechms/fcst/curw_sim_fcst_hechms.log 2>&1
 
 # Deactivating virtual environment
 echo "Deactivating virtual environment"
