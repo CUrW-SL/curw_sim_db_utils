@@ -4,7 +4,7 @@
 #00 2,6,10,14,18 * * * /home/uwcc-admin/curw_sim_db_utils/update_obs_rainfall_flo2d_30.sh >> /home/uwcc-admin/curw_sim_db_utils/curw_sim_obs_flo2d_30.log
 
 # update forecasted precipitation values for flo2d grids in curw_sim db
-00 22 * * * /home/uwcc-admin/curw_sim_db_utils/update_fcst_rainfall_flo2d_250.sh >> /home/uwcc-admin/curw_sim_db_utils/curw_sim_fcst_flo2d_250.log
+00 22 * * * /home/uwcc-admin/curw_sim_db_utils/rain/flo2d_250/fcst/update_fcst_rainfall_flo2d_250.sh >> /home/uwcc-admin/curw_sim_db_utils/rain/flo2d_250/fcst/curw_sim_fcst_flo2d_250.log
 00 22 * * * /home/uwcc-admin/curw_sim_db_utils/update_fcst_rainfall_flo2d_150.sh >> /home/uwcc-admin/curw_sim_db_utils/curw_sim_fcst_flo2d_150.log
 #00 22 * * * /home/uwcc-admin/curw_sim_db_utils/update_fcst_rainfall_flo2d_30.sh >> /home/uwcc-admin/curw_sim_db_utils/curw_sim_fcst_flo2d_30.log
 
