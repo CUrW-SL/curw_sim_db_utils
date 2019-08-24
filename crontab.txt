@@ -1,13 +1,21 @@
-# update observed precipitation values for flo2d grids in curw_sim db
+# update observed & forecasted precipitation values for flo2d 250 grids in curw_sim db
 */20 1-21 * * * /home/uwcc-admin/curw_sim_db_utils/rain/flo2d_250/obs/update_obs_rainfall_flo2d_250.sh >> /home/uwcc-admin/curw_sim_db_utils/rain/flo2d_250/obs/curw_sim_obs_flo2d_250.log
-00 1,3,5,7,9,11,13,15,17,19,21 * * * /home/uwcc-admin/curw_sim_db_utils/update_obs_rainfall_flo2d_150.sh >> /home/uwcc-admin/curw_sim_db_utils/curw_sim_obs_flo2d_150.log
-#00 2,6,10,14,18 * * * /home/uwcc-admin/curw_sim_db_utils/update_obs_rainfall_flo2d_30.sh >> /home/uwcc-admin/curw_sim_db_utils/curw_sim_obs_flo2d_30.log
-
-# update forecasted precipitation values for flo2d grids in curw_sim db
 00 22 * * * /home/uwcc-admin/curw_sim_db_utils/rain/flo2d_250/fcst/update_fcst_rainfall_flo2d_250.sh >> /home/uwcc-admin/curw_sim_db_utils/rain/flo2d_250/fcst/curw_sim_fcst_flo2d_250.log
-00 22 * * * /home/uwcc-admin/curw_sim_db_utils/update_fcst_rainfall_flo2d_150.sh >> /home/uwcc-admin/curw_sim_db_utils/curw_sim_fcst_flo2d_150.log
-#00 22 * * * /home/uwcc-admin/curw_sim_db_utils/update_fcst_rainfall_flo2d_30.sh >> /home/uwcc-admin/curw_sim_db_utils/curw_sim_fcst_flo2d_30.log
 
-# update precipitation timeseries for hechms
+# update observed & forecasted precipitation values for flo2d 150 grids in curw_sim db
+00 22 * * * /home/uwcc-admin/curw_sim_db_utils/rain/flo2d_150/fcst/update_fcst_rainfall_flo2d_150.sh >> /home/uwcc-admin/curw_sim_db_utils/rain/flo2d_150/fcst/curw_sim_fcst_flo2d_150.log
+00 1,3,5,7,9,11,13,15,17,19,21 * * * /home/uwcc-admin/curw_sim_db_utils/rain/flo2d_150/obs/update_obs_rainfall_flo2d_150.sh >> /home/uwcc-admin/curw_sim_db_utils/rain/flo2d_150/obs/curw_sim_obs_flo2d_150.log
+
+# update observed & forecasted precipitation timeseries for hechms
 */15 1-21 * * * /home/uwcc-admin/curw_sim_db_utils/rain/hechms/obs/update_obs_rainfall.sh >> /home/uwcc-admin/curw_sim_db_utils/rain/hechms/obs/curw_sim_obs_hechms.log
 00 22 * * * /home/uwcc-admin/curw_sim_db_utils/rain/hechms/fcst/update_fcst_rainfall.sh >> /home/uwcc-admin/curw_sim_db_utils/rain/hechms/fcst/curw_sim_fcst_hechms.log
+
+
+
+
+
+
+
+#00 2,6,10,14,18 * * * /home/uwcc-admin/curw_sim_db_utils/update_obs_rainfall_flo2d_30.sh >> /home/uwcc-admin/curw_sim_db_utils/curw_sim_obs_flo2d_30.log
+#00 22 * * * /home/uwcc-admin/curw_sim_db_utils/update_fcst_rainfall_flo2d_30.sh >> /home/uwcc-admin/curw_sim_db_utils/curw_sim_fcst_flo2d_30.log
+
