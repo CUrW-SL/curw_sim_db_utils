@@ -10,4 +10,4 @@
 
 # update precipitation timeseries for hechms
 */15 1-21 * * * /home/uwcc-admin/curw_sim_db_utils/update_obs_rainfall.sh >> /home/uwcc-admin/curw_sim_db_utils/curw_sim_obs_hechms.log
-00 22 * * * /home/uwcc-admin/curw_sim_db_utils/update_fcst_rainfall.sh >> /home/uwcc-admin/curw_sim_db_utils/curw_sim_fcst_hechms.log
+00 22 * * * /home/uwcc-admin/curw_sim_db_utils/rain/hechms/fcst/update_fcst_rainfall.sh >> /home/uwcc-admin/curw_sim_db_utils/rain/hechms/fcst/curw_sim_fcst_hechms.log
