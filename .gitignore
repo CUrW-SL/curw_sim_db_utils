@@ -1,8 +1,9 @@
 .idea/
 *.log.*
 *.log
-fill_missing_obs.py
-fill_missing_values.py
+temp/fill_missing_obs.py
+temp/fill_missing_values.py
+temp
 
 # setup.py installed.txt
 installed.txt
