@@ -2,7 +2,7 @@
 
 echo `date`
 
-echo "Changing into ~/curw_sim_utils"
+echo "Changing into ~/curw_sim_db_utils"
 cd /home/uwcc-admin/curw_sim_db_utils
 echo "Inside `pwd`"
 
@@ -19,7 +19,7 @@ echo "Activating venv python3 virtual environment."
 source venv/bin/activate
 
 # Install dependencies using pip.
-if [ ! -f "curw_sim_fcst_rainfall.log" ]
+if [ ! -f "curw_sim_fcst_hechms.log" ]
 then
     echo "Installing PyMySQL"
     pip install PyMySQL
@@ -29,10 +29,13 @@ then
     pip install git+https://github.com/shadhini/curw_db_adapter.git
 fi
 
+echo "Changing into ~/curw_sim_db_utils/rain/hechms/fcst"
+cd /rain/hechms/fcst
+echo "Inside `pwd`"
 
 # Update fcst data in curw_sim for flo2d grids
 echo "Running update_fcst_rainfall.py"
-python /rain/hechms/fcst/update_fcst_rainfall.py >> /home/uwcc-admin/curw_sim_db_utils/rain/hechms/fcst/curw_sim_fcst_hechms.log 2>&1
+python update_fcst_rainfall.py >> /home/uwcc-admin/curw_sim_db_utils/rain/hechms/fcst/curw_sim_fcst_hechms.log 2>&1
 
 # Deactivating virtual environment
 echo "Deactivating virtual environment"
