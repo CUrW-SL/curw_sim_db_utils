@@ -2,7 +2,6 @@
 *.log.*
 *.log
 temp/fill_missing_obs.py
-temp/fill_missing_values.py
 
 # setup.py installed.txt
 installed.txt
