@@ -2,8 +2,8 @@
 
 echo `date`
 
-echo "Changing into ~/curw_sim_utils"
-cd /home/uwcc-admin/curw_sim_utils
+echo "Changing into ~/curw_sim_db_utils"
+cd /home/uwcc-admin/curw_sim_db_utils
 echo "Inside `pwd`"
 
 
@@ -19,7 +19,7 @@ echo "Activating venv python3 virtual environment."
 source venv/bin/activate
 
 # Install dependencies using pip.
-if [ ! -f "curw_sim_obs_rainfall.log" ]
+if [ ! -f "curw_sim_utils.log" ]
 then
     echo "Installing PyMySQL"
     pip install PyMySQL
@@ -27,12 +27,13 @@ then
     pip install PyYAML
     echo "Installing db adapter"
     pip install git+https://github.com/shadhini/curw_db_adapter.git
+    touch curw_sim_utils.log
 fi
 
 
 # Update obs data in curw_sim for flo2d grids
 echo "Running update_obs_rainfall.py"
-python update_obs_rainfall.py >> curw_sim_obs_hechms.log 2>&1
+python rain/hechms/obs/update_obs_rainfall.py >> rain/hechms/obs/curw_sim_obs_hechms.log 2>&1
 
 # Deactivating virtual environment
 echo "Deactivating virtual environment"
