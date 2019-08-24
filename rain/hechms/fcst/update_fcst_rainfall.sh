@@ -27,10 +27,11 @@ then
     pip install PyYAML
     echo "Installing db adapter"
     pip install git+https://github.com/shadhini/curw_db_adapter.git
+    touch curw_sim_utils.log
 fi
 
 echo "Changing into ~/curw_sim_db_utils/rain/hechms/fcst"
-cd /rain/hechms/fcst
+cd rain/hechms/fcst
 echo "Inside `pwd`"
 
 # Update fcst data in curw_sim for flo2d grids
