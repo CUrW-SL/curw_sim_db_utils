@@ -13,8 +13,8 @@
 # update active curw rainfall observational stations
 00 21 * * * /home/uwcc-admin/curw_sim_db_utils/grids/obs_stations/rainfall/update_active_curw_rainfall_stations.sh >> /home/uwcc-admin/curw_sim_db_utils/grids/obs_stations/rainfall/curw_sim_update_active_curw_rainfall_stations.log
 
-
-
+# update grid_map_obs
+05 21 * * * /home/uwcc-admin/curw_sim_db_utils/grid_maps/obs_stations/rainfall/update_rainfall_obs_to_d03_mapping.sh >> /home/uwcc-admin/curw_sim_db_utils/grid_maps/obs_stations/rainfall/curw_sim_rainfall_obs_to_d03_mapping.log 2>&1
 
 
 
