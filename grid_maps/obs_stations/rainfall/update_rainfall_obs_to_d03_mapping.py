@@ -1,10 +1,10 @@
 import csv
 import operator
 import collections
+import traceback
 
 from math import acos, cos, sin, radians
 
-import traceback
 from db_adapter.base import get_Pool, destroy_Pool
 from db_adapter.curw_sim.grids import add_obs_to_d03_grid_mappings_for_rainfall, \
     get_obs_to_d03_grid_mappings_for_rainfall, \
