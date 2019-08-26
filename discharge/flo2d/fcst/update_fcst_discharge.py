@@ -56,7 +56,7 @@ if __name__=="__main__":
                 discharge_ts = timeseries
             else:
                 for i in range(len(timeseries)):
-                    if timeseries[i][0] > existing_ts_end:
+                    if (timeseries[i][0]).strptime(COMMON_DATE_TIME_FORMAT) > existing_ts_end:
                         discharge_ts = timeseries[i:]
                         break
 
