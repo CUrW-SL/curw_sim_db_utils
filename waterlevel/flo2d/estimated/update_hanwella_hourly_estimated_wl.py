@@ -81,8 +81,8 @@ if __name__ == "__main__":
             # DX Ranwala (x[x] - x[t-1]}
             # Hanwella = X 1.642174610188251` -   DX 3.8585516925010444` -
             #    8.810870547723741`;
-            x = ranwala_ts[i + 1][1]
-            dx = ranwala_ts[i + 1][1] - ranwala_ts[i][1]
+            x = float(ranwala_ts[i + 1][1])
+            dx = float(ranwala_ts[i + 1][1] - ranwala_ts[i][1])
             hanwella_wl = x * 1.642174610188251 - dx * 3.8585516925010444 - 8.810870547723741
             hanwella_ts.append([ranwala_ts[i + 1][0], hanwella_wl])
 
