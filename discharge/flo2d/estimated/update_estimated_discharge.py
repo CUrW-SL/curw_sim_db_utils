@@ -69,7 +69,7 @@ if __name__=="__main__":
 
             discharge_ts = []
             for i in range(len(timeseries)):
-                wl = timeseries[i][1]
+                wl = float(timeseries[i][1])
                 discharge = 26.1131 * (wl**1.73499)
                 discharge_ts.append([timeseries[i][0], discharge])
 
