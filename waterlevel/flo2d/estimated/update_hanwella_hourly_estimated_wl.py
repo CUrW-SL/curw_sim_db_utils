@@ -56,7 +56,7 @@ if __name__ == "__main__":
         tms_id = TS.get_timeseries_id_if_exists(meta_data=meta_data)
 
         ranwala_ts = []
-        hanwella_ts = ['time', 'value']
+        hanwella_ts = []
         start_date = (datetime.now() - timedelta(days=10)).strftime(COMMON_DATE_TIME_FORMAT)
         end_date = (datetime.now().strftime(COMMON_DATE_TIME_FORMAT))
 
