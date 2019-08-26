@@ -86,6 +86,10 @@ if __name__ == "__main__":
             hanwella_wl = x * 1.642174610188251 - dx * 3.8585516925010444 - 8.810870547723741
             hanwella_ts.append([ranwala_ts[i + 1][0], hanwella_wl])
 
+        for i in range(len(hanwella_ts)):
+            if hanwella_ts[i][1] < 0:
+                hanwella_ts[i][1] = 0
+
         if hanwella_ts is not None and len(hanwella_ts) > 0:
             TS.insert_data(timeseries=hanwella_ts, tms_id=tms_id, upsert=True)
 
