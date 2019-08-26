@@ -20,6 +20,16 @@
 
 
 
+
+# update hanwella estimated waterlevel
+00 * * * * /home/uwcc-admin/curw_sim_db_utils/waterlevel/flo2d/estimated/update_hanwella_hourly_estimated_wl.py >> /home/uwcc-admin/curw_sim_db_utils/waterlevel/flo2d/estimated/curw_sim_update_hanwella_estimated_wl.log 2>&1
+
+
+
+
+
+
+
 #00 2,6,10,14,18 * * * /home/uwcc-admin/curw_sim_db_utils/update_obs_rainfall_flo2d_30.sh >> /home/uwcc-admin/curw_sim_db_utils/curw_sim_obs_flo2d_30.log
 #00 22 * * * /home/uwcc-admin/curw_sim_db_utils/update_fcst_rainfall_flo2d_30.sh >> /home/uwcc-admin/curw_sim_db_utils/curw_sim_fcst_flo2d_30.log
 
