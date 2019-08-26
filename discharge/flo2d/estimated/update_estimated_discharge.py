@@ -28,7 +28,7 @@ if __name__=="__main__":
 
         TS = Timeseries(pool=curw_sim_pool)
 
-        method = MethodEnum.SF
+        method = MethodEnum.getAbbreviation(MethodEnum.MME)
 
         # [station_name,latitude,longitude,target]
         extract_stations = read_csv('grids/discharge_stations/extract_stations.csv')
