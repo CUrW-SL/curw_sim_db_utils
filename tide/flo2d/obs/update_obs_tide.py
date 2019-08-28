@@ -83,7 +83,7 @@ if __name__ == "__main__":
 
         tms_id = TS.get_timeseries_id_if_exists(meta_data=meta_data)
 
-        start_date = datetime.strptime((datetime.now() - timedelta(days=10)), COMMON_DATE_TIME_FORMAT)
+        start_date = datetime.strptime((datetime.now()- timedelta(days=10)).strftime('%Y-%m-%d %H:00:00'), COMMON_DATE_TIME_FORMAT)
         end_date = datetime.now() + timedelta(hours=5, minutes=30)
 
         final_tide_ts = []
@@ -94,7 +94,7 @@ if __name__ == "__main__":
             TS.insert_run(meta_data=meta_data)
             final_tide_ts = prepare_obs_tide_ts(connection=connection, start_date=start_date, end_date=end_date)
         else:
-            start_date = datetime.strptime((datetime.now() - timedelta(hours=20)),
+            start_date = datetime.strptime((datetime.now() - timedelta(hours=20)).strftime('%Y-%m-%d %H:00:00'),
                                            COMMON_DATE_TIME_FORMAT)
             final_tide_ts = prepare_obs_tide_ts(connection=connection, start_date=start_date, end_date=end_date)
 
