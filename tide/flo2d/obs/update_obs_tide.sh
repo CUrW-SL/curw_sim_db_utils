@@ -32,7 +32,7 @@ fi
 
 
 # Update obs data in curw_sim for flo2d grids
-echo "Running update_obs_rainfall_flo2d_250.py"
+echo "Running update_obs_tide.py"
 python tide/flo2d/obs/update_obs_tide.py >> tide/flo2d/obs/curw_sim_update_obs_tide.log 2>&1
 
 # Deactivating virtual environment
