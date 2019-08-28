@@ -104,7 +104,7 @@ if __name__ == "__main__":
 
         if final_tide_ts is not None and len(final_tide_ts) > 0:
             TS.insert_data(timeseries=final_tide_ts, tms_id=tms_id, upsert=True)
-            TS.update_latest_obs(id_=tms_id, obs_end=final_tide_ts[-1][0])
+            TS.update_latest_obs(id_=tms_id, obs_end=final_tide_ts[-1][1])
 
     except Exception as e:
         traceback.print_exc()
