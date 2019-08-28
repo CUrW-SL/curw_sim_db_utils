@@ -1,6 +1,7 @@
 .idea/
 *.log.*
 *.log
+*/nohup.out
 temp/fill_missing_obs.py
 
 # setup.py installed.txt
