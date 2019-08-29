@@ -32,7 +32,7 @@ fi
 
 
 # Update obs data in curw_sim for flo2d grids
-echo "Running update_fcst_discharge.py"
+echo "Running update_fcst_tide.py"
 python tide/flo2d/fcst/update_fcst_tide.py >> tide/flo2d/fcst/curw_sim_update_fcst_tide.log 2>&1
 
 # Deactivating virtual environment
