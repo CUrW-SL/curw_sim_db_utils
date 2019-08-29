@@ -27,6 +27,10 @@
 # update hanwella estimated discharge
 05 * * * * /home/uwcc-admin/curw_sim_db_utils/discharge/flo2d/estimated/update_estimated_discharge.sh >> /home/uwcc-admin/curw_sim_db_utils/discharge/flo2d/estimated/curw_sim_estimated_discharge.log 2>&1
 
+# update obs tidal data series for colombo
+00 * * * * /home/uwcc-admin/curw_sim_db_utils/tide/flo2d/obs/update_obs_tide.sh >> /home/uwcc-admin/curw_sim_db_utils/tide/flo2d/obs/curw_sim_update_obs_tide.log 2>&1
+
+
 
 
 
