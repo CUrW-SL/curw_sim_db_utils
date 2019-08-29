@@ -6,7 +6,7 @@ from db_adapter.csv_utils import read_csv
 from db_adapter.base import get_Pool, destroy_Pool
 from db_adapter.constants import CURW_SIM_DATABASE, CURW_SIM_PASSWORD, CURW_SIM_USERNAME, CURW_SIM_PORT, CURW_SIM_HOST
 from db_adapter.constants import COMMON_DATE_TIME_FORMAT
-from db_adapter.curw_sim.timeseries.discharge import Timeseries
+from db_adapter.curw_sim.timeseries.tide import Timeseries
 from db_adapter.curw_sim.timeseries import MethodEnum
 from db_adapter.logger import logger
 
