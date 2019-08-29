@@ -86,11 +86,11 @@ if __name__=="__main__":
         if existing_ts_end is None:
             tide_ts = timeseries
         else:
-            extract_ts_from(start_date=existing_ts_end.strftime(COMMON_DATE_TIME_FORMAT), timeseries=timeseries)
+            tide_ts = extract_ts_from(start_date=existing_ts_end.strftime(COMMON_DATE_TIME_FORMAT), timeseries=timeseries)
 
         processed_tide_ts = []
 
-        for i in range(len(timeseries)):
+        for i in range(len(tide_ts)):
             processed_tide_ts.append([round_to_nearest_hour(tide_ts[i][0]), tide_ts[i][1]])
 
         if processed_tide_ts is not None and len(processed_tide_ts) > 0:
