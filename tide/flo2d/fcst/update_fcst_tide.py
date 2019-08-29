@@ -92,6 +92,7 @@ if __name__=="__main__":
         processed_tide_ts = []
 
         for i in range(len(tide_ts)):
+            print(i)
             processed_tide_ts.append([round_to_nearest_hour(tide_ts[i][0]), tide_ts[i][1]])
 
         print("processed ts, ", processed_tide_ts)
