@@ -67,6 +67,7 @@ if __name__ == "__main__":
             with connection.cursor() as cursor1:
                 cursor1.callproc('getWL', ('curw_wl_ranwala', start_date, end_date))
                 results = cursor1.fetchall()
+
                 for result in results:
                     ranwala_ts.append([result.get('time'), result.get('value')])
         else:
