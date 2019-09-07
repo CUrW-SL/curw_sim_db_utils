@@ -99,7 +99,6 @@ if __name__=="__main__":
 
         if processed_tide_ts is not None and len(processed_tide_ts) > 0:
             TS.insert_data(timeseries=processed_tide_ts, tms_id=tms_id, upsert=True)
-            TS.update_latest_obs(id_=tms_id, obs_end=processed_tide_ts[-1][1])
 
     except Exception as e:
         traceback.print_exc()
