@@ -48,7 +48,7 @@ if __name__=="__main__":
                 meta_data['id'] = tms_id
                 TS.insert_run(meta_data=meta_data)
 
-            existing_ts_end = TS.get_timeseris_end(id_=tms_id)
+            existing_ts_end = TS.get_obs_end(id_=tms_id)
 
             discharge_ts = []
 

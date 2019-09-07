@@ -81,7 +81,7 @@ if __name__=="__main__":
 
         tide_ts = []
 
-        existing_ts_end = TS.get_timeseris_end(id_=tms_id)
+        existing_ts_end = TS.get_obs_end(id_=tms_id)
 
         if existing_ts_end is None:
             tide_ts = timeseries
