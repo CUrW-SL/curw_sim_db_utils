@@ -20,15 +20,26 @@
 
 
 
-
+######### Waterlevels ##########
 # update hanwella estimated waterlevel
 00 * * * * /home/uwcc-admin/curw_sim_db_utils/waterlevel/flo2d/estimated/update_hanwella_hourly_estimated_wl.sh >> /home/uwcc-admin/curw_sim_db_utils/waterlevel/flo2d/estimated/curw_sim_update_hanwella_estimated_wl.log 2>&1
 
+
+
+######### Discharge ############
 # update hanwella estimated discharge
 05 * * * * /home/uwcc-admin/curw_sim_db_utils/discharge/flo2d/estimated/update_estimated_discharge.sh >> /home/uwcc-admin/curw_sim_db_utils/discharge/flo2d/estimated/curw_sim_estimated_discharge.log 2>&1
 
+# update fcst discharge data series for hanwella
+15 * * * * /home/uwcc-admin/curw_sim_db_utils/discharge/flo2d/fcst/update_fcst_discharge.sh >> /home/uwcc-admin/curw_sim_db_utils/discharge/flo2d/fcst/curw_sim_fcst_discharge.log 2>&1
+
+
+######## Tidal Data #########
 # update obs tidal data series for colombo
 00 * * * * /home/uwcc-admin/curw_sim_db_utils/tide/flo2d/obs/update_obs_tide.sh >> /home/uwcc-admin/curw_sim_db_utils/tide/flo2d/obs/curw_sim_update_obs_tide.log 2>&1
+
+# update fcst tidal data series for colombo
+15 * * * * /home/uwcc-admin/curw_sim_db_utils/tide/flo2d/fcst/update_fcst_tide.sh >> /home/uwcc-admin/curw_sim_db_utils/tide/flo2d/fcst/curw_sim_update_fcst_tide.log 2>&1
 
 
 
