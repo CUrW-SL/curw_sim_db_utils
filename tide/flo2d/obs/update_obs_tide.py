@@ -90,7 +90,7 @@ if __name__ == "__main__":
         tms_id = TS.get_timeseries_id_if_exists(meta_data=meta_data)
 
         start_date = datetime.strptime((datetime.now() - timedelta(days=10)).strftime('%Y-%m-%d %H:00:00'), COMMON_DATE_TIME_FORMAT)
-        end_date = (datetime.now() + timedelta(hours=5, minutes=30)).strftime('%Y-%m-%d %H:00:00')
+        end_date = datetime.now() + timedelta(hours=5, minutes=30)
 
         final_tide_ts = []
 
