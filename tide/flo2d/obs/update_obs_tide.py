@@ -32,8 +32,6 @@ def prepare_obs_tide_ts(connection, start_date, end_date):
         tide_ts.append([timestamp.strftime(COMMON_DATE_TIME_FORMAT)])
         timestamp = timestamp + timedelta(hours=1)
 
-    print("initial tide ts,", tide_ts)
-
     for station in OBS_STATIONS_LIST:
         ts = []
         with connection.cursor() as cursor1:
@@ -43,13 +41,10 @@ def prepare_obs_tide_ts(connection, start_date, end_date):
             for result in results:
                 ts.append([result.get('time').strftime(COMMON_DATE_TIME_FORMAT), result.get('value')])
 
-        print("ts,", ts)
         tide_ts = append_ts(original_ts=tide_ts, new_ts=ts)
-        print("tide ts,", station, tide_ts)
 
     avg_tide_ts = average_timeseries(tide_ts)
 
-    print("avg tide ts, ", avg_tide_ts)
     return avg_tide_ts
 
 
