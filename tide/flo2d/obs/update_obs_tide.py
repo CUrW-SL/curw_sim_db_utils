@@ -99,7 +99,8 @@ if __name__ == "__main__":
             TS.insert_run(meta_data=meta_data)
             final_tide_ts = prepare_obs_tide_ts(connection=connection, start_date=start_date, end_date=end_date)
         else:
-            start_date = datetime.strptime((datetime.now() - timedelta(hours=20)).strftime('%Y-%m-%d %H:00:00'),
+            obs_end = TS.get_timeseris_end(tms_id)
+            start_date = datetime.strptime((obs_end - timedelta(hours=10)).strftime('%Y-%m-%d %H:00:00'),
                                            COMMON_DATE_TIME_FORMAT)
             final_tide_ts = prepare_obs_tide_ts(connection=connection, start_date=start_date, end_date=end_date)
 
