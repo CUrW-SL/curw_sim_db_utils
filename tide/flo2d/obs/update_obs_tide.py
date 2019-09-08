@@ -37,6 +37,7 @@ def prepare_obs_tide_ts(connection, start_date, end_date):
     for station in OBS_STATIONS_LIST:
         ts = []
         with connection.cursor() as cursor1:
+            print('stored procedure, ', station, start_date, end_date)
             cursor1.callproc('getWL', (station, start_date, end_date))
             results = cursor1.fetchall()
             for result in results:
@@ -103,6 +104,7 @@ if __name__ == "__main__":
             print('obs end, ' ,  obs_end)
             start_date = datetime.strptime((obs_end - timedelta(hours=10)).strftime('%Y-%m-%d %H:00:00'),
                                            COMMON_DATE_TIME_FORMAT)
+            print("start date,", start_date)
             final_tide_ts = prepare_obs_tide_ts(connection=connection, start_date=start_date, end_date=end_date)
 
         for i in range(len(final_tide_ts)):
