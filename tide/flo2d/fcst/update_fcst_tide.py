@@ -10,6 +10,8 @@ from db_adapter.curw_sim.timeseries.tide import Timeseries
 from db_adapter.curw_sim.timeseries import MethodEnum
 from db_adapter.logger import logger
 
+INPUT_DIR = "/mnt/disks/wrf_nfs/curw_sim_db_utils/tide/flo2d/fcst"
+
 
 def extract_ts_from(start_date, timeseries):
     """
@@ -77,7 +79,7 @@ if __name__=="__main__":
             meta_data['id'] = tms_id
             TS.insert_run(meta_data=meta_data)
 
-        timeseries = read_csv('tide/flo2d/fcst/{}.csv'.format(station_name))
+        timeseries = read_csv('{}/tide/flo2d/fcst/{}.csv'.format(INPUT_DIR, station_name))
 
         tide_ts = []
 
