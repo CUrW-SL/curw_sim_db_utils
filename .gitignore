@@ -3,6 +3,7 @@
 *.log
 */nohup.out
 temp/fill_missing_obs.py
+temp/*
 
 # setup.py installed.txt
 installed.txt
