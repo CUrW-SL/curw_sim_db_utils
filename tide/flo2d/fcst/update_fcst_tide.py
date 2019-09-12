@@ -79,7 +79,7 @@ if __name__=="__main__":
             meta_data['id'] = tms_id
             TS.insert_run(meta_data=meta_data)
 
-        timeseries = read_csv('{}/tide/flo2d/fcst/{}.csv'.format(INPUT_DIR, station_name))
+        timeseries = read_csv('{}/{}.csv'.format(INPUT_DIR, station_name))
 
         tide_ts = []
 
