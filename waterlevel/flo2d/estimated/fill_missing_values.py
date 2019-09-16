@@ -15,7 +15,7 @@ from db_adapter.logger import logger
 if __name__ == "__main__":
 
     try:
-
+        print("Fill missing values in hanwella waterlevel series")
         curw_sim_pool = get_Pool(host=CURW_SIM_HOST, user=CURW_SIM_USERNAME, password=CURW_SIM_PASSWORD,
                                  port=CURW_SIM_PORT, db=CURW_SIM_DATABASE)
 
@@ -67,6 +67,7 @@ if __name__ == "__main__":
         traceback.print_exc()
         logger.error("Exception occurred.")
     finally:
+        logger.info("Filled missing values")
         destroy_Pool(pool=curw_sim_pool)
 
 
