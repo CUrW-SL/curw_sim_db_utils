@@ -11,6 +11,40 @@ from db_adapter.curw_sim.timeseries import MethodEnum
 from db_adapter.logger import logger
 
 
+INPUT_DIR = "/mnt/disks/wrf_nfs/curw_sim_db_utils/discharge/flo2d/fcst"
+
+
+def extract_ts_from(start_date, timeseries):
+    """
+    timeseries from start date (inclusive)
+    :param start_date:
+    :param timeseries:
+    :return:
+    """
+
+    output_ts = []
+
+    for i in range(len(timeseries)):
+        if timeseries[i][0] > start_date:
+            output_ts = timeseries[i:]
+            break
+
+    return output_ts
+
+
+def round_to_nearest_hour(datetime_string, format=None):
+
+    if format is None:
+        time = datetime.strptime(datetime_string, COMMON_DATE_TIME_FORMAT)
+    else:
+        time = datetime.strptime(datetime_string, format)
+
+    if time.minute > 30:
+        return (time + timedelta(hours=1)).strftime("%Y-%m-%d %H:00:00")
+
+    return time.strftime("%Y-%m-%d %H:00:00")
+
+
 if __name__=="__main__":
 
     try:
@@ -41,7 +75,7 @@ if __name__=="__main__":
 
             tms_id = TS.get_timeseries_id_if_exists(meta_data=meta_data)
 
-            timeseries = read_csv('discharge/flo2d/fcst/{}.csv'.format(station_name))
+            timeseries = read_csv('{}/{}.csv'.format(INPUT_DIR, station_name))
 
             if tms_id is None:
                 tms_id = TS.generate_timeseries_id(meta_data=meta_data)
@@ -60,8 +94,13 @@ if __name__=="__main__":
                         discharge_ts = timeseries[i:]
                         break
 
-            if discharge_ts is not None and len(discharge_ts) > 0:
-                TS.insert_data(timeseries=discharge_ts, tms_id=tms_id, upsert=True)
+            processed_discharge_ts = []
+
+            for i in range(len(discharge_ts)):
+                processed_discharge_ts.append([round_to_nearest_hour(discharge_ts[i][0]), discharge_ts[i][1]])
+
+            if processed_discharge_ts is not None and len(processed_discharge_ts) > 0:
+                TS.insert_data(timeseries=processed_discharge_ts, tms_id=tms_id, upsert=True)
 
     except Exception as e:
         traceback.print_exc()

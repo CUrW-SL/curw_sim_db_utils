@@ -15,7 +15,7 @@ INPUT_DIR = "/mnt/disks/wrf_nfs/curw_sim_db_utils/tide/flo2d/fcst"
 
 def extract_ts_from(start_date, timeseries):
     """
-    timeseries from start date (inclusive)
+    timeseries from start date (exclusive)
     :param start_date:
     :param timeseries:
     :return:
@@ -24,7 +24,7 @@ def extract_ts_from(start_date, timeseries):
     output_ts = []
 
     for i in range(len(timeseries)):
-        if timeseries[i][0] >= start_date:
+        if timeseries[i][0] > start_date:
             output_ts = timeseries[i:]
             break
 
@@ -90,14 +90,10 @@ if __name__=="__main__":
         else:
             tide_ts = extract_ts_from(start_date=existing_ts_end.strftime(COMMON_DATE_TIME_FORMAT), timeseries=timeseries)
 
-        print("tide ts, ", tide_ts)
         processed_tide_ts = []
 
         for i in range(len(tide_ts)):
-            print(i)
             processed_tide_ts.append([round_to_nearest_hour(tide_ts[i][0]), tide_ts[i][1]])
-
-        print("processed ts, ", processed_tide_ts)
 
         if processed_tide_ts is not None and len(processed_tide_ts) > 0:
             TS.insert_data(timeseries=processed_tide_ts, tms_id=tms_id, upsert=True)
