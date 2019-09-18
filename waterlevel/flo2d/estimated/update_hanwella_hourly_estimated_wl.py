@@ -59,7 +59,8 @@ if __name__ == "__main__":
             meta_data['id'] = tms_id
             TS.insert_run(meta_data=meta_data)
         else:
-            start_date = (datetime.now() - timedelta(days=1)).strftime("%Y-%m-%d %H:00:00")
+            obs_end = TS.get_obs_end(id_=tms_id)
+            start_date = (obs_end - timedelta(days=1)).strftime("%Y-%m-%d %H:00:00")
 
         with connection.cursor() as cursor1:
             cursor1.callproc('getWL', (RANWALA_WL_ID, start_date, end_date))
@@ -72,15 +73,15 @@ if __name__ == "__main__":
 
         hanwella_ts = []
 
-        for i in range(len(ranwala_ts) - 1):
+        for i in range(len(interpolated_ranwala_ts) - 1):
             # x = Ranwala
             # DX Ranwala (x[x] - x[t-1]}
             # Hanwella = X 1.642174610188251` -   DX 3.8585516925010444` -
             #    8.810870547723741`;
-            x = float(ranwala_ts[i + 1][1])
-            dx = float(ranwala_ts[i + 1][1] - ranwala_ts[i][1])
+            x = float(interpolated_ranwala_ts[i + 1][1])
+            dx = float(interpolated_ranwala_ts[i + 1][1] - interpolated_ranwala_ts[i][1])
             hanwella_wl = x * 1.642174610188251 - dx * 3.8585516925010444 - 8.810870547723741
-            hanwella_ts.append([ranwala_ts[i + 1][0], '%.3f' % hanwella_wl])
+            hanwella_ts.append([interpolated_ranwala_ts[i + 1][0], '%.3f' % hanwella_wl])
 
         for i in range(len(hanwella_ts)):
             if hanwella_ts[i][1] < 0.2:
