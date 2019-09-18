@@ -84,7 +84,7 @@ if __name__ == "__main__":
             hanwella_ts.append([interpolated_ranwala_ts[i + 1][0], '%.3f' % hanwella_wl])
 
         for i in range(len(hanwella_ts)):
-            if hanwella_ts[i][1] < 0.2:
+            if float(hanwella_ts[i][1]) < 0.2:
                 hanwella_ts[i][1] = 0.2
 
         if hanwella_ts is not None and len(hanwella_ts) > 0:
