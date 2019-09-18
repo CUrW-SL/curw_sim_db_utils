@@ -74,7 +74,7 @@ if __name__=="__main__":
             for i in range(len(timeseries)):
                 wl = float(timeseries[i][1])
                 discharge = 26.1131 * (wl**1.73499)
-                discharge_ts.append([timeseries[i][0], discharge])
+                discharge_ts.append([timeseries[i][0], '%.3f' % discharge])
 
             if discharge_ts is not None and len(discharge_ts) > 0:
                 discharge_TS.insert_data(timeseries=discharge_ts, tms_id=tms_id, upsert=True)
