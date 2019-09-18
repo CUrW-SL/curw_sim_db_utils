@@ -78,7 +78,7 @@ if __name__=="__main__":
             processed_discharge_ts = []
 
             for i in range(len(discharge_ts)):
-                processed_discharge_ts.append([round_to_nearest_hour(discharge_ts[i][0]), '%.3f' %  discharge_ts[i][1]])
+                processed_discharge_ts.append([round_to_nearest_hour(discharge_ts[i][0]), '%.3f' % discharge_ts[i][1]])
 
             if processed_discharge_ts is not None and len(processed_discharge_ts) > 0:
                 TS.insert_data(timeseries=processed_discharge_ts, tms_id=tms_id, upsert=True)
