@@ -13,6 +13,7 @@ from db_adapter.logger import logger
 
 INPUT_DIR = "/mnt/disks/wrf_nfs/curw_sim_db_utils/discharge/flo2d/fcst"
 
+
 def round_to_nearest_hour(datetime_string, format=None):
 
     if format is None:
