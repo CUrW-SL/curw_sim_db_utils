@@ -43,14 +43,14 @@ if __name__ == "__main__":
 
         tms_id = TS.get_timeseries_id_if_exists(meta_data=meta_data)
 
-        start_date = (datetime.now() - timedelta(days=5)).strftime(COMMON_DATE_TIME_FORMAT)
+        start_date = (datetime.now() - timedelta(days=10)).strftime("%Y-%m-%d %H:00:00")
 
         filled_ts = []
 
         if tms_id is None:
             exit(0)
         else:
-            end_date = TS.get_timeseries_end(id_=tms_id)
+            end_date = TS.get_obs_end(id_=tms_id)
             original_ts = TS.get_timeseries(id_=tms_id, start_date=start_date, end_date=end_date)
             filled_ts = fill_ts_missing_entries(start=start_date, end=end_date, timeseries=original_ts,
                                                 interpolation_method='linear', timestep=60)
