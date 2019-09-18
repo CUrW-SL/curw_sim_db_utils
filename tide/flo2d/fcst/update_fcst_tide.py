@@ -93,7 +93,7 @@ if __name__=="__main__":
         processed_tide_ts = []
 
         for i in range(len(tide_ts)):
-            processed_tide_ts.append([round_to_nearest_hour(tide_ts[i][0]), tide_ts[i][1]])
+            processed_tide_ts.append([round_to_nearest_hour(tide_ts[i][0]), '%.3f' % float(tide_ts[i][1])])
 
         if processed_tide_ts is not None and len(processed_tide_ts) > 0:
             TS.insert_data(timeseries=processed_tide_ts, tms_id=tms_id, upsert=True)
