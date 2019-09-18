@@ -43,7 +43,7 @@ if __name__ == "__main__":
 
         tms_id = TS.get_timeseries_id_if_exists(meta_data=meta_data)
 
-        start_date = (datetime.now() - timedelta(days=10)).strftime("%Y-%m-%d %H:00:00")
+        start_date = (datetime.now() - timedelta(days=1)).strftime("%Y-%m-%d %H:00:00")
 
         filled_ts = []
 
