@@ -85,7 +85,7 @@ if __name__ == "__main__":
             x = float(ranwala_ts[i + 1][1])
             dx = float(ranwala_ts[i + 1][1] - ranwala_ts[i][1])
             hanwella_wl = x * 1.642174610188251 - dx * 3.8585516925010444 - 8.810870547723741
-            hanwella_ts.append([ranwala_ts[i + 1][0], hanwella_wl])
+            hanwella_ts.append([ranwala_ts[i + 1][0], '%.3f' % hanwella_wl])
 
         for i in range(len(hanwella_ts)):
             if hanwella_ts[i][1] < 0.2:
