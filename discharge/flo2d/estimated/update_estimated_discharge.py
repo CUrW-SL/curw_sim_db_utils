@@ -51,7 +51,11 @@ if __name__=="__main__":
             tms_id = discharge_TS.get_timeseries_id_if_exists(meta_data=meta_data)
             wl_tms_id = waterlevel_TS.get_timeseries_id_if_exists(meta_data=wl_meta_data)
 
-            end_time = (datetime.now()+ timedelta(hours=5, minutes=30)).strftime(COMMON_DATE_TIME_FORMAT)
+            if wl_tms_id is None:
+                print("Warning!!! Hanwella waterlevel timeseries doesn't exist.")
+                exit(1)
+
+            end_time = (datetime.now() + timedelta(hours=5, minutes=30)).strftime(COMMON_DATE_TIME_FORMAT)
 
             timeseries = []
 
@@ -59,13 +63,11 @@ if __name__=="__main__":
                 tms_id = discharge_TS.generate_timeseries_id(meta_data=meta_data)
                 meta_data['id'] = tms_id
                 discharge_TS.insert_run(meta_data=meta_data)
-                if wl_tms_id is not None:
-                    start = (datetime.now() - timedelta(days=10)).strftime(COMMON_DATE_TIME_FORMAT)
-                    timeseries = waterlevel_TS.get_timeseries(id_=wl_tms_id, start_date=start, end_date=end_time)
+                start = (datetime.now() - timedelta(days=10)).strftime(COMMON_DATE_TIME_FORMAT)
             else:
-                if wl_tms_id is not None:
-                    start = (datetime.now() - timedelta(days=1)).strftime(COMMON_DATE_TIME_FORMAT)
-                    timeseries = waterlevel_TS.get_timeseries(id_=wl_tms_id, start_date=start, end_date=end_time)
+                start = (datetime.now() - timedelta(days=1)).strftime(COMMON_DATE_TIME_FORMAT)
+
+            timeseries = waterlevel_TS.get_timeseries(id_=wl_tms_id, start_date=start, end_date=end_time)
 
             discharge_ts = []
             for i in range(len(timeseries)):

@@ -13,25 +13,6 @@ from db_adapter.logger import logger
 
 INPUT_DIR = "/mnt/disks/wrf_nfs/curw_sim_db_utils/discharge/flo2d/fcst"
 
-
-def extract_ts_from(start_date, timeseries):
-    """
-    timeseries from start date (inclusive)
-    :param start_date:
-    :param timeseries:
-    :return:
-    """
-
-    output_ts = []
-
-    for i in range(len(timeseries)):
-        if timeseries[i][0] > start_date:
-            output_ts = timeseries[i:]
-            break
-
-    return output_ts
-
-
 def round_to_nearest_hour(datetime_string, format=None):
 
     if format is None:
