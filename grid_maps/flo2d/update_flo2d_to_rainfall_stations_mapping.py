@@ -80,7 +80,7 @@ def find_nearest_obs_stations_for_flo2d_stations(flo2d_stations_csv, obs_station
                 flo2d_obs_mapping.extend([key, sorted_distances.get(key)])
                 count += 1
 
-        print(flo2d_obs_mapping)
+        # print(flo2d_obs_mapping)
         flo2d_obs_mapping_list.append(flo2d_obs_mapping)
 
     create_csv('MDPA_{}_obs_mapping.csv'.format(flo2d_model), flo2d_obs_mapping_list)
