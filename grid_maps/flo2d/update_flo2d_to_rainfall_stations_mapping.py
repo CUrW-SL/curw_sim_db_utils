@@ -70,14 +70,17 @@ def find_nearest_obs_stations_for_flo2d_stations(flo2d_stations_csv, obs_station
             else:
                 distance = 6371 * acos(1)
 
-            distances[obs_stations[obs_index][2]] = distance
+            distances[obs_stations[obs_index][1]] = distance
 
         sorted_distances = collections.OrderedDict(sorted(distances.items(), key=operator.itemgetter(1))[:10])
 
         count = 0
         for key in sorted_distances.keys():
-            if count < 3 and sorted_distances.get(key) < 15:
+            if count < 3 and sorted_distances.get(key) <= 15:
                 flo2d_obs_mapping.extend([key, sorted_distances.get(key)])
+                count += 1
+            elif count < 3:
+                flo2d_obs_mapping.extend([-1, -1])
                 count += 1
 
         # print(flo2d_obs_mapping)
