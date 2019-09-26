@@ -5,6 +5,15 @@ import traceback
 
 from math import acos, cos, sin, radians
 
+from db_adapter.base import get_Pool, destroy_Pool
+from db_adapter.constants import CURW_SIM_HOST, CURW_SIM_PORT, CURW_SIM_USERNAME, CURW_SIM_PASSWORD, CURW_SIM_DATABASE
+from db_adapter.curw_sim.grids import add_flo2d_raincell_grid_mappings, \
+    get_flo2d_cells_to_obs_grid_mappings, get_flo2d_cells_to_wrf_grid_mappings, \
+    GridInterpolationEnum
+from db_adapter.curw_sim.constants import FLO2D_250, FLO2D_150, FLO2D_30
+
+flo2d_models_list = [FLO2D_250, FLO2D_150]
+
 
 def create_csv(file_name, data):
     """
@@ -65,13 +74,43 @@ def find_nearest_obs_stations_for_flo2d_stations(flo2d_stations_csv, obs_station
 
         sorted_distances = collections.OrderedDict(sorted(distances.items(), key=operator.itemgetter(1))[:10])
 
+        count = 0
         for key in sorted_distances.keys():
-            flo2d_obs_mapping.extend([key, sorted_distances.get(key)])
+            if count < 3 and sorted_distances.get(key) < 15:
+                flo2d_obs_mapping.extend([key, sorted_distances.get(key)])
+                count += 1
 
         print(flo2d_obs_mapping)
         flo2d_obs_mapping_list.append(flo2d_obs_mapping)
 
     create_csv('MDPA_{}_obs_mapping.csv'.format(flo2d_model), flo2d_obs_mapping_list)
 
-
 # find_nearest_obs_stations_for_flo2d_stations('flo2d_30m.csv', 'curw_active_rainfall_obs_stations.csv')
+
+
+try:
+
+    pool = get_Pool(host=CURW_SIM_HOST, port=CURW_SIM_PORT, user=CURW_SIM_USERNAME, password=CURW_SIM_PASSWORD,
+                    db=CURW_SIM_DATABASE)
+
+    grid_interpolation_method = GridInterpolationEnum.getAbbreviation(GridInterpolationEnum.MDPA)
+
+    for flo2d_model in flo2d_models_list:
+        print("Update {} grid mappings".format(flo2d_model))
+
+        find_nearest_obs_stations_for_flo2d_stations(flo2d_stations_csv='grids/flo2d/{}m.csv'.format(flo2d_model),
+                                                     obs_stations_csv='grids/obs_stations/rainfall/curw_active_rainfall_obs_stations.csv',
+                                                     flo2d_model=flo2d_model)
+
+        add_flo2d_raincell_grid_mappings(pool=pool, flo2d_model=flo2d_model, grid_interpolation=grid_interpolation_method)
+        print("{} {} grids added".format(len(get_flo2d_cells_to_wrf_grid_mappings(
+            pool=pool, flo2d_model=flo2d_model, grid_interpolation=grid_interpolation_method).keys()), flo2d_model))
+        print("{} {} grids added".format(len(get_flo2d_cells_to_obs_grid_mappings(
+            pool=pool, flo2d_model=flo2d_model, grid_interpolation=grid_interpolation_method).keys()), flo2d_model))
+
+
+except Exception as e:
+    traceback.print_exc()
+finally:
+    destroy_Pool(pool=pool)
+    print("Process Finished.")
