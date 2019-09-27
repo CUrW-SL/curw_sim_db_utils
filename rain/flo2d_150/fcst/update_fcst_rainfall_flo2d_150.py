@@ -5,7 +5,11 @@ import json
 from db_adapter.curw_sim.constants import FLO2D_150
 from db_adapter.curw_sim.grids import GridInterpolationEnum
 from db_adapter.curw_sim.timeseries import MethodEnum
-from db_adapter.curw_sim.flo2d import update_rainfall_fcsts
+# from rain.flo2d.flo2d_common import update_rainfall_fcsts
+
+import sys
+sys.path.insert(0, '/home/uwcc-admin/curw_sim_db_utils/rain/flo2d')
+import flo2d_common
 
 
 def read_attribute_from_config_file(attribute, config):
@@ -24,7 +28,7 @@ def read_attribute_from_config_file(attribute, config):
 if __name__=="__main__":
     try:
 
-        config = json.loads(open('config.json').read())
+        config = json.loads(open('rain/config.json').read())
 
         # source details
         model_list = read_attribute_from_config_file('model_list', config)
@@ -33,7 +37,7 @@ if __name__=="__main__":
         grid_interpolation = GridInterpolationEnum.getAbbreviation(GridInterpolationEnum.MDPA)
 
         print("{} : ####### Insert fcst rainfall for FLO2D 150 grids".format(datetime.now()))
-        update_rainfall_fcsts(flo2d_model=FLO2D_150, method=method, grid_interpolation=grid_interpolation,
+        flo2d_common.update_rainfall_fcsts(flo2d_model=FLO2D_150, method=method, grid_interpolation=grid_interpolation,
                 model_list=model_list, timestep=15)
 
     except Exception as e:
