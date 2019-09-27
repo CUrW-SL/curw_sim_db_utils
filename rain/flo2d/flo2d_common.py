@@ -194,6 +194,7 @@ def update_rainfall_obs(flo2d_model, method, grid_interpolation, timestep):
 
             if timestep == 5:
                 if obs1_station_id != str(-1):
+                    print("obs1 station id", obs1_station_id)
                     obs1_hash_id = stations_dict_for_obs.get(obs1_station_id)
                     print("obs1 hash id", obs1_hash_id)
                     ts = extract_obs_rain_5_min_ts(connection=curw_obs_connection, start_time=obs_start, id=obs1_hash_id)
