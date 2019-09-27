@@ -1,30 +1,16 @@
-
 # update active curw rainfall observational stations
 00 21 * * * /home/uwcc-admin/curw_sim_db_utils/grids/obs_stations/rainfall/update_active_curw_rainfall_stations.sh >> /home/uwcc-admin/curw_sim_db_utils/grids/obs_stations/rainfall/curw_sim_update_active_curw_rainfall_stations.log
 
-
-####### Grid Maps ###########
 # update grid_map_obs
 05 21 * * * /home/uwcc-admin/curw_sim_db_utils/grid_maps/obs_stations/rainfall/update_rainfall_obs_to_d03_mapping.sh >> /home/uwcc-admin/curw_sim_db_utils/grid_maps/obs_stations/rainfall/curw_sim_rainfall_obs_to_d03_mapping.log 2>&1
 
-# update grid_map_flo2d_raincell
-05 21 * * * /home/uwcc-admin/curw_sim_db_utils/grid_maps/flo2d/update_flo2d_to_rainfall_stations_mapping.sh >> /home/uwcc-admin/curw_sim_db_utils/grid_maps/flo2d/curw_sim_update_flo2d_to_rainfall_stations_mapping.log 2>&1
 
 
-######### Rain - HecHMS #########
 # update observed & forecasted precipitation timeseries for hechms
 */15 1-20 * * * /home/uwcc-admin/curw_sim_db_utils/rain/hechms/obs/update_obs_rainfall.sh >> /home/uwcc-admin/curw_sim_db_utils/rain/hechms/obs/curw_sim_obs_hechms.log
 00 22 * * * /home/uwcc-admin/curw_sim_db_utils/rain/hechms/fcst/update_fcst_rainfall.sh >> /home/uwcc-admin/curw_sim_db_utils/rain/hechms/fcst/curw_sim_fcst_hechms.log
 
-######### Rain - Flo2D 250 ##########
-# update observed & forecasted precipitation timeseries for flo2d 250
-*/20 1-21 * * * /home/uwcc-admin/curw_sim_db_utils/rain/flo2d_250/obs/update_obs_rainfall_flo2d_250.sh >> /home/uwcc-admin/curw_sim_db_utils/rain/flo2d_250/obs/curw_sim_obs_flo2d_250.log 2>&1
-00 22 * * * /home/uwcc-admin/curw_sim_db_utils/rain/flo2d_250/fcst/update_fcst_rainfall_flo2d_250.sh >> /home/uwcc-admin/curw_sim_db_utils/rain/flo2d_250/fcst/curw_sim_fcst_flo2d_250.log 2>&1
 
-######### Rain - Flo2D 150 ##########
-# update observed & forecasted precipitation timeseries for flo2d 150
-00 1,3,5,7,9,11,13,15,17,19,21 * * * /home/uwcc-admin/curw_sim_db_utils/rain/flo2d_150/obs/update_obs_rainfall_flo2d_150.sh >> /home/uwcc-admin/curw_sim_db_utils/rain/flo2d_150/obs/curw_sim_obs_flo2d_150.log 2>&1
-00 22 * * * /home/uwcc-admin/curw_sim_db_utils/rain/flo2d_150/fcst/update_fcst_rainfall_flo2d_150.sh >> /home/uwcc-admin/curw_sim_db_utils/rain/flo2d_150/fcst/curw_sim_fcst_flo2d_150.log 2>&1
 
 
 ######### Waterlevels ##########
@@ -47,13 +33,3 @@
 
 # update fcst tidal data series for colombo
 15 * * * * /home/uwcc-admin/curw_sim_db_utils/tide/flo2d/fcst/update_fcst_tide.sh >> /home/uwcc-admin/curw_sim_db_utils/tide/flo2d/fcst/curw_sim_update_fcst_tide.log 2>&1
-
-
-
-
-
-
-
-#00 2,6,10,14,18 * * * /home/uwcc-admin/curw_sim_db_utils/update_obs_rainfall_flo2d_30.sh >> /home/uwcc-admin/curw_sim_db_utils/curw_sim_obs_flo2d_30.log
-#00 22 * * * /home/uwcc-admin/curw_sim_db_utils/update_fcst_rainfall_flo2d_30.sh >> /home/uwcc-admin/curw_sim_db_utils/curw_sim_fcst_flo2d_30.log
-
