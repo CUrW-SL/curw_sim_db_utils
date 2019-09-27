@@ -5,7 +5,7 @@ import json
 from db_adapter.curw_sim.constants import FLO2D_250
 from db_adapter.curw_sim.grids import GridInterpolationEnum
 from db_adapter.curw_sim.timeseries import MethodEnum
-from db_adapter.curw_sim.flo2d import update_rainfall_fcsts
+from rain.flo2d import update_rainfall_fcsts
 
 
 def read_attribute_from_config_file(attribute, config):
@@ -24,7 +24,7 @@ def read_attribute_from_config_file(attribute, config):
 if __name__=="__main__":
     try:
 
-        config = json.loads(open('config.json').read())
+        config = json.loads(open('rain/config.json').read())
 
         # source details
         model_list = read_attribute_from_config_file('model_list', config)
