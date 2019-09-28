@@ -163,7 +163,10 @@ def update_rainfall_obs(flo2d_model, method, grid_interpolation, timestep):
 
         flo2d_obs_mapping = get_flo2d_cells_to_obs_grid_mappings(pool=curw_sim_pool, grid_interpolation=grid_interpolation, flo2d_model=flo2d_model)
 
+        logger.info("{} flo2d grids, {} grid mappings".format(len(flo2d_grids), len(flo2d_obs_mapping)))
+
         for flo2d_index in range(len(flo2d_grids)):
+            logger.info(flo2d_grids[0])
             obs_start = OBS_START
             lat = flo2d_grids[flo2d_index][2]
             lon = flo2d_grids[flo2d_index][1]
@@ -264,9 +267,7 @@ def update_rainfall_obs(flo2d_model, method, grid_interpolation, timestep):
                     obs_timeseries[i][1] = 0
 
             if obs_timeseries is not None and len(obs_timeseries) > 0:
-                logger.info("Update observed rainfall timeseries in curw_sim for id {}".format(tms_id))
                 TS.insert_data(timeseries=obs_timeseries, tms_id=tms_id, upsert=True)
-                logger.info("Update latest obs {}".format(obs_timeseries[-1][1]))
                 TS.update_latest_obs(id_=tms_id, obs_end=(obs_timeseries[-1][1]))
 
     except Exception as e:
