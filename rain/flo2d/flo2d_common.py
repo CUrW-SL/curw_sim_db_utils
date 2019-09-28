@@ -165,8 +165,7 @@ def update_rainfall_obs(flo2d_model, method, grid_interpolation, timestep):
 
         print("{} flo2d grids, {} grid mappings".format(len(flo2d_grids), len(flo2d_obs_mapping)))
 
-        for flo2d_index in range(len(flo2d_grids)):
-            print(flo2d_grids[flo2d_index][0])
+        for flo2d_index in range(30000, len(flo2d_grids)):  ################## debug
             obs_start = OBS_START
             lat = flo2d_grids[flo2d_index][2]
             lon = flo2d_grids[flo2d_index][1]
@@ -176,6 +175,8 @@ def update_rainfall_obs(flo2d_model, method, grid_interpolation, timestep):
                     'model': flo2d_model, 'method': method,
                     'grid_id': '{}_{}_{}'.format(flo2d_model, grid_interpolation, (str(cell_id)).zfill(10))
                     }
+
+            print('**** grid_id,', meta_data.get('grid_id'))
 
             tms_id = TS.get_timeseries_id(grid_id=meta_data.get('grid_id'), method=meta_data.get('method'))
 
@@ -230,9 +231,12 @@ def update_rainfall_obs(flo2d_model, method, grid_interpolation, timestep):
                                 obs_timeseries.extend(process_5_min_ts(newly_extracted_timeseries=ts3, expected_start=expected_start)[1:])
             elif timestep == 15:
                 if obs1_station_id != str(-1):
+                    print('obs1 station id', obs1_station_id)
+                    print('obs1 hash id', obs1_hash_id)
                     obs1_hash_id = stations_dict_for_obs.get(obs1_station_id)
 
                     ts = extract_obs_rain_15_min_ts(connection=curw_obs_connection, start_time=obs_start, id=obs1_hash_id)
+                    print('ts,', ts)
                     if ts is not None and len(ts) > 1:
                         obs_timeseries.extend(process_15_min_ts(newly_extracted_timeseries=ts, expected_start=obs_start)[1:])
                         # obs_start = ts[-1][0]
@@ -261,6 +265,8 @@ def update_rainfall_obs(flo2d_model, method, grid_interpolation, timestep):
                                 else:
                                     expected_start = obs_start
                                 obs_timeseries.extend(process_15_min_ts(newly_extracted_timeseries=ts3, expected_start=expected_start)[1:])
+
+            print('obs_timeseries', obs_timeseries)
 
             for i in range(len(obs_timeseries)):
                 if obs_timeseries[i][1] == -99999:
