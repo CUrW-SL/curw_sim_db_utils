@@ -165,7 +165,7 @@ def update_rainfall_obs(flo2d_model, method, grid_interpolation, timestep):
 
         print("{} flo2d grids, {} grid mappings".format(len(flo2d_grids), len(flo2d_obs_mapping)))
 
-        for flo2d_index in [30807, 30996, 30997, 31185]:  #range(30000, len(flo2d_grids)):  ################## debug
+        for flo2d_index in range(30000, len(flo2d_grids)):  ################## debug
             obs_start = OBS_START
             lat = flo2d_grids[flo2d_index][2]
             lon = flo2d_grids[flo2d_index][1]
