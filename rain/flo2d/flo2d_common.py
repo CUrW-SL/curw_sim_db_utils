@@ -165,7 +165,7 @@ def update_rainfall_obs(flo2d_model, method, grid_interpolation, timestep):
 
         print("{} flo2d grids, {} grid mappings".format(len(flo2d_grids), len(flo2d_obs_mapping)))
 
-        for flo2d_index in range(30000, len(flo2d_grids)):  ################## debug
+        for flo2d_index in [30807, 30996, 30997, 31185]:  #range(30000, len(flo2d_grids)):  ################## debug
             obs_start = OBS_START
             lat = flo2d_grids[flo2d_index][2]
             lon = flo2d_grids[flo2d_index][1]
@@ -234,6 +234,7 @@ def update_rainfall_obs(flo2d_model, method, grid_interpolation, timestep):
                     print('obs1 station id', obs1_station_id)
                     obs1_hash_id = stations_dict_for_obs.get(obs1_station_id)
                     print('obs1 hash id', obs1_hash_id)
+                    print('obs start', obs_start)
 
                     ts = extract_obs_rain_15_min_ts(connection=curw_obs_connection, start_time=obs_start, id=obs1_hash_id)
                     print('ts,', ts)
