@@ -93,9 +93,9 @@ def update_rainfall_obs(target_model, method, grid_interpolation, timestep):
                     obs_timeseries.extend(process_15_min_ts(newly_extracted_timeseries=ts, expected_start=obs_start)[1:])
                     # obs_start = ts[-1][0]
 
-            for i in range(len(obs_timeseries)):
-                if obs_timeseries[i][1] == -99999:
-                    obs_timeseries[i][1] = 0
+            # for i in range(len(obs_timeseries)):
+            #     if obs_timeseries[i][1] == -99999:
+            #         obs_timeseries[i][1] = 0
 
             if obs_timeseries is not None and len(obs_timeseries) > 0:
                 TS.insert_data(timeseries=obs_timeseries, tms_id=tms_id, upsert=True)
