@@ -94,7 +94,10 @@ try:
     grid_interpolation_method = GridInterpolationEnum.getAbbreviation(GridInterpolationEnum.MDPA)
 
     print(" Add obs to wrf_d03 grid mappings")
-    add_obs_to_d03_grid_mappings_for_rainfall(pool=pool, grid_interpolation=grid_interpolation_method)
+    add_obs_to_d03_grid_mappings_for_rainfall(pool=pool, grid_interpolation=grid_interpolation_method,
+                                              obs_to_d03_map_path='grid_maps/obs_stations/rainfall/{}_obs_d03_stations_mapping.csv'
+                                              .format(grid_interpolation_method),
+                                              active_obs_path='grids/obs_stations/rainfall/curw_active_rainfall_obs_stations.csv')
     print("{} rainfall observed station grids added".format(len(get_obs_to_d03_grid_mappings_for_rainfall(pool=pool, grid_interpolation=grid_interpolation_method).keys())))
 
 except Exception as e:
