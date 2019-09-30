@@ -111,7 +111,6 @@ def update_rainfall_fcsts(flo2d_model, method, grid_interpolation, model_list, t
             if avg_timeseries is not None and len(avg_timeseries)>0:
                 Sim_TS.insert_data(timeseries=avg_timeseries, tms_id=tms_id, upsert=True)
 
-
     except Exception as e:
         traceback.print_exc()
         logger.error("Exception occurred while updating fcst rainfalls in curw_sim.")
@@ -258,7 +257,6 @@ def update_rainfall_obs(flo2d_model, method, grid_interpolation, timestep):
                                 else:
                                     expected_start = obs_start
                                 obs_timeseries.extend(process_15_min_ts(newly_extracted_timeseries=ts3, expected_start=expected_start)[1:])
-
 
             for i in range(len(obs_timeseries)):
                 if obs_timeseries[i][1] == -99999:
