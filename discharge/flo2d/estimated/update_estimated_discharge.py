@@ -12,6 +12,26 @@ from db_adapter.curw_sim.timeseries import MethodEnum
 from db_adapter.logger import logger
 
 
+def calculate_hanwella_discharge(hanwella_wl_ts):
+    discharge_ts = []
+    for i in range(len(hanwella_wl_ts)):
+        wl = float(hanwella_wl_ts[i][1])
+        discharge = 26.1131 * (wl ** 1.73499)
+        discharge_ts.append([hanwella_wl_ts[i][0], '%.3f' % discharge])
+
+    return discharge_ts
+
+
+def calculate_glencourse_discharge(glencourse_wl_ts):
+    discharge_ts = []
+    for i in range(len(glencourse_wl_ts)):
+        wl = float(glencourse_wl_ts[i][1])
+        discharge = 41.904 * ((wl - 7.65)** 1.518)
+        discharge_ts.append([glencourse_wl_ts[i][0], '%.3f' % discharge])
+
+    return discharge_ts
+
+
 if __name__=="__main__":
 
     try:
@@ -68,17 +88,18 @@ if __name__=="__main__":
                 obs_end = discharge_TS.get_obs_end(id_=tms_id)
                 start = (obs_end - timedelta(days=1)).strftime(COMMON_DATE_TIME_FORMAT)
 
-            timeseries = waterlevel_TS.get_timeseries(id_=wl_tms_id, start_date=start, end_date=end_time)
+            wl_timeseries = waterlevel_TS.get_timeseries(id_=wl_tms_id, start_date=start, end_date=end_time)
 
-            discharge_ts = []
-            for i in range(len(timeseries)):
-                wl = float(timeseries[i][1])
-                discharge = 26.1131 * (wl**1.73499)
-                discharge_ts.append([timeseries[i][0], '%.3f' % discharge])
+            estimated_discharge_ts = []
 
-            if discharge_ts is not None and len(discharge_ts) > 0:
-                discharge_TS.insert_data(timeseries=discharge_ts, tms_id=tms_id, upsert=True)
-                discharge_TS.update_latest_obs(id_=tms_id, obs_end=discharge_ts[-1][1])
+            if station_name == 'hanwella':
+                estimated_discharge_ts = calculate_hanwella_discharge(wl_timeseries)
+            elif station_name == 'glencourse':
+                estimated_discharge_ts = calculate_glencourse_discharge(wl_timeseries)
+
+            if estimated_discharge_ts is not None and len(estimated_discharge_ts) > 0:
+                discharge_TS.insert_data(timeseries=estimated_discharge_ts, tms_id=tms_id, upsert=True)
+                discharge_TS.update_latest_obs(id_=tms_id, obs_end=estimated_discharge_ts[-1][1])
 
     except Exception as e:
         traceback.print_exc()
