@@ -32,9 +32,8 @@ fi
 
 
 # Update obs data in curw_sim for flo2d grids
-echo "Running update_obs_rainfall_flo2d_250.py"
-python waterlevel/flo2d/estimated/update_hanwella_hourly_estimated_wl.py >> waterlevel/flo2d/estimated/curw_sim_update_hanwella_estimated_wl.log 2>&1
-python waterlevel/flo2d/estimated/update_glencourse_hourly_estimated_wl.py >> waterlevel/flo2d/estimated/curw_sim_update_glencourse_estimated_wl.log 2>&1
+echo "Running update_hanwella_glencourse_hourly_estimated_wl.py"
+python waterlevel/flo2d/estimated/update_hanwella_glencourse_hourly_estimated_wl.py >> waterlevel/flo2d/estimated/curw_sim_update_hanwella_glencourse_estimated_wl.log 2>&1
 
 # Deactivating virtual environment
 echo "Deactivating virtual environment"
