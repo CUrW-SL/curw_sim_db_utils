@@ -101,7 +101,7 @@ def update_rainfall_fcsts(flo2d_model, method, grid_interpolation, model_list, t
 
                 if coefficient != 1:
                     for j in range(len(temp_timeseries)):
-                        temp_timeseries[j][1] = temp_timeseries[j][1] * coefficient
+                        temp_timeseries[j][1] = float(temp_timeseries[j][1]) * coefficient
 
                 if i == 0:
                     fcst_timeseries = temp_timeseries
