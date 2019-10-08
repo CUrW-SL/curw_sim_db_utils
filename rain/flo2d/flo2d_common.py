@@ -72,6 +72,7 @@ def update_rainfall_fcsts(flo2d_model, method, grid_interpolation, model_list, t
             for i in range(len(model_list)):
                 source_id = get_source_id(pool=curw_fcst_pool, model=model_list[i][0], version=model_list[i][1])
                 sim_tag = model_list[i][2]
+                coefficient = model_list[i][3]
 
                 temp_timeseries = []
 
@@ -97,6 +98,10 @@ def update_rainfall_fcsts(flo2d_model, method, grid_interpolation, model_list, t
                         temp_timeseries = Fcst_TS.get_latest_timeseries(
                                         sim_tag=sim_tag, station_id=flo2d_wrf_mapping.get(meta_data['grid_id']),
                                         source_id=source_id, variable_id=1, unit_id=1)
+
+                if coefficient != 1:
+                    for j in range(len(temp_timeseries)):
+                        temp_timeseries[j][1] = temp_timeseries[j][1] * coefficient
 
                 if i == 0:
                     fcst_timeseries = temp_timeseries
