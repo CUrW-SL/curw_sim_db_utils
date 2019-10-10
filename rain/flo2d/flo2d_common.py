@@ -282,3 +282,68 @@ def update_rainfall_obs(flo2d_model, method, grid_interpolation, timestep):
         logger.info("Process finished")
 
 
+################################
+## Raincell rfield generation ##
+################################
+def write_to_file(file_name, data):
+    with open(file_name, 'w+') as f:
+        f.write('\n'.join(data))
+
+
+def append_to_file(file_name, data):
+    with open(file_name, 'a+') as f:
+        f.write('\n'.join(data))
+
+
+def prepare_rfields(root_dir, start_time, end_time, target_model, interpolation_method="MME"):
+    """
+    Create rfields for flo2d
+    :param root_dir: rfield root directory
+    :param start_time:
+    :param end_time:
+    :param target_model: FLO2D model (e.g. flo2d_250, flo2d_150)
+    :param interpolation_method: value interpolation method (e.g. "MME")
+    :return:
+    """
+
+    end_time = datetime.strptime(end_time, COMMON_DATE_TIME_FORMAT)
+    start_time = datetime.strptime(start_time, COMMON_DATE_TIME_FORMAT)
+
+    if end_time < start_time:
+        exit(1)
+
+    length = 0
+    if target_model == "flo2d_250":
+        length = 9348
+        timestep = 5
+    elif target_model == "flo2d_150":
+        length = 41767
+        timestep = 15
+
+    pool = get_Pool(host=CURW_SIM_HOST, port=CURW_SIM_PORT, user=CURW_SIM_USERNAME,
+                    db=CURW_SIM_DATABASE, password=CURW_SIM_PASSWORD)
+
+    connection = pool.connection()
+
+    try:
+        timestamp = start_time
+        while timestamp < end_time:
+            raincell = []
+            timestamp = timestamp + timedelta(minutes=timestep)
+            # Extract raincell from db
+            with connection.cursor() as cursor1:
+                cursor1.callproc('prepare_flo2d_raincell', (target_model, interpolation_method, timestamp))
+                for result in cursor1:
+                    raincell.append(result.get('value'))
+
+            if len(raincell) == length:
+                write_to_file("{}/{}_{}_{}".format(root_dir, target_model, interpolation_method,
+                                                   timestamp.strftime('%Y-%m-%d_%H-%M')),
+                              raincell)
+
+    except Exception as ex:
+        traceback.print_exc()
+    finally:
+        connection.close()
+        print("{} {} generation process completed".format(datetime.now(), target_model))
+
