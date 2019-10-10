@@ -312,9 +312,12 @@ def prepare_rfields(root_dir, start_time, end_time, target_model, interpolation_
     if end_time < start_time:
         exit(1)
 
+    length = 0
     if target_model == "flo2d_250":
+        length = 9348
         timestep = 5
     elif target_model == "flo2d_150":
+        length = 41767
         timestep = 15
 
     pool = get_Pool(host=CURW_SIM_HOST, port=CURW_SIM_PORT, user=CURW_SIM_USERNAME,
@@ -332,9 +335,11 @@ def prepare_rfields(root_dir, start_time, end_time, target_model, interpolation_
                 cursor1.callproc('prepare_flo2d_raincell', (target_model, interpolation_method, timestamp))
                 for result in cursor1:
                     raincell.append(result.get('value'))
-            write_to_file("{}/{}_{}_{}".format(root_dir, target_model, interpolation_method,
-                                               timestamp.strftime('%Y-%m-%d_%H-%M')),
-                          raincell)
+
+            if len(raincell) == length:
+                write_to_file("{}/{}_{}_{}".format(root_dir, target_model, interpolation_method,
+                                                   timestamp.strftime('%Y-%m-%d_%H-%M')),
+                              raincell)
 
     except Exception as ex:
         traceback.print_exc()
