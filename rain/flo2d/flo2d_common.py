@@ -337,8 +337,7 @@ def prepare_rfields(root_dir, start_time, end_time, target_model, interpolation_
                     raincell.append(result.get('value'))
 
             if len(raincell) == length:
-                write_to_file("{}/{}_{}_{}".format(root_dir, target_model, interpolation_method,
-                                                   timestamp.strftime('%Y-%m-%d_%H-%M')),
+                write_to_file("{}/_{}_{}".format(root_dir, interpolation_method, timestamp.strftime('%Y-%m-%d_%H-%M')),
                               raincell)
 
     except Exception as ex:
