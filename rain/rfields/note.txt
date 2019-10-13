@@ -5,11 +5,14 @@ _________________________
 250
 _________________________
 
-#### observed rfield update
+########## observed rfield update ##########
+rain/flo2d_250/obs/gen_flo2d_250_obs_rfield.py
 
 @ every hour :: update last 2 hour rfields :: when rainfall for grids are updated
+* can be used to generate all rfields for a specified day
 
-#### forecasted rfield update
+########## forecasted rfield update ##########
+rain/flo2d_250/fcst/gen_flo2d_250_fcst_rfield.py
 
 @ every forecast data updation :: update from now onward
 
@@ -17,11 +20,12 @@ _________________________
 150
 _________________________
 
-#### observed rfield update
+########## observed rfield update ##########
 
 @ every 2 hours :: update last 3 hour rfields :: when rainfall for grids are updated
+* can be used to generate all rfields for a specified day
 
-#### forecasted rfield update
+########## forecasted rfield update ##########
 
 @ every forecast data updation :: update from now onward
 
