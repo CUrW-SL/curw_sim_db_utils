@@ -33,7 +33,7 @@ fi
 
 # Update obs data in curw_sim for flo2d grids
 echo "Running gen_flo2d_250_fcst_rfield.py"
-python rain/flo2d_250/fcst/gen_flo2d_250_fcst_rfield.py >> rain/flo2d_250/fcst/curw_sim_flo2d_250_fcst_rfield.log 2>&1
+python rain/flo2d_250/fcst/gen_flo2d_250_fcst_rfield.py >> rain/flo2d_250/fcst/curw_sim_rfield_fcst_250.log 2>&1
 
 # Deactivating virtual environment
 echo "Deactivating virtual environment"
