@@ -346,7 +346,7 @@ def prepare_rfields(root_dir, start_time, end_time, target_model, interpolation_
                 pass
 
             if len(raincell) == length:
-                write_to_file("{}/{}/{}_{}".format(root_dir, day, interpolation_method, timestamp.strftime('%Y-%m-%d_%H-%M')),
+                write_to_file("{}/{}/{}_{}.txt".format(root_dir, day, interpolation_method, timestamp.strftime('%Y-%m-%d_%H-%M')),
                               raincell)
 
             timestamp = timestamp + timedelta(minutes=timestep)
