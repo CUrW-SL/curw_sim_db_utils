@@ -328,9 +328,8 @@ def prepare_rfields(root_dir, start_time, end_time, target_model, interpolation_
 
     try:
         timestamp = start_time
-        while timestamp < end_time:
+        while timestamp <= end_time:
             raincell = []
-            timestamp = timestamp + timedelta(minutes=timestep)
             # Extract raincell from db
             with connection.cursor() as cursor1:
                 cursor1.callproc('prepare_flo2d_raincell', (target_model, interpolation_method, timestamp))
@@ -349,6 +348,8 @@ def prepare_rfields(root_dir, start_time, end_time, target_model, interpolation_
             if len(raincell) == length:
                 write_to_file("{}/{}/{}_{}".format(root_dir, day, interpolation_method, timestamp.strftime('%Y-%m-%d_%H-%M')),
                               raincell)
+
+            timestamp = timestamp + timedelta(minutes=timestep)
 
     except Exception as ex:
         traceback.print_exc()
