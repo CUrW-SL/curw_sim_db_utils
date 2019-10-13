@@ -1,4 +1,5 @@
 import traceback
+import os
 from datetime import datetime, timedelta
 from db_adapter.csv_utils import read_csv
 
@@ -338,6 +339,12 @@ def prepare_rfields(root_dir, start_time, end_time, target_model, interpolation_
                     raincell.append(result.get('value'))
 
             day = timestamp.date()
+
+            try:
+                os.makedirs("{}/{}".format(root_dir, day))
+            except FileExistsError:
+                # directory already exists
+                pass
 
             if len(raincell) == length:
                 write_to_file("{}/{}/{}_{}".format(root_dir, day, interpolation_method, timestamp.strftime('%Y-%m-%d_%H-%M')),
