@@ -14,16 +14,37 @@ import flo2d_common
 FLO2D_250_RFIELD_DIR = "rain/rfields/flo2d_250"
 
 
+def read_attribute_from_config_file(attribute, config, compulsory):
+    """
+    :param attribute: key name of the config json file
+    :param config: loaded json file
+    :param compulsory: Boolean value: whether the attribute is must present or not in the config file
+    :return:
+    """
+    if attribute in config and (config[attribute]!=""):
+        return config[attribute]
+    elif compulsory:
+        print("{} not specified in config file.".format(attribute))
+        exit(1)
+    else:
+        return None
+
+
 if __name__=="__main__":
     try:
+
+        config = json.loads(open('rain/rfields/250_config.json').read())
+
+        # date
+        date = read_attribute_from_config_file('day', config, True)
 
         # source details
         method = MethodEnum.getAbbreviation(MethodEnum.MME)
         grid_interpolation = GridInterpolationEnum.getAbbreviation(GridInterpolationEnum.MDPA)
 
-        now_sl = (datetime.now() + timedelta(hours=5, minutes=30))
-        start = (now_sl - timedelta(hours=2)).strftime("%Y-%m-%d %H:00:00")
-        end = now_sl.strftime("%Y-%m-%d %H:%M:00")
+        config_date = datetime.strptime(date, "%Y-%m-%d")
+        start = config_date.strftime("%Y-%m-%d 00:00:00")
+        end = config_date.strftime("%Y-%m-%d 23:55:00")
 
         print("{} : ####### Generate FLO2D 250 rfields".format(datetime.now()))
         flo2d_common.prepare_rfields(root_dir=FLO2D_250_RFIELD_DIR, start_time=start, end_time=end,
