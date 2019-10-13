@@ -43,7 +43,7 @@ if __name__=="__main__":
         config = json.loads(open('rain/rfields/250_config.json').read())
 
         # date
-        date = read_attribute_from_config_file('model_list', config, False)
+        date = read_attribute_from_config_file('day', config, False)
 
         # source details
         method = MethodEnum.getAbbreviation(MethodEnum.MME)
