@@ -55,7 +55,7 @@ if __name__=="__main__":
             end = config_date.strftime("%Y-%m-%d 23:55:00")
         else:
             now_sl = (datetime.now() + timedelta(hours=5, minutes=30))
-            start = (now_sl - timedelta(hours=2)).strftime("%Y-%m-%d %H:00:00")
+            start = (now_sl - timedelta(hours=3)).strftime("%Y-%m-%d %H:00:00")
             end = now_sl.strftime("%Y-%m-%d %H:%M:00")
 
         print("{} : ####### Generate FLO2D 150 rfields".format(datetime.now()))
