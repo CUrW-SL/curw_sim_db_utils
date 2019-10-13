@@ -10,7 +10,7 @@ import sys
 sys.path.insert(0, '/home/uwcc-admin/curw_sim_db_utils/rain/flo2d')
 import flo2d_common
 
-FLO2D_250_RFIELD_DIR = "/mnt/disks/wrf_nfs/flo2d_raincells/250"
+FLO2D_250_RFIELD_DIR = "rain/rfields/flo2d_250"
 
 if __name__=="__main__":
     try:
@@ -20,8 +20,8 @@ if __name__=="__main__":
         grid_interpolation = GridInterpolationEnum.getAbbreviation(GridInterpolationEnum.MDPA)
 
         now_sl = (datetime.now() + timedelta(hours=5, minutes=30))
-        start = (now_sl - timedelta(hours=2)).strftime("%Y-%m-%d %H:00:00")
-        end = now_sl.strftime("%Y-%m-%d %H:00:00")
+        start = (now_sl + timedelta(hours=1)).strftime("%Y-%m-%d %H:00:00")
+        end = (now_sl+timedelta(days=1)).strftime("%Y-%m-%d 23:30:00")
 
         print("{} : ####### Generate FLO2D 250 rfields".format(datetime.now()))
         flo2d_common.prepare_rfields(root_dir=FLO2D_250_RFIELD_DIR, start_time=start, end_time=end,
