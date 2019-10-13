@@ -31,7 +31,7 @@ then
 fi
 
 
-# Update obs data in curw_sim for flo2d grids
+# Generate flo2d 150 rfields in fcst range
 echo "Running gen_flo2d_150_fcst_rfield.py"
 python rain/flo2d_150/fcst/gen_flo2d_150_fcst_rfield.py >> rain/flo2d_150/fcst/curw_sim_rfield_fcst_150.log 2>&1
 

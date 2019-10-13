@@ -35,6 +35,10 @@ fi
 echo "Running update_obs_rainfall_flo2d_150.py"
 python rain/flo2d_150/obs/update_obs_rainfall_flo2d_150.py >> rain/flo2d_150/obs/curw_sim_obs_flo2d_150.log 2>&1
 
+# Generate flo2d 150 rfields in obs range
+echo "Running gen_flo2d_150_obs_rfield.py"
+python rain/flo2d_150/obs/gen_flo2d_150_obs_rfield.py >> rain/flo2d_150/obs/curw_sim_rfield_obs_150.log 2>&1
+
 # Deactivating virtual environment
 echo "Deactivating virtual environment"
 deactivate

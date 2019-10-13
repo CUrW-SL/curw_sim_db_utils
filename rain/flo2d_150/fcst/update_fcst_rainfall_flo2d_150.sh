@@ -35,6 +35,10 @@ fi
 echo "Running update_obs_rainfall_flo2d_150.py"
 python rain/flo2d_150/fcst/update_fcst_rainfall_flo2d_150.py >> rain/flo2d_150/fcst/curw_sim_fcst_flo2d_150.log 2>&1
 
+# Generate flo2d 150 rfields in fcst range
+echo "Running gen_flo2d_150_fcst_rfield.py"
+python rain/flo2d_150/fcst/gen_flo2d_150_fcst_rfield.py >> rain/flo2d_150/fcst/curw_sim_rfield_fcst_150.log 2>&1
+
 # Deactivating virtual environment
 echo "Deactivating virtual environment"
 deactivate

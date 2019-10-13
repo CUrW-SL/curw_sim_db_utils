@@ -31,7 +31,7 @@ then
 fi
 
 
-# Update obs data in curw_sim for flo2d grids
+# Generate flo2d 250 rfields in obs range
 echo "Running gen_flo2d_250_obs_rfield.py"
 python rain/flo2d_250/obs/gen_flo2d_250_obs_rfield.py >> rain/flo2d_250/obs/curw_sim_rfield_obs_250.log 2>&1
 
