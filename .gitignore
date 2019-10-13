@@ -109,3 +109,5 @@ ENV/
 
 # mypy
 .mypy_cache/
+/rain/rfields/flo2d_150/
+/rain/rfields/flo2d_250/
