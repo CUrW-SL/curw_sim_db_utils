@@ -336,7 +336,7 @@ def prepare_rfields(root_dir, start_time, end_time, target_model, interpolation_
                 cursor1.callproc('prepare_flo2d_raincell', (target_model, interpolation_method, timestamp))
                 results = cursor1.fetchall()
                 for result in results:
-                    raincell.append(result.get('value'))
+                    raincell.append(str(result.get('value')))
 
             day = timestamp.date()
 
