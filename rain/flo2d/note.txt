@@ -1,0 +1,27 @@
+=========================
+Raincell Rfields Update
+=========================
+_________________________
+250
+_________________________
+
+#### observed rfield update
+
+@ every hour :: update last 2 hour rfields :: when rainfall for grids are updated
+
+#### forecasted rfield update
+
+@ every forecast data updation :: update from now onward
+
+_________________________
+150
+_________________________
+
+#### observed rfield update
+
+@ every 2 hours :: update last 3 hour rfields :: when rainfall for grids are updated
+
+#### forecasted rfield update
+
+@ every forecast data updation :: update from now onward
+
