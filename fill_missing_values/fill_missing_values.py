@@ -1,3 +1,4 @@
+#!/home/uwcc-admin/curw_sim_db_utils/venv/bin/python3
 import pymysql
 import traceback
 import getopt
