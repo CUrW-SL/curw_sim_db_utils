@@ -168,25 +168,29 @@ def fill_missing_fcsts(end, model):
                 ids.append([result.get('id')])
 
         for id in ids:
-            print(id)
             with connection.cursor() as cursor2:
                 sql_statement = "select max(`time`) as `time` from `data` where id=%s;"
                 cursor2.execute(sql_statement, id)
                 start = cursor2.fetchone()['time']
 
-            timestamp = start
-            while timestamp <= end:
-                print(timestamp)
-                try:
-                    with connection.cursor() as cursor3:
-                        sql_statement = "INSERT INTO `data` (`id`,`time`,`value`) VALUES (%s,%s,%s);"
-                        cursor3.execute(sql_statement, (id, timestamp, 0))
-                    connection.commit()
-                except Exception as ex:
-                    connection.rollback()
-                    traceback.print_exc()
+            print(id, start, end)
 
+            ts0 = []
+
+            timestamp = start
+            while timestamp < end:
                 timestamp = timestamp + timedelta(minutes=timestep)
+                ts0.append([id, timestamp, 0])
+
+            try:
+                with connection.cursor() as cursor3:
+                    sql_statement = "INSERT INTO `data` (`id`,`time`,`value`) VALUES (%s,%s,%s);"
+                    cursor3.executemany(sql_statement, ts0)
+                connection.commit()
+            except Exception as ex:
+                connection.rollback()
+                traceback.print_exc()
+
 
     except Exception as ex:
         traceback.print_exc()
