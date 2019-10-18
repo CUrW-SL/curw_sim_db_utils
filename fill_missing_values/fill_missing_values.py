@@ -272,7 +272,7 @@ if __name__=="__main__":
             exit(1)
 
         if end_time is None:
-            end_time = (datetime.now() + timedelta(days=1)).strftime('%Y-%m-%d 23:30:00')
+            end_time = (datetime.now() + timedelta(days=2)).strftime('%Y-%m-%d 00:00:00')
         else:
             check_time_format(time=end_time, model=model)
 
