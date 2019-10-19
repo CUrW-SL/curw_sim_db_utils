@@ -32,7 +32,7 @@ fi
 
 
 # Update fcst data in curw_sim for flo2d grids
-echo "Running update_obs_rainfall_flo2d_250.py"
+echo "Running update_fcst_rainfall_flo2d_250.py"
 python rain/flo2d_250/fcst/update_fcst_rainfall_flo2d_250.py >> rain/flo2d_250/fcst/curw_sim_fcst_flo2d_250.log 2>&1
 
 # Generate flo2d 250 rfields in fcst range

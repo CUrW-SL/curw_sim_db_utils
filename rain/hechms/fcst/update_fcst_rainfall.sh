@@ -30,7 +30,7 @@ then
     touch curw_sim_utils.log
 fi
 
-# Update fcst data in curw_sim for flo2d grids
+# Update fcst data in curw_sim for hechms grids
 echo "Running update_fcst_rainfall.py"
 python rain/hechms/fcst/update_fcst_rainfall.py >> rain/hechms/fcst/curw_sim_fcst_hechms.log 2>&1
 
