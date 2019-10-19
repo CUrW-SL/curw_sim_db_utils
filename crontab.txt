@@ -6,6 +6,8 @@
 30 17 * * * /home/uwcc-admin/curw_sim_db_utils/fill_missing_values/fill_missing_values.py -o FCST -m "flo2d_250" >> /home/uwcc-admin/curw_sim_db_utils/fill_missing_values/fill_missing_values_250.log
 30 17 * * * /home/uwcc-admin/curw_sim_db_utils/fill_missing_values/fill_missing_values.py -o FCST -m "flo2d_150" >> /home/uwcc-admin/curw_sim_db_utils/fill_missing_values/fill_missing_values_150.log
 
+# forecast rain config updation check & forecast rain updates initializer
+*/5 * * * * /home/uwcc-admin/curw_sim_db_utils/rain/update_fcsts.sh >> /home/uwcc-admin/curw_sim_db_utils/rain/curw_sim_update_fcsts.log
 
 ####### Grid Maps ###########
 # update grid_map_obs
