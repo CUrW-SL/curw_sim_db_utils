@@ -13,7 +13,7 @@ from db_adapter.curw_sim.timeseries import MethodEnum
 from db_adapter.curw_sim.timeseries import Timeseries as Sim_Timeseries
 from db_adapter.curw_fcst.timeseries import Timeseries as Fcst_Timeseries
 from db_adapter.curw_fcst.source import get_source_id
-from db_adapter.curw_sim.common import convert_15_min_ts_to_5_mins_ts, append_value_for_timestamp, average_timeseries
+from db_adapter.curw_sim.common import convert_15_min_ts_to_5_mins_ts, append_value_for_timestamp, summed_timeseries
 
 from db_adapter.logger import logger
 
@@ -129,14 +129,14 @@ def update_rainfall_fcsts(target_model, method, grid_interpolation, model_list, 
                     fcst_timeseries = append_value_for_timestamp(existing_ts=fcst_timeseries,
                             new_ts=temp_timeseries)
 
-            avg_timeseries = average_timeseries(fcst_timeseries)
+            summed_timeseries = summed_timeseries(fcst_timeseries)
 
-            for i in range(len(avg_timeseries)):
-                if float(avg_timeseries[i][1]) < 0:
-                    avg_timeseries[i][1] = 0
+            for i in range(len(summed_timeseries)):
+                if float(summed_timeseries[i][1]) < 0:
+                    summed_timeseries[i][1] = 0
 
-            if avg_timeseries is not None and len(avg_timeseries)>0:
-                Sim_TS.insert_data(timeseries=avg_timeseries, tms_id=tms_id, upsert=True)
+            if summed_timeseries is not None and len(summed_timeseries)>0:
+                Sim_TS.insert_data(timeseries=summed_timeseries, tms_id=tms_id, upsert=True)
 
     except Exception as e:
         traceback.print_exc()
