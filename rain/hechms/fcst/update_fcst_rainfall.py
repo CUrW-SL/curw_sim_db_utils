@@ -129,14 +129,14 @@ def update_rainfall_fcsts(target_model, method, grid_interpolation, model_list, 
                     fcst_timeseries = append_value_for_timestamp(existing_ts=fcst_timeseries,
                             new_ts=temp_timeseries)
 
-            summed_timeseries = summed_timeseries(fcst_timeseries)
+            sum_timeseries = summed_timeseries(fcst_timeseries)
 
-            for i in range(len(summed_timeseries)):
-                if float(summed_timeseries[i][1]) < 0:
-                    summed_timeseries[i][1] = 0
+            for i in range(len(sum_timeseries)):
+                if float(sum_timeseries[i][1]) < 0:
+                    sum_timeseries[i][1] = 0
 
-            if summed_timeseries is not None and len(summed_timeseries)>0:
-                Sim_TS.insert_data(timeseries=summed_timeseries, tms_id=tms_id, upsert=True)
+            if sum_timeseries is not None and len(sum_timeseries)>0:
+                Sim_TS.insert_data(timeseries=sum_timeseries, tms_id=tms_id, upsert=True)
 
     except Exception as e:
         traceback.print_exc()
