@@ -23,7 +23,7 @@ if __name__=="__main__":
         method = MethodEnum.getAbbreviation(MethodEnum.MME)
         run_table = "run"
         data_table = "data"
-        end = (datetime.now() - timedelta(days=50)).strftime("%Y-%m-%d %H:%M:%00")
+        end = (datetime.now() - timedelta(days=50)).strftime("%Y-%m-%d %H:%M:00")
 
         hash_ids = flush_common.get_curw_sim_hash_ids(pool=pool, run_table=run_table, model=FLO2D_250, method=method, obs_end_start=None,
                                          obs_end_end=None, grid_id=None)
