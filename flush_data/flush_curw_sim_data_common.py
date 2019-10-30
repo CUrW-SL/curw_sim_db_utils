@@ -20,11 +20,12 @@ class Timeseries:
         connection = self.pool.connection()
         data_table = self.data_table
 
-        pre_sql_statement = "DELETE FROM `curw_sim`.`" + data_table + "` WHERE `id`= %s"
+        pre_sql_statement = "DELETE FROM `curw_sim`.`" + data_table + "` WHERE "
 
         condition_list = []
         variable_list = []
 
+        condition_list.append("`id`= %s")
         variable_list.append(id_)
 
         if start is not None:
