@@ -38,6 +38,8 @@ class Timeseries:
 
         sql_statement = pre_sql_statement + conditions + ";"
 
+        print(sql_statement)
+
         try:
             with connection.cursor() as cursor:
                 row_count = cursor.execute(sql_statement, tuple(variable_list))
