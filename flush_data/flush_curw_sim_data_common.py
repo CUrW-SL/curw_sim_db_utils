@@ -66,7 +66,7 @@ class Timeseries:
         try:
 
             with connection.cursor() as cursor:
-                sql_statement = "DELETE FROM `curw_fcst`.`" + run_table + "` WHERE `id`= %s ;"
+                sql_statement = "DELETE FROM `curw_sim`.`" + run_table + "` WHERE `id`= %s ;"
                 row_count = cursor.execute(sql_statement, id_)
 
             connection.commit()
