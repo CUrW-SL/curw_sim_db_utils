@@ -38,13 +38,13 @@ if __name__=="__main__":
         #     TS.delete_timeseries(id_=id, end=end)
         #     print(count, id)
         #     count += 1
+        # print("{} of hash ids are deleted".format(len(hash_ids)))
+
 
         ##########################################################################################################
         # bulk delete a specific timeseries defined by a given hash id from data table for specified time period #
         ##########################################################################################################
         TS.bulk_delete_timeseries(ids=hash_ids, end=end)
-
-        print("{} of hash ids are deleted".format(len(hash_ids)))
 
     except Exception as e:
         print('An exception occurred.')
