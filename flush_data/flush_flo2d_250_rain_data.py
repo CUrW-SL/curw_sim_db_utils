@@ -35,11 +35,12 @@ if __name__=="__main__":
         #####################################################################################################
         count = 0
         for id in hash_ids:
+            print(count, id)
+
             if count == 0:
                 TS.delete_timeseries(id_=id, end=end)
                 break
             count += 1
-            print(count, id)
 
         print("{} of hash ids are deleted".format(len(hash_ids)))
 
