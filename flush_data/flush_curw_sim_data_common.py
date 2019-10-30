@@ -135,9 +135,6 @@ class Timeseries:
                 error_message = "Deletion of timeseries failed"
                 print(error_message)
                 traceback.print_exc()
-            finally:
-                if connection is not None:
-                    connection.close()
 
         try:
             with connection.cursor() as cursor:
