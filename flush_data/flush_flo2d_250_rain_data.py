@@ -33,11 +33,16 @@ if __name__=="__main__":
         #####################################################################################################
         # delete a specific timeseries defined by a given hash id from data table for specified time period #
         #####################################################################################################
-        count = 0
-        for id in hash_ids:
-            TS.delete_timeseries(id_=id, end=end)
-            print(count, id)
-            count += 1
+        # count = 0
+        # for id in hash_ids:
+        #     TS.delete_timeseries(id_=id, end=end)
+        #     print(count, id)
+        #     count += 1
+
+        ##########################################################################################################
+        # bulk delete a specific timeseries defined by a given hash id from data table for specified time period #
+        ##########################################################################################################
+        TS.bulk_delete_timeseries(ids=hash_ids, end=end)
 
         print("{} of hash ids are deleted".format(len(hash_ids)))
 
