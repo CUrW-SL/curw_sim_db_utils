@@ -10,9 +10,10 @@ class Timeseries:
 
     def delete_timeseries(self, id_, start=None, end=None):
         """
-        Delete specific timeseries identified by hash id and a fgt
+        Delete specific timeseries identified by hash id
         :param id_: hash id
-        :param fgt: fgt
+        :param start: start time inclusive
+        :param end: end time inclusive
         :return:
         """
 
@@ -52,3 +53,29 @@ class Timeseries:
             if connection is not None:
                 connection.close()
 
+    def delete_all_by_hash_id(self, id_):
+        """
+        Delete all timeseries with same hash id (same meta data)
+        :param id_: hash id
+        :return:
+        """
+
+        connection = self.pool.connection()
+        run_table = self.run_table
+
+        try:
+
+            with connection.cursor() as cursor:
+                sql_statement = "DELETE FROM `curw_fcst`.`" + run_table + "` WHERE `id`= %s ;"
+                row_count = cursor.execute(sql_statement, id_)
+
+            connection.commit()
+            return row_count
+        except Exception as exception:
+            connection.rollback()
+            error_message = "Deletion of timeseries with hash id {} failed".format(id_)
+            print(error_message)
+            traceback.print_exc()
+        finally:
+            if connection is not None:
+                connection.close()
