@@ -120,16 +120,15 @@ class Timeseries:
         for i in range(len(ids)):
             processed_variable_list[i].extend(variable_list)
 
-        rows = 0
         count = 0
         while count < len(ids):
             try:
                 with connection.cursor() as cursor:
                     row_count = cursor.executemany(sql_statement, processed_variable_list[count: count+100])
                 connection.commit()
+                print(count + len(processed_variable_list[count: count+100]))
                 count += 100
-                rows += row_count
-                print(rows)
+                print("count: ", count)
             except Exception as exception:
                 connection.rollback()
                 error_message = "Deletion of timeseries failed"
@@ -140,8 +139,8 @@ class Timeseries:
             with connection.cursor() as cursor:
                 row_count = cursor.executemany(sql_statement, processed_variable_list[count: len(ids)])
             connection.commit()
-            rows += row_count
-            print(rows)
+            print(count + len(processed_variable_list[count: count+100])
+)
         except Exception as exception:
             connection.rollback()
             error_message = "Deletion of timeseries failed"
@@ -151,7 +150,7 @@ class Timeseries:
             if connection is not None:
                 connection.close()
 
-        print("{} timeseries deleted.".format(rows))
+        print("{} rows deleted.".format(rows))
 
     def bulk_delete_all_by_hash_id(self, ids):
         """
