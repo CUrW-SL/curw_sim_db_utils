@@ -128,7 +128,6 @@ class Timeseries:
                 connection.commit()
                 print(count + len(processed_variable_list[count: count+100]))
                 count += 100
-                print("count: ", count)
             except Exception as exception:
                 connection.rollback()
                 error_message = "Deletion of timeseries failed"
@@ -139,8 +138,7 @@ class Timeseries:
             with connection.cursor() as cursor:
                 row_count = cursor.executemany(sql_statement, processed_variable_list[count: len(ids)])
             connection.commit()
-            print(count + len(processed_variable_list[count: count+100])
-)
+            print(count + len(processed_variable_list[count: len(ids)]))
         except Exception as exception:
             connection.rollback()
             error_message = "Deletion of timeseries failed"
@@ -149,8 +147,6 @@ class Timeseries:
         finally:
             if connection is not None:
                 connection.close()
-
-        print("{} rows deleted.".format(rows))
 
     def bulk_delete_all_by_hash_id(self, ids):
         """
@@ -162,14 +158,27 @@ class Timeseries:
         connection = self.pool.connection()
         run_table = self.run_table
 
-        try:
+        count = 0
+        while count < len(ids):
+            try:
+                with connection.cursor() as cursor:
+                    sql_statement = "DELETE FROM `curw_sim`.`" + run_table + "` WHERE `id`= %s ;"
+                    row_count = cursor.executemany(sql_statement, ids[count: count+100])
+                connection.commit()
+                print(count + len(ids[count: count+100]))
+                count += 100
+            except Exception as exception:
+                connection.rollback()
+                error_message = "Deletion of run entries along with all relating timeseries failed"
+                print(error_message)
+                traceback.print_exc()
 
+        try:
             with connection.cursor() as cursor:
                 sql_statement = "DELETE FROM `curw_sim`.`" + run_table + "` WHERE `id`= %s ;"
-                row_count = cursor.executemany(sql_statement, ids)
-
+                row_count = cursor.executemany(sql_statement, ids[count: len(ids)])
             connection.commit()
-            return row_count
+            print(count + len(ids[count: len(ids)]))
         except Exception as exception:
             connection.rollback()
             error_message = "Deletion of run entries along with all relating timeseries failed"
