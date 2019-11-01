@@ -120,8 +120,9 @@ class Timeseries:
         for i in range(len(ids)):
             processed_variable_list[i].extend(variable_list)
 
+        ilength = (len(ids) // 100) * 100
         count = 0
-        while count < len(ids):
+        while count < ilength:
             try:
                 with connection.cursor() as cursor:
                     row_count = cursor.executemany(sql_statement, processed_variable_list[count: count+100])
@@ -158,8 +159,9 @@ class Timeseries:
         connection = self.pool.connection()
         run_table = self.run_table
 
+        ilength = (len(ids) // 100) * 100
         count = 0
-        while count < len(ids):
+        while count < ilength:
             try:
                 with connection.cursor() as cursor:
                     sql_statement = "DELETE FROM `curw_sim`.`" + run_table + "` WHERE `id`= %s ;"
