@@ -1,6 +1,6 @@
-##################
-# curw_sim utils #
-##################
+####################
+# CURW_SIM UPDATES #
+####################
 
 # update active curw rainfall observational stations
 00 21 * * * /home/uwcc-admin/curw_sim_db_utils/grids/obs_stations/rainfall/update_active_curw_rainfall_stations.sh >> /home/uwcc-admin/curw_sim_db_utils/grids/obs_stations/rainfall/curw_sim_update_active_curw_rainfall_stations.log
