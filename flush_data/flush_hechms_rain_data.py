@@ -42,6 +42,7 @@ if __name__=="__main__":
                 count += 1
                 TS.delete_all_by_hash_id(id)
                 print(count, id)
+                hash_ids.remove(id)
 
         #####################################################################################################
         # delete a specific timeseries defined by a given hash id from data table for specified time period #
