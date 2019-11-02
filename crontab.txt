@@ -1,3 +1,6 @@
+##################
+# curw_sim utils #
+##################
 
 # update active curw rainfall observational stations
 00 21 * * * /home/uwcc-admin/curw_sim_db_utils/grids/obs_stations/rainfall/update_active_curw_rainfall_stations.sh >> /home/uwcc-admin/curw_sim_db_utils/grids/obs_stations/rainfall/curw_sim_update_active_curw_rainfall_stations.log
@@ -54,6 +57,20 @@
 # update fcst tidal data series for colombo
 15 * * * * /home/uwcc-admin/curw_sim_db_utils/tide/flo2d/fcst/update_fcst_tide.sh >> /home/uwcc-admin/curw_sim_db_utils/tide/flo2d/fcst/curw_sim_update_fcst_tide.log 2>&1
 
+
+####### FLUSH DATA #########
+# flo2d 250 rain data
+00 23 * * * /home/uwcc-admin/curw_sim_db_utils/flush_data/flush_flo2d_250_rain_data.py >> /home/uwcc-admin/curw_sim_db_utils/flush_data/flush_flo2d_250_rain.log 2>&1
+# flo2d 150 rain data
+25 23 * * * /home/uwcc-admin/curw_sim_db_utils/flush_data/flush_flo2d_150_rain_data.py >> /home/uwcc-admin/curw_sim_db_utils/flush_data/flush_flo2d_150_rain.log 2>&1
+# hechms rain data
+15 23 * * * /home/uwcc-admin/curw_sim_db_utils/flush_data/flush_hechms_rain_data.py >> /home/uwcc-admin/curw_sim_db_utils/flush_data/flush_hechms_rain.log 2>&1
+# flo2d discharge data
+05 23 * * * /home/uwcc-admin/curw_sim_db_utils/flush_data/flush_flo2d_discharge_data.py >> /home/uwcc-admin/curw_sim_db_utils/flush_data/flush_flo2d_discharge.log 2>&1
+# flo2d tidal data
+10 23 * * * /home/uwcc-admin/curw_sim_db_utils/flush_data/flush_flo2d_tidal_data.py >> /home/uwcc-admin/curw_sim_db_utils/flush_data/flush_flo2d_tide.log 2>&1
+# flo2d water level data
+15 23 * * * /home/uwcc-admin/curw_sim_db_utils/flush_data/flush_flo2d_wl_data.py >> /home/uwcc-admin/curw_sim_db_utils/flush_data/flush_flo2d_wl.log 2>&1
 
 
 
