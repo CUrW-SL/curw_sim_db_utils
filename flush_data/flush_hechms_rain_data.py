@@ -6,7 +6,7 @@ from db_adapter.base import get_Pool, destroy_Pool
 from db_adapter.constants import CURW_SIM_PASSWORD, CURW_SIM_DATABASE, CURW_SIM_USERNAME, CURW_SIM_PORT, CURW_SIM_HOST
 from db_adapter.constants import COMMON_DATE_TIME_FORMAT
 from db_adapter.curw_sim.constants import HecHMS
-from db_adapter.curw_sim.timeseries import MethodEnum
+from db_adapter.curw_sim.timeseries import MethodEnum, Timeseries
 # from flush_data.flush_curw_sim_data_common import Timeseries, get_curw_sim_hash_ids
 
 import sys
@@ -29,6 +29,19 @@ if __name__=="__main__":
                                          obs_end_end=None, grid_id=None)
 
         TS = flush_common.Timeseries(pool=pool, run_table=run_table, data_table=data_table)
+
+        TS_rain = Timeseries(pool)
+
+        ###########################################################################
+        # Delete run entries without any observed data within last 50 days period #
+        ###########################################################################
+        count = 0
+        for id in hash_ids:
+            obs_end = TS_rain.get_obs_end(id)
+            if (obs_end is None) or (obs_end.strftime("%Y-%m-%d %H:%M:%S") < end):
+                count += 1
+                TS.delete_all_by_hash_id(id)
+                print(count, id)
 
         #####################################################################################################
         # delete a specific timeseries defined by a given hash id from data table for specified time period #
