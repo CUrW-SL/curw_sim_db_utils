@@ -40,7 +40,7 @@ if __name__=="__main__":
 
         # [station_name,latitude,longitude,target]
         extract_stations = read_csv('grids/discharge_stations/extract_stations.csv')
-        extract_stations_dict = { }  # keys: station_name , value: [latitude, longitude, target_method]
+        extract_stations_dict = { }  # keys: station_name , value: [latitude, longitude, target_model]
 
         for obs_index in range(len(extract_stations)):
             extract_stations_dict[extract_stations[obs_index][0]] = [extract_stations[obs_index][1],
