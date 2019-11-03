@@ -58,6 +58,10 @@
 15 * * * * /home/uwcc-admin/curw_sim_db_utils/tide/flo2d/fcst/update_fcst_tide.sh >> /home/uwcc-admin/curw_sim_db_utils/tide/flo2d/fcst/curw_sim_update_fcst_tide.log 2>&1
 
 
+######## push flo2d rfields to google bucket #########
+
+
+
 ####### FLUSH DATA #########
 # flo2d 250 rain data
 00 23 * * * /home/uwcc-admin/curw_sim_db_utils/flush_data/flush_flo2d_250_rain_data.py >> /home/uwcc-admin/curw_sim_db_utils/flush_data/flush_flo2d_250_rain.log 2>&1
