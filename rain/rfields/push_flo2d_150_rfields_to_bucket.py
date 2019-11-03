@@ -42,6 +42,8 @@ if __name__=="__main__":
         method = MethodEnum.getAbbreviation(MethodEnum.MME)
         grid_interpolation = GridInterpolationEnum.getAbbreviation(GridInterpolationEnum.MDPA)
 
+        now = datetime.now().strftime("%Y-%m-%d_%H-%M")
+
         if day:
             day_0 = (datetime.strptime(day, "%Y-%m-%d")).date()
         else:
@@ -62,7 +64,7 @@ if __name__=="__main__":
 
         print("{} : ####### Push FLO2D 150 rfields to google bucket".format(datetime.now()))
         os.system("tar --transform 's/.*\///g' -czf {}/{}.tar.gz{}".format(FLO2D_150_RFIELD_BUCKET_DIR,
-                                                   day_0.strftime("%Y-%m-%d_%H-%M"), rfield_locations))
+                                                   now, rfield_locations))
 
     except Exception as e:
         traceback.print_exc()
