@@ -56,9 +56,9 @@ if __name__=="__main__":
 
         for i in range(delta.days + 1):
             day = start + timedelta(days=i)
-            dir_path = " {}/{}/*".format(FLO2D_150_RFIELD_DIR, day.strftime("%Y-%m-%d"))
+            dir_path = "{}/{}/*".format(FLO2D_150_RFIELD_DIR, day.strftime("%Y-%m-%d"))
             if os.path.isdir(dir_path):
-                rfield_locations += "{}/*".format(dir_path)
+                rfield_locations += " {}/*".format(dir_path)
 
         print("{} : ####### Push FLO2D 150 rfields to google bucket".format(datetime.now()))
         os.system("tar --transform 's/.*\///g' -czf {}/{}.tar.gz{}".format(FLO2D_150_RFIELD_BUCKET_DIR,
