@@ -59,6 +59,8 @@
 
 
 ######## push flo2d rfields to google bucket #########
+15 */3 * * * /home/uwcc-admin/curw_sim_db_utils/rain/rfields/push_flo2d_250_rfields_to_bucket.sh >> /home/uwcc-admin/curw_sim_db_utils/rain/rfields/curw_sim_push_flo2d_250_rfields_to_bucket.log 2>&1
+30 */6 * * * /home/uwcc-admin/curw_sim_db_utils/rain/rfields/push_flo2d_150_rfields_to_bucket.sh >> /home/uwcc-admin/curw_sim_db_utils/rain/rfields/curw_sim_push_flo2d_150_rfields_to_bucket.log 2>&1
 
 
 
