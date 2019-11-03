@@ -48,7 +48,7 @@ if __name__=="__main__":
             day_0 = (datetime.now() + timedelta(hours=5, minutes=30)).date()
 
         start = day_0 - timedelta(days=BACKWARD)
-        end = start + timedelta(days=FORWARD+BACKWARD)
+        end = start + timedelta(days=FORWARD)
 
         delta = end - start  # as timedelta
 
@@ -59,7 +59,7 @@ if __name__=="__main__":
             rfield_locations += " {}/{}".format(FLO2D_250_RFIELD_DIR, day.strftime("%Y-%m-%d"))
 
         print("{} : ####### Push FLO2D 250 rfields to google bucket".format(datetime.now()))
-        os.system("tar -C{} -czf {}/{}.tar.gz".format(rfield_locations, FLO2D_250_RFIELD_BUCKET_DIR,
+        os.system("tar -C{} -czf {}/{}.tar.gz *".format(rfield_locations, FLO2D_250_RFIELD_BUCKET_DIR,
                                                       day_0.strftime("%Y-%m-%d_%H-%M")))
 
     except Exception as e:
