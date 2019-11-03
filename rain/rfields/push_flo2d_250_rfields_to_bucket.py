@@ -59,8 +59,8 @@ if __name__=="__main__":
             rfield_locations += " {}/{}".format(FLO2D_250_RFIELD_DIR, day.strftime("%Y-%m-%d"))
 
         print("{} : ####### Push FLO2D 250 rfields to google bucket".format(datetime.now()))
-        os.system("tar -czf {}/{}.tar.gz -C{}".format(FLO2D_250_RFIELD_BUCKET_DIR, day_0.strftime("%Y-%m-%d_%H-%M"),
-                                                             rfield_locations))
+        os.system("tar -C{} -czf {}/{}.tar.gz".format(rfield_locations, FLO2D_250_RFIELD_BUCKET_DIR,
+                                                      day_0.strftime("%Y-%m-%d_%H-%M")))
 
     except Exception as e:
         traceback.print_exc()
