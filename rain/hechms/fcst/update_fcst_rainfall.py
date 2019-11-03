@@ -72,7 +72,7 @@ def update_rainfall_fcsts(target_model, method, grid_interpolation, model_list, 
                     'latitude': float('%.6f' % float(obs_stations_dict.get(obs_id)[1])),
                     'longitude': float('%.6f' % float(obs_stations_dict.get(obs_id)[2])),
                     'model': target_model, 'method': method,
-                    'grid_id': 'rainfall_{}_{}'.format(obs_stations_dict.get(obs_id)[0], grid_interpolation)
+                    'grid_id': 'rainfall_{}_{}_{}'.format(obs_id, obs_stations_dict.get(obs_id)[0], grid_interpolation)
                     }
 
             tms_id = Sim_TS.get_timeseries_id_if_exists(meta_data=meta_data)

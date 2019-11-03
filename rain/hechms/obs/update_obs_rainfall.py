@@ -61,7 +61,7 @@ def update_rainfall_obs(target_model, method, grid_interpolation, timestep):
                     'latitude': float('%.6f' % float(obs_stations_dict.get(obs_id)[2])),
                     'longitude': float('%.6f' % float(obs_stations_dict.get(obs_id)[3])),
                     'model': target_model, 'method': method,
-                    'grid_id': 'rainfall_{}_{}'.format(obs_stations_dict.get(obs_id)[1], grid_interpolation)
+                    'grid_id': 'rainfall_{}_{}_{}'.format(obs_id, obs_stations_dict.get(obs_id)[1], grid_interpolation)
                     }
 
             tms_id = TS.get_timeseries_id_if_exists(meta_data=meta_data)
@@ -70,8 +70,8 @@ def update_rainfall_obs(target_model, method, grid_interpolation, timestep):
                 tms_id = TS.generate_timeseries_id(meta_data=meta_data)
                 meta_data['id'] = tms_id
                 TS.insert_run(meta_data=meta_data)
-            else:
-                TS.update_grid_id(id_=tms_id, grid_id=meta_data['grid_id'])
+
+            TS.update_grid_id(id_=tms_id, grid_id=meta_data['grid_id'])
 
             obs_end = TS.get_obs_end(id_=tms_id)
 
