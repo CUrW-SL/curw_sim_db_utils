@@ -48,7 +48,7 @@ if __name__=="__main__":
             day_0 = (datetime.now() + timedelta(hours=5, minutes=30)).date()
 
         start = day_0 - timedelta(days=BACKWARD)
-        end = start + timedelta(days=FORWARD)
+        end = day_0 + timedelta(days=FORWARD)
 
         delta = end - start  # as timedelta
 
