@@ -42,7 +42,7 @@ if __name__=="__main__":
         method = MethodEnum.getAbbreviation(MethodEnum.MME)
         grid_interpolation = GridInterpolationEnum.getAbbreviation(GridInterpolationEnum.MDPA)
 
-        now = datetime.now().strftime("%Y-%m-%d_%H-%M")
+        now = (datetime.now()+ timedelta(hours=5, minutes=30)).strftime("%Y-%m-%d_%H-%M")
 
         if day:
             day_0 = (datetime.strptime(day, "%Y-%m-%d")).date()
