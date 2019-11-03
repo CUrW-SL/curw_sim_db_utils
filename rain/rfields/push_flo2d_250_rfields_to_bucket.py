@@ -10,7 +10,7 @@ from db_adapter.curw_sim.timeseries import MethodEnum
 
 FLO2D_250_RFIELD_DIR = "rain/rfields/flo2d_250"
 FLO2D_250_RFIELD_BUCKET_DIR = "/mnt/disks/wrf_nfs/flo2d_raincells/250/rfield"
-FORWARD = 1
+FORWARD = 3
 BACKWARD = 3
 
 
@@ -56,7 +56,9 @@ if __name__=="__main__":
 
         for i in range(delta.days + 1):
             day = start + timedelta(days=i)
-            rfield_locations += " {}/{}/*".format(FLO2D_250_RFIELD_DIR, day.strftime("%Y-%m-%d"))
+            dir_path = " {}/{}".format(FLO2D_250_RFIELD_DIR, day.strftime("%Y-%m-%d"))
+            if os.path.isdir(dir_path):
+                rfield_locations += "{}/*".format(dir_path)
 
         print("{} : ####### Push FLO2D 250 rfields to google bucket".format(datetime.now()))
         os.system("tar --transform 's/.*\///g' -czf {}/{}.tar.gz{}".format(FLO2D_250_RFIELD_BUCKET_DIR,
