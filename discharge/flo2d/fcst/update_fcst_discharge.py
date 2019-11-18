@@ -41,7 +41,7 @@ def list_of_lists_to_df_first_row_as_columns(data):
     return pd.DataFrame.from_records(data[1:], columns=data[0])
 
 
-def process_fcst_ts_from_flo2d_outputs(curw_fcst_pool, fcst_start):
+def process_fcst_ts_from_hechms_outputs(curw_fcst_pool, fcst_start):
 
     FCST_TS = Fcst_Timeseries(curw_fcst_pool)
 
@@ -70,13 +70,11 @@ def process_fcst_ts_from_flo2d_outputs(curw_fcst_pool, fcst_start):
 
         processed_df = pd.merge(df, fcst_df, on='time', how='left')
 
-        return processed_df
+        return processed_df.values.tolist()
 
     except Exception as e:
         traceback.print_exc()
         logger.error("Exception occurred")
-    finally:
-        destroy_Pool(pool=curw_fcst_pool)
 
 
 if __name__=="__main__":
@@ -85,6 +83,9 @@ if __name__=="__main__":
 
         curw_sim_pool = get_Pool(host=CURW_SIM_HOST, user=CURW_SIM_USERNAME, password=CURW_SIM_PASSWORD,
                 port=CURW_SIM_PORT, db=CURW_SIM_DATABASE)
+
+        curw_fcst_pool = get_Pool(host=CURW_FCST_HOST, user=CURW_FCST_USERNAME, password=CURW_FCST_PASSWORD,
+                                  port=CURW_FCST_PORT, db=CURW_FCST_DATABASE)
 
         TS = Timeseries(pool=curw_sim_pool)
 
@@ -139,8 +140,7 @@ if __name__=="__main__":
                     processed_discharge_ts.append(
                         [round_to_nearest_hour(discharge_ts[k][0]), '%.3f' % float(discharge_ts[k][1])])
             elif station_name in ('glencourse'):    # process fcst ts from model outputs
-                curw_fcst_pool = get_Pool(host=CURW_FCST_HOST, user=CURW_FCST_USERNAME, password=CURW_FCST_PASSWORD,
-                                          port=CURW_FCST_PORT, db=CURW_FCST_DATABASE)
+                processed_discharge_ts = process_fcst_ts_from_hechms_outputs(curw_fcst_pool=curw_fcst_pool, fcst_start=fcst_start)
             else:
                 continue  ## skip the current station and move to next iteration
 
@@ -152,3 +152,5 @@ if __name__=="__main__":
         logger.error("Exception occurred")
     finally:
         destroy_Pool(pool=curw_sim_pool)
+        destroy_Pool(pool=curw_fcst_pool)
+
