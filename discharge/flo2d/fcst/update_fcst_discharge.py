@@ -5,9 +5,12 @@ from datetime import datetime, timedelta
 from db_adapter.csv_utils import read_csv
 from db_adapter.base import get_Pool, destroy_Pool
 from db_adapter.constants import CURW_SIM_DATABASE, CURW_SIM_PASSWORD, CURW_SIM_USERNAME, CURW_SIM_PORT, CURW_SIM_HOST
+from db_adapter.constants import CURW_FCST_DATABASE, CURW_FCST_HOST, CURW_FCST_PASSWORD, CURW_FCST_PORT, CURW_FCST_USERNAME
 from db_adapter.constants import COMMON_DATE_TIME_FORMAT
 from db_adapter.curw_sim.timeseries.discharge import Timeseries
 from db_adapter.curw_sim.timeseries import MethodEnum
+from db_adapter.curw_fcst.timeseries import Timeseries as Fcst_Timeseries
+from db_adapter.curw_fcst.source import get_source_id
 from db_adapter.logger import logger
 
 
@@ -27,6 +30,30 @@ def round_to_nearest_hour(datetime_string, format=None):
     return time.strftime("%Y-%m-%d %H:00:00")
 
 
+def process_fcst_ts_from_flo2d_outputs(curw_fcst_pool):
+
+    FCST_TS = Fcst_Timeseries(curw_fcst_pool)
+
+    try:
+        # [station_name,latitude,longitude,target,model,version,sim_tag,station]
+        source_model = extract_stations[i][4]
+        version = extract_stations[i][5]
+        sim_tag = extract_stations[i][6]
+        station_id = extract_stations[i][7]
+
+        variable_id = 3 # Discharge
+        unit_id = 3 # m3/s | Instantaneous
+
+        source_id = get_source_id(pool=curw_fcst_pool, model=source_model, version=version)
+
+        timeseries = FCST_TS.get_latest_timeseries(sim_tag, station_id, source_id, variable_id, unit_id, start=None)
+
+    except Exception as e:
+        traceback.print_exc()
+        logger.error("Exception occurred")
+    finally:
+        destroy_Pool(pool=curw_fcst_pool)
+
 if __name__=="__main__":
 
     try:
@@ -36,19 +63,8 @@ if __name__=="__main__":
 
         TS = Timeseries(pool=curw_sim_pool)
 
-        # [station_name,latitude,longitude,target,model,version,station]
+        # [station_name,latitude,longitude,target,model,version,sim_tag,station]
         extract_stations = read_csv('grids/discharge_stations/extract_stations.csv')
-        # extract_stations_dict = { }  # keys: station_name , value: [latitude, longitude, target_model,
-                                                                  # source_model, version, station]
-
-        for obs_index in range(len(extract_stations)):
-            extract_stations_dict[extract_stations[obs_index][0]] = [extract_stations[obs_index][1],
-                                                                     extract_stations[obs_index][2],
-                                                                     extract_stations[obs_index][3],
-                                                                     extract_stations[obs_index][4],
-                                                                     extract_stations[obs_index][5],
-                                                                     extract_stations[obs_index][6]
-                                                                     ]
 
         for i in range(len(extract_stations)):
             station_name = extract_stations[i][0]
@@ -86,18 +102,19 @@ if __name__=="__main__":
 
             processed_discharge_ts = []
 
-            if station_name in ('hanwella'):
+            if station_name in ('hanwella'):  # process fcst ts from statistical forecasts
                 timeseries = read_csv('{}/{}.csv'.format(INPUT_DIR, station_name))
                 discharge_ts = []
                 for i in range(len(timeseries)):
                     if datetime.strptime(timeseries[i][0], COMMON_DATE_TIME_FORMAT) > fcst_start:
-                        discharge_ts = timeseries[i:]
+                           discharge_ts = timeseries[i:]
                         break
                 for i in range(len(discharge_ts)):
                     processed_discharge_ts.append(
                         [round_to_nearest_hour(discharge_ts[i][0]), '%.3f' % float(discharge_ts[i][1])])
-            elif station_name in ('glencourse'):
-                ##hhvhv
+            elif station_name in ('glencourse'):    # process fcst ts from model outputs
+                curw_fcst_pool = get_Pool(host=CURW_FCST_HOST, user=CURW_FCST_USERNAME, password=CURW_FCST_PASSWORD,
+                                          port=CURW_FCST_PORT, db=CURW_FCST_DATABASE)
             else:
                 continue  ## skip the current station and move to next iteration
 
