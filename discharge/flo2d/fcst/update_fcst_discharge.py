@@ -1,4 +1,5 @@
 import traceback
+import pandas as pd
 import pymysql
 from datetime import datetime, timedelta
 
@@ -30,7 +31,17 @@ def round_to_nearest_hour(datetime_string, format=None):
     return time.strftime("%Y-%m-%d %H:00:00")
 
 
-def process_fcst_ts_from_flo2d_outputs(curw_fcst_pool):
+def list_of_lists_to_df_first_row_as_columns(data):
+    """
+
+    :param data: data in list of lists format
+    :return: equivalent pandas dataframe
+    """
+
+    return pd.DataFrame.from_records(data[1:], columns=data[0])
+
+
+def process_fcst_ts_from_flo2d_outputs(curw_fcst_pool, fcst_start):
 
     FCST_TS = Fcst_Timeseries(curw_fcst_pool)
 
@@ -46,13 +57,27 @@ def process_fcst_ts_from_flo2d_outputs(curw_fcst_pool):
 
         source_id = get_source_id(pool=curw_fcst_pool, model=source_model, version=version)
 
-        timeseries = FCST_TS.get_latest_timeseries(sim_tag, station_id, source_id, variable_id, unit_id, start=None)
+        fcst_series = FCST_TS.get_latest_timeseries(sim_tag, station_id, source_id, variable_id, unit_id, start=None)
+
+        if (fcst_series is None) or (len(fcst_series)<1):
+            return None
+
+        fcst_series.insert(0, ['time', 'value'])
+        fcst_df = list_of_lists_to_df_first_row_as_columns(fcst_series)
+        fcst_end = (fcst_df['time'].max()).strftime(COMMON_DATE_TIME_FORMAT)
+
+        df = (pd.date_range(start=fcst_start, end=fcst_end, freq='60min')).to_frame(name='time')
+
+        processed_df = pd.merge(df, fcst_df, on='time', how='left')
+
+        return processed_df
 
     except Exception as e:
         traceback.print_exc()
         logger.error("Exception occurred")
     finally:
         destroy_Pool(pool=curw_fcst_pool)
+
 
 if __name__=="__main__":
 
@@ -98,20 +123,21 @@ if __name__=="__main__":
             if existing_ts_end is None:
                 fcst_start = (datetime.now() - timedelta(days=10)).strftime("%Y-%m-%d %H:00:00")
             else:
-                fcst_start = existing_ts_end
+                fcst_start = (existing_ts_end + timedelta(hours=1)).strftime("%Y-%m-%d %H:00:00")
 
             processed_discharge_ts = []
 
             if station_name in ('hanwella'):  # process fcst ts from statistical forecasts
                 timeseries = read_csv('{}/{}.csv'.format(INPUT_DIR, station_name))
                 discharge_ts = []
-                for i in range(len(timeseries)):
-                    if datetime.strptime(timeseries[i][0], COMMON_DATE_TIME_FORMAT) > fcst_start:
-                           discharge_ts = timeseries[i:]
+                start = datetime.strptime(fcst_start, COMMON_DATE_TIME_FORMAT)
+                for j in range(len(timeseries)):
+                    if datetime.strptime(timeseries[j][0], COMMON_DATE_TIME_FORMAT) > start:
+                        discharge_ts = timeseries[j:]
                         break
-                for i in range(len(discharge_ts)):
+                for k in range(len(discharge_ts)):
                     processed_discharge_ts.append(
-                        [round_to_nearest_hour(discharge_ts[i][0]), '%.3f' % float(discharge_ts[i][1])])
+                        [round_to_nearest_hour(discharge_ts[k][0]), '%.3f' % float(discharge_ts[k][1])])
             elif station_name in ('glencourse'):    # process fcst ts from model outputs
                 curw_fcst_pool = get_Pool(host=CURW_FCST_HOST, user=CURW_FCST_USERNAME, password=CURW_FCST_PASSWORD,
                                           port=CURW_FCST_PORT, db=CURW_FCST_DATABASE)
