@@ -42,8 +42,6 @@ if __name__=="__main__":
         discharge_TS = DTimeseries(pool=curw_sim_pool)
         waterlevel_TS = WLTimeseries(pool=curw_sim_pool)
 
-        method = MethodEnum.getAbbreviation(MethodEnum.SF)
-
         # [station_name,latitude,longitude,target]
         extract_stations = read_csv('grids/discharge_stations/extract_stations.csv')
         extract_stations_dict = { }  # keys: station_name , value: [latitude, longitude, target_model]
@@ -54,6 +52,14 @@ if __name__=="__main__":
                                                                      extract_stations[obs_index][3]]
 
         for station_name in extract_stations_dict.keys():
+
+            if station_name in ('hanwella'):
+                method = MethodEnum.getAbbreviation(MethodEnum.SF)
+            elif station_name in ('glencourse'):
+                method = MethodEnum.getAbbreviation(MethodEnum.MME)
+            else:
+                continue
+
             meta_data = {
                 'latitude': float('%.6f' % float(extract_stations_dict.get(station_name)[0])),
                 'longitude': float('%.6f' % float(extract_stations_dict.get(station_name)[1])),
