@@ -94,7 +94,7 @@ if __name__=="__main__":
         TS = Timeseries(pool=curw_sim_pool)
 
         # [station_name,latitude,longitude,target,model,version,sim_tag,station]
-        extract_stations = read_csv('grids/discharge_stations/extract_stations.csv')
+        extract_stations = read_csv('grids/discharge_stations/flo2d_stations.csv')
 
         for i in range(len(extract_stations)):
             station_name = extract_stations[i][0]
