@@ -94,7 +94,10 @@ if __name__=="__main__":
                 start = (datetime.now() - timedelta(days=10)).strftime(COMMON_DATE_TIME_FORMAT)
             else:
                 obs_end = discharge_TS.get_obs_end(id_=tms_id)
-                start = (obs_end - timedelta(days=1)).strftime(COMMON_DATE_TIME_FORMAT)
+                if obs_end is None:
+                    start = (datetime.now() - timedelta(days=10)).strftime(COMMON_DATE_TIME_FORMAT)
+                else:
+                    start = (obs_end - timedelta(days=1)).strftime(COMMON_DATE_TIME_FORMAT)
 
             wl_timeseries = waterlevel_TS.get_timeseries(id_=wl_tms_id, start_date=start, end_date=end_time)
 
