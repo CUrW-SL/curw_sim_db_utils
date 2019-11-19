@@ -70,6 +70,8 @@ def process_fcst_ts_from_hechms_outputs(curw_fcst_pool, fcst_start):
 
         processed_df = pd.merge(df, fcst_df, on='time', how='left')
 
+        processed_df['time'] = processed_df['time'].dt.strftime(COMMON_DATE_TIME_FORMAT)
+
         return processed_df.values.tolist()
 
     except Exception as e:
