@@ -67,6 +67,8 @@ def process_fcst_ts_from_hechms_outputs(curw_fcst_pool, fcst_start):
 
         print("fcst_df", fcst_df)
         fcst_end = (fcst_df['time'].max()).strftime(COMMON_DATE_TIME_FORMAT)
+        if fcst_start is None:
+            fcst_start = (fcst_df['time'].min()).strftime(COMMON_DATE_TIME_FORMAT)
 
         df = (pd.date_range(start=fcst_start, end=fcst_end, freq='60min')).to_frame(name='time')
 
@@ -127,26 +129,31 @@ if __name__=="__main__":
 
             existing_ts_end = TS.get_obs_end(id_=tms_id)
 
-            if existing_ts_end is None:
-                fcst_start = (datetime.now() - timedelta(days=10)).strftime("%Y-%m-%d %H:00:00")
-            else:
-                fcst_start = (existing_ts_end + timedelta(hours=1)).strftime("%Y-%m-%d %H:00:00")
-
             processed_discharge_ts = []
 
             if station_name in ('hanwella'):  # process fcst ts from statistical forecasts
+
+                if existing_ts_end is None:
+                    fcst_start = datetime.now() - timedelta(days=10)
+                else:
+                    fcst_start = existing_ts_end + timedelta(hours=1)
+
                 timeseries = read_csv('{}/{}.csv'.format(INPUT_DIR, station_name))
+
                 discharge_ts = []
-                start = datetime.strptime(fcst_start, COMMON_DATE_TIME_FORMAT)
                 for j in range(len(timeseries)):
-                    if datetime.strptime(timeseries[j][0], COMMON_DATE_TIME_FORMAT) > start:
+                    if datetime.strptime(timeseries[j][0], COMMON_DATE_TIME_FORMAT) > fcst_start:
                         discharge_ts = timeseries[j:]
                         break
+
                 for k in range(len(discharge_ts)):
                     processed_discharge_ts.append(
                         [round_to_nearest_hour(discharge_ts[k][0]), '%.3f' % float(discharge_ts[k][1])])
+
             elif station_name in ('glencourse'):    # process fcst ts from model outputs
-                processed_discharge_ts = process_fcst_ts_from_hechms_outputs(curw_fcst_pool=curw_fcst_pool, fcst_start=fcst_start)
+                processed_discharge_ts = process_fcst_ts_from_hechms_outputs(curw_fcst_pool=curw_fcst_pool,
+                                                                             fcst_start=existing_ts_end)
+
             else:
                 continue  ## skip the current station and move to next iteration
 
