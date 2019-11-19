@@ -58,14 +58,12 @@ def process_fcst_ts_from_hechms_outputs(curw_fcst_pool, fcst_start):
         source_id = get_source_id(pool=curw_fcst_pool, model=source_model, version=version)
 
         fcst_series = FCST_TS.get_latest_timeseries(sim_tag, station_id, source_id, variable_id, unit_id, start=None)
-        print('fcst ts', fcst_series)
         if (fcst_series is None) or (len(fcst_series)<1):
             return None
 
         fcst_series.insert(0, ['time', 'value'])
         fcst_df = list_of_lists_to_df_first_row_as_columns(fcst_series)
 
-        print("fcst_df", fcst_df)
         fcst_end = (fcst_df['time'].max()).strftime(COMMON_DATE_TIME_FORMAT)
         if fcst_start is None:
             fcst_start = (fcst_df['time'].min()).strftime(COMMON_DATE_TIME_FORMAT)
@@ -75,8 +73,6 @@ def process_fcst_ts_from_hechms_outputs(curw_fcst_pool, fcst_start):
         processed_df = pd.merge(df, fcst_df, on='time', how='left')
 
         processed_df['time'] = processed_df['time'].dt.strftime(COMMON_DATE_TIME_FORMAT)
-
-        print("processed_df", processed_df)
 
         return processed_df.values.tolist()
 
