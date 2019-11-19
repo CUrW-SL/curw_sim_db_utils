@@ -42,6 +42,8 @@ if __name__=="__main__":
         discharge_TS = DTimeseries(pool=curw_sim_pool)
         waterlevel_TS = WLTimeseries(pool=curw_sim_pool)
 
+        wl_method = MethodEnum.getAbbreviation(MethodEnum.SF)
+
         # [station_name,latitude,longitude,target]
         extract_stations = read_csv('grids/discharge_stations/extract_stations.csv')
         extract_stations_dict = { }  # keys: station_name , value: [latitude, longitude, target_model]
@@ -70,7 +72,7 @@ if __name__=="__main__":
             wl_meta_data = {
                 'latitude': float('%.6f' % float(extract_stations_dict.get(station_name)[0])),
                 'longitude': float('%.6f' % float(extract_stations_dict.get(station_name)[1])),
-                'model': extract_stations_dict.get(station_name)[2], 'method': method,
+                'model': extract_stations_dict.get(station_name)[2], 'method': wl_method,
                 'grid_id': 'waterlevel_{}'.format(station_name)
             }
 
@@ -78,8 +80,8 @@ if __name__=="__main__":
             wl_tms_id = waterlevel_TS.get_timeseries_id_if_exists(meta_data=wl_meta_data)
 
             if wl_tms_id is None:
-                print("Warning!!! Hanwella waterlevel timeseries doesn't exist.")
-                exit(1)
+                print("Warning!!! {} waterlevel timeseries doesn't exist.".format(station_name))
+                continue
 
             end_time = (datetime.now() + timedelta(hours=5, minutes=30)).strftime(COMMON_DATE_TIME_FORMAT)
 
