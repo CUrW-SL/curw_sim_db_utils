@@ -20,13 +20,18 @@ if __name__=="__main__":
         pool = get_Pool(host=CURW_SIM_HOST, port=CURW_SIM_PORT, user=CURW_SIM_USERNAME, password=CURW_SIM_PASSWORD,
                         db=CURW_SIM_DATABASE)
 
-        method = MethodEnum.getAbbreviation(MethodEnum.SF)
+        method1 = MethodEnum.getAbbreviation(MethodEnum.SF)
+        method2 = MethodEnum.getAbbreviation(MethodEnum.MME)
+
         run_table = "dis_run"
         data_table = "dis_data"
         end = (datetime.now() - timedelta(days=51)).strftime("%Y-%m-%d %H:%M:00")
 
-        hash_ids = flush_common.get_curw_sim_hash_ids(pool=pool, run_table=run_table, model=None, method=method, obs_end_start=None,
+        hash_ids = flush_common.get_curw_sim_hash_ids(pool=pool, run_table=run_table, model=None, method=method1, obs_end_start=None,
                                          obs_end_end=None, grid_id=None)
+
+        hash_ids.extend(flush_common.get_curw_sim_hash_ids(pool=pool, run_table=run_table, model=None, method=method2, obs_end_start=None,
+                                         obs_end_end=None, grid_id=None))
 
         TS = flush_common.Timeseries(pool=pool, run_table=run_table, data_table=data_table)
 
