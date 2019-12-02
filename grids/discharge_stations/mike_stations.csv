@@ -1,2 +1,2 @@
 station_name,latitude,longitude,target,model,version,sim_tag,station
-ambatale,6.978055556,80.20305556,flo2d_150,HECHMS,distributed,hourly_run,1000001
+ambatale,6.939040,79.949800,mike,FLO2D,250,hourly_run,1200016
