@@ -22,7 +22,7 @@ if __name__ == "__main__":
         method = MethodEnum.getAbbreviation(MethodEnum.SF)
 
         # [station_name,latitude,longitude,target]
-        extract_stations = read_csv('grids/discharge_stations/extract_stations.csv')
+        extract_stations = read_csv('grids/waterlevel_stations/extract_stations.csv')
         extract_stations_dict = {}  # keys: station_name , value: [latitude, longitude, target_method]
 
         for obs_index in range(len(extract_stations)):
