@@ -54,6 +54,11 @@
 15 * * * * /home/uwcc-admin/curw_sim_db_utils/discharge/flo2d/fcst/update_fcst_discharge.sh >> /home/uwcc-admin/curw_sim_db_utils/discharge/flo2d/fcst/curw_sim_fcst_discharge.log 2>&1
 
 
+######### Discharge - Mike ############
+# update fcst discharge data series for mike
+15 * * * * /home/uwcc-admin/curw_sim_db_utils/discharge/mike/fcst/update_fcst_discharge.sh >> /home/uwcc-admin/curw_sim_db_utils/discharge/mike/fcst/curw_sim_discharge.log 2>&1
+
+
 ######## Tidal Data #########
 # update obs tidal data series for colombo
 00 * * * * /home/uwcc-admin/curw_sim_db_utils/tide/flo2d/obs/update_obs_tide.sh >> /home/uwcc-admin/curw_sim_db_utils/tide/flo2d/obs/curw_sim_update_obs_tide.log 2>&1
