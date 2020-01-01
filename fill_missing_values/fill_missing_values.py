@@ -5,12 +5,15 @@ import getopt
 import sys
 from datetime import datetime, timedelta
 
+from db_adapter.constants import set_db_config_file_path
+from db_adapter.constants import connection as con_params
+
 DATE_TIME_FORMAT = '%Y-%m-%d %H:%M:%S'
 
 # connection params
-HOST = "10.138.0.13"
-USER = "admin"
-PASSWORD = "floody"
+HOST = ""
+USER = ""
+PASSWORD = ""
 DB ="curw_sim"
 PORT = 3306
 
@@ -237,6 +240,15 @@ def check_time_format(time, model):
 
 
 if __name__=="__main__":
+
+
+    set_db_config_file_path('/home/uwcc-admin/curw_sim_db_utils/db_adapter_config.json')
+
+    HOST = con_params.CURW_SIM_HOST
+    USER = con_params.CURW_SIM_USERNAME
+    PASSWORD = con_params.CURW_SIM_PASSWORD
+    DB = con_params.CURW_SIM_DATABASE
+    PORT = con_params.CURW_SIM_PORT
 
     try:
         start_time = None
