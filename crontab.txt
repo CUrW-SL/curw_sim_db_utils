@@ -75,8 +75,8 @@
 25 23 * * * /home/uwcc-admin/curw_sim_db_utils/flush_data/flush_flo2d_150_rain_data.py >> /home/uwcc-admin/curw_sim_db_utils/flush_data/flush_flo2d_150_rain.log 2>&1
 # hechms rain data
 15 23 * * * /home/uwcc-admin/curw_sim_db_utils/flush_data/flush_hechms_rain_data.py >> /home/uwcc-admin/curw_sim_db_utils/flush_data/flush_hechms_rain.log 2>&1
-# flo2d discharge data
-05 23 * * * /home/uwcc-admin/curw_sim_db_utils/flush_data/flush_flo2d_discharge_data.py >> /home/uwcc-admin/curw_sim_db_utils/flush_data/flush_flo2d_discharge.log 2>&1
+# flo2d,mike discharge data
+05 23 * * * /home/uwcc-admin/curw_sim_db_utils/flush_data/flush_discharge_data.py >> /home/uwcc-admin/curw_sim_db_utils/flush_data/flush_discharge.log 2>&1
 # flo2d tidal data
 10 23 * * * /home/uwcc-admin/curw_sim_db_utils/flush_data/flush_flo2d_tidal_data.py >> /home/uwcc-admin/curw_sim_db_utils/flush_data/flush_flo2d_tide.log 2>&1
 # flo2d water level data
