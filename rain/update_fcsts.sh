@@ -2,14 +2,15 @@
 
 echo `date`
 
-FILE_MODIFIED_TIME=$(date -r /home/uwcc-admin/curw_sim_db_utils/rain/config.json +%s)
+#FILE_MODIFIED_TIME=$(date -r /home/uwcc-admin/curw_sim_db_utils/rain/config.json +%s)
+FILE_MODIFIED_TIME=$(date -r /home/uwcc-admin/wrf_rfields/4.1.2/d0/18/rfields/wrf/d03_kelani_basinconfig.json.txt +%s)
 CURRENT=$(date +%s)
 
 DIFF=$(((CURRENT-FILE_MODIFIED_TIME)/60))
 echo $DIFF
 
 
-if [ $DIFF -lt 7 ]
+if [ $DIFF -lt 120 ]
 then
   echo "New fcst rain config !!!"
   echo "Changing into ~/curw_sim_db_utils"
