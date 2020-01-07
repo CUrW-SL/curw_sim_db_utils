@@ -17,6 +17,7 @@ then
   cd /home/uwcc-admin/curw_sim_db_utils
   echo "Inside `pwd`"
 
+  cp /home/uwcc-admin/wrf_rfields/4.1.2/d0/18/rfields/wrf/d03_kelani_basinconfig.json.txt rain/config.json
 
   # If no venv (python3 virtual environment) exists, then create one.
   if [ ! -d "venv" ]
