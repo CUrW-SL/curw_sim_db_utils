@@ -156,8 +156,6 @@ if __name__=="__main__":
             else:
                 continue  ## skip the current station and move to next iteration
 
-            print(processed_discharge_ts)
-
             if processed_discharge_ts is not None and len(processed_discharge_ts) > 0:
                 TS.insert_data(timeseries=processed_discharge_ts, tms_id=tms_id, upsert=True)
 
