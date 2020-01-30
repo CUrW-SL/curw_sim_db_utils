@@ -72,7 +72,8 @@ def process_fcst_ts_from_hechms_outputs(curw_fcst_pool, fcst_start):
 
         processed_df = pd.merge(df, fcst_df, on='time', how='left')
 
-        processed_df.interpolate(method='linear', limit_direction='both')
+        processed_df.interpolate(method='linear', limit_direction='both', limit=100)
+        processed_df.fillna(inplace=True, value=0)
 
         processed_df['time'] = processed_df['time'].dt.strftime(COMMON_DATE_TIME_FORMAT)
 
