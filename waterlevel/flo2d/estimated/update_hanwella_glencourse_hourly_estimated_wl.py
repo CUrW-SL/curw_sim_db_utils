@@ -12,7 +12,7 @@ from db_adapter.curw_sim.timeseries import MethodEnum
 from db_adapter.curw_sim.common import fill_ts_missing_entries
 from db_adapter.logger import logger
 
-RANWALA_WL_ID = 100047
+RANWALA_WL_ID = 100064
 
 
 def calculate_hanwella_wl_from_ranwala(ranwala_ts):
