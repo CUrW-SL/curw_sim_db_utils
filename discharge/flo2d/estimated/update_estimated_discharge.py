@@ -27,6 +27,7 @@ def calculate_glencourse_discharge(glencourse_wl_ts):
     for i in range(len(glencourse_wl_ts)):
         wl = float(glencourse_wl_ts[i][1])
         discharge = 41.904 * ((wl - 7.65) ** 1.518)
+        print('wl', wl)
         print(discharge, type(discharge))
         discharge_ts.append([glencourse_wl_ts[i][0], '%.3f' % discharge])
 
