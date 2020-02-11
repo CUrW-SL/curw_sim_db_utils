@@ -23,6 +23,7 @@ def calculate_hanwella_discharge(hanwella_wl_ts):
 
 
 def calculate_glencourse_discharge(glencourse_wl_ts):
+    print('glencourse_wl_ts', glencourse_wl_ts)
     discharge_ts = []
     for i in range(len(glencourse_wl_ts)):
         wl = float(glencourse_wl_ts[i][1])
