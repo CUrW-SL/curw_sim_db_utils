@@ -13,7 +13,7 @@ from db_adapter.curw_sim.timeseries import MethodEnum
 from db_adapter.curw_sim.common import append_ts, average_timeseries, fill_ts_missing_entries
 from db_adapter.logger import logger
 
-OBS_STATIONS_LIST = [100024, 100027]
+OBS_STATIONS_LIST = [100066]
 
 
 def prepare_obs_tide_ts(connection, start_date, end_date):
