@@ -111,3 +111,4 @@ ENV/
 .mypy_cache/
 /rain/rfields/flo2d_150/
 /rain/rfields/flo2d_250/
+/_event_simulation/db_adapter_config.json
