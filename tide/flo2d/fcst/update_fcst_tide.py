@@ -62,6 +62,8 @@ if __name__=="__main__":
                                                                      extract_stations[obs_index][3]]
 
         for station_name in extract_stations_dict.keys():
+            fcst_station_name = 'colombo' ############################################################################################################################################
+
             meta_data = {
                 'latitude': float('%.6f' % float(extract_stations_dict.get(station_name)[0])),
                 'longitude': float('%.6f' % float(extract_stations_dict.get(station_name)[1])),
@@ -78,7 +80,7 @@ if __name__=="__main__":
                 meta_data['id'] = tms_id
                 TS.insert_run(meta_data=meta_data)
 
-            timeseries = read_csv('{}/{}.csv'.format(INPUT_DIR, station_name))
+            timeseries = read_csv('{}/{}.csv'.format(INPUT_DIR, fcst_station_name))
 
             tide_ts = []
 
