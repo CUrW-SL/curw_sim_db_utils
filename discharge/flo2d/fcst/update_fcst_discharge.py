@@ -150,6 +150,8 @@ if __name__=="__main__":
                         [round_to_nearest_hour(discharge_ts[k][0]), '%.3f' % float(discharge_ts[k][1])])
 
             elif station_name in ('glencourse'):    # process fcst ts from model outputs
+                existing_ts_end = datetime.strptime(((datetime.now() - timedelta(days=2)).strftime("%Y-%m-%d 00:00:00")),
+                                                    COMMON_DATE_TIME_FORMAT) ######################################################################################################################
                 processed_discharge_ts = process_fcst_ts_from_hechms_outputs(curw_fcst_pool=curw_fcst_pool,
                                                                              fcst_start=existing_ts_end)
 
