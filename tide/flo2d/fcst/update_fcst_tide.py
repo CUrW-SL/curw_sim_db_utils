@@ -61,42 +61,41 @@ if __name__=="__main__":
                                                                      extract_stations[obs_index][2],
                                                                      extract_stations[obs_index][3]]
 
-        station_name = 'colombo'
+        for station_name in extract_stations_dict.keys():
+            meta_data = {
+                'latitude': float('%.6f' % float(extract_stations_dict.get(station_name)[0])),
+                'longitude': float('%.6f' % float(extract_stations_dict.get(station_name)[1])),
+                'model': extract_stations_dict.get(station_name)[2], 'method': method,
+                'grid_id': 'tide_{}'.format(station_name)
+            }
 
-        meta_data = {
-            'latitude': float('%.6f' % float(extract_stations_dict.get(station_name)[0])),
-            'longitude': float('%.6f' % float(extract_stations_dict.get(station_name)[1])),
-            'model': extract_stations_dict.get(station_name)[2], 'method': method,
-            'grid_id': 'tide_{}'.format(station_name)
-        }
+            TS = Timeseries(pool=curw_sim_pool)
 
-        TS = Timeseries(pool=curw_sim_pool)
+            tms_id = TS.get_timeseries_id_if_exists(meta_data=meta_data)
 
-        tms_id = TS.get_timeseries_id_if_exists(meta_data=meta_data)
+            if tms_id is None:
+                tms_id = TS.generate_timeseries_id(meta_data=meta_data)
+                meta_data['id'] = tms_id
+                TS.insert_run(meta_data=meta_data)
 
-        if tms_id is None:
-            tms_id = TS.generate_timeseries_id(meta_data=meta_data)
-            meta_data['id'] = tms_id
-            TS.insert_run(meta_data=meta_data)
+            timeseries = read_csv('{}/{}.csv'.format(INPUT_DIR, station_name))
 
-        timeseries = read_csv('{}/{}.csv'.format(INPUT_DIR, station_name))
+            tide_ts = []
 
-        tide_ts = []
+            existing_ts_end = TS.get_obs_end(id_=tms_id)
 
-        existing_ts_end = TS.get_obs_end(id_=tms_id)
+            if existing_ts_end is None:
+                tide_ts = timeseries
+            else:
+                tide_ts = extract_ts_from(start_date=existing_ts_end.strftime(COMMON_DATE_TIME_FORMAT), timeseries=timeseries)
 
-        if existing_ts_end is None:
-            tide_ts = timeseries
-        else:
-            tide_ts = extract_ts_from(start_date=existing_ts_end.strftime(COMMON_DATE_TIME_FORMAT), timeseries=timeseries)
+            processed_tide_ts = []
 
-        processed_tide_ts = []
+            for i in range(len(tide_ts)):
+                processed_tide_ts.append([round_to_nearest_hour(tide_ts[i][0]), '%.3f' % float(tide_ts[i][1])])
 
-        for i in range(len(tide_ts)):
-            processed_tide_ts.append([round_to_nearest_hour(tide_ts[i][0]), '%.3f' % float(tide_ts[i][1])])
-
-        if processed_tide_ts is not None and len(processed_tide_ts) > 0:
-            TS.insert_data(timeseries=processed_tide_ts, tms_id=tms_id, upsert=True)
+            if processed_tide_ts is not None and len(processed_tide_ts) > 0:
+                TS.insert_data(timeseries=processed_tide_ts, tms_id=tms_id, upsert=True)
 
     except Exception as e:
         traceback.print_exc()
