@@ -94,7 +94,7 @@ if __name__ == "__main__":
                 TS.insert_run(meta_data=meta_data)
             else:
                 obs_end = TS.get_obs_end(id_=tms_id)
-                start_date = (obs_end - timedelta(days=10)).strftime("%Y-%m-%d %H:00:00") ##############################
+                start_date = (obs_end - timedelta(days=1)).strftime("%Y-%m-%d %H:00:00")
 
             with connection.cursor() as cursor1:
                 cursor1.callproc('getWL', (RANWALA_WL_ID, start_date, end_date))
