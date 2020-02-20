@@ -17,6 +17,7 @@ RANWALA_WL_ID = 100064
 
 def calculate_hanwella_wl_from_ranwala(ranwala_ts):
     hanwella_ts = []
+    "Han[i]=1.623194Ran[i]-5.16108(Ran[i]-Ran[i-1])-10.847356"
 
     for i in range(len(interpolated_ranwala_ts) - 1):
         # x = Ranwala
@@ -25,7 +26,7 @@ def calculate_hanwella_wl_from_ranwala(ranwala_ts):
         #    8.810870547723741`;
         x = float(ranwala_ts[i + 1][1])
         dx = float(ranwala_ts[i + 1][1] - ranwala_ts[i][1])
-        hanwella_wl = x * 1.642174610188251 - dx * 3.8585516925010444 - 8.810870547723741
+        hanwella_wl = x * 1.623194 - dx * 5.16108 - 10.847356
         hanwella_ts.append([ranwala_ts[i + 1][0], '%.3f' % hanwella_wl])
 
     for i in range(len(hanwella_ts)):
@@ -36,11 +37,12 @@ def calculate_hanwella_wl_from_ranwala(ranwala_ts):
 
 
 def calculate_glencourse_wl_from_ranwala(ranwala_ts):
+    "-5.908532+2.2784865x-0.0309476x2"
     glencourse_ts = []
 
     for i in range(len(ranwala_ts)):
         ranwala_wl = float(ranwala_ts[i][1])
-        glencourse_wl = 1.7983 * ranwala_wl - 1.6475
+        glencourse_wl = -5.908532 + (2.2784865 * ranwala_wl) - (0.0309476 * (ranwala_wl ** 2))
         glencourse_ts.append([ranwala_ts[i][0], '%.3f' % glencourse_wl])
 
     return glencourse_ts
