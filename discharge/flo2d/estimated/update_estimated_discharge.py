@@ -32,8 +32,6 @@ Q = 21.323 (H – 7.71)^1.838 (H&gt;16.0 m AMSL)"""
             discharge = 41.904 * ((wl - 7.65) ** 1.518)
         else:
             discharge = 21.323 * ((wl - 7.71) ** 1.838)
-        print('wl', wl)
-        print(discharge, type(discharge))
         discharge_ts.append([glencourse_wl_ts[i][0], '%.3f' % discharge])
 
     return discharge_ts
