@@ -84,6 +84,22 @@ def process_fcst_ts_from_hechms_outputs(curw_fcst_pool, fcst_start):
         logger.error("Exception occurred")
 
 
+def process_fcsts_from_csv(timeseries, fcst_start):
+    discharge_ts = []
+    processed_dis_ts = []
+
+    for j in range(len(timeseries)):
+        if datetime.strptime(timeseries[j][0], COMMON_DATE_TIME_FORMAT) > fcst_start:
+            discharge_ts = timeseries[j:]
+            break
+
+    for k in range(len(discharge_ts)):
+        processed_dis_ts.append(
+            [round_to_nearest_hour(discharge_ts[k][0]), '%.3f' % float(discharge_ts[k][1])])
+
+    return processed_dis_ts
+
+
 if __name__=="__main__":
 
     try:
@@ -106,60 +122,51 @@ if __name__=="__main__":
             target_model = extract_stations[i][3]
 
             if station_name in ('hanwella'):
-                method = MethodEnum.getAbbreviation(MethodEnum.SF)
+                methods = []
+                methods.append(MethodEnum.getAbbreviation(MethodEnum.SF))
             elif station_name in ('glencourse'):
-                method = MethodEnum.getAbbreviation(MethodEnum.MME)
+                methods = []
+                methods.append(MethodEnum.getAbbreviation(MethodEnum.MME))
+                methods.append(MethodEnum.getAbbreviation(MethodEnum.SF))
             else:
                 continue  ## skip the current station and move to next iteration
 
-            meta_data = {
-                'latitude': float('%.6f' % float(latitude)),
-                'longitude': float('%.6f' % float(longitude)),
-                'model': target_model, 'method': method,
-                'grid_id': 'discharge_{}'.format(station_name)
-            }
+            for method in methods:
+                meta_data = {
+                    'latitude': float('%.6f' % float(latitude)),
+                    'longitude': float('%.6f' % float(longitude)),
+                    'model': target_model, 'method': method,
+                    'grid_id': 'discharge_{}'.format(station_name)
+                }
 
-            tms_id = TS.get_timeseries_id_if_exists(meta_data=meta_data)
+                tms_id = TS.get_timeseries_id_if_exists(meta_data=meta_data)
 
-            if tms_id is None:
-                tms_id = TS.generate_timeseries_id(meta_data=meta_data)
-                meta_data['id'] = tms_id
-                TS.insert_run(meta_data=meta_data)
+                if tms_id is None:
+                    tms_id = TS.generate_timeseries_id(meta_data=meta_data)
+                    meta_data['id'] = tms_id
+                    TS.insert_run(meta_data=meta_data)
 
-            existing_ts_end = TS.get_obs_end(id_=tms_id)
+                existing_ts_end = TS.get_obs_end(id_=tms_id)
 
-            processed_discharge_ts = []
-
-            if station_name in ('hanwella'):  # process fcst ts from statistical forecasts
+                processed_discharge_ts = []
 
                 if existing_ts_end is None:
                     fcst_start = datetime.now() - timedelta(days=10)
                 else:
                     fcst_start = existing_ts_end + timedelta(hours=1)
 
-                timeseries = read_csv('{}/{}.csv'.format(INPUT_DIR, station_name))
+                if method in ('SF'): # process fcst ts from statistical forecasts
+                    timeseries = read_csv('{}/{}.csv'.format(INPUT_DIR, station_name))
+                    processed_discharge_ts = process_fcsts_from_csv(timeseries=timeseries, fcst_start=fcst_start)
 
-                discharge_ts = []
-                for j in range(len(timeseries)):
-                    if datetime.strptime(timeseries[j][0], COMMON_DATE_TIME_FORMAT) > fcst_start:
-                        discharge_ts = timeseries[j:]
-                        break
+                elif method in ('MME'): # process fcst ts from model outputs
+                    processed_discharge_ts = process_fcst_ts_from_hechms_outputs(curw_fcst_pool=curw_fcst_pool,
+                                                                                 fcst_start=existing_ts_end)
+                else:
+                    continue ## skip the current iteration and move to next iteration
 
-                for k in range(len(discharge_ts)):
-                    processed_discharge_ts.append(
-                        [round_to_nearest_hour(discharge_ts[k][0]), '%.3f' % float(discharge_ts[k][1])])
-
-            elif station_name in ('glencourse'):    # process fcst ts from model outputs
-                existing_ts_end = datetime.strptime(((datetime.now() - timedelta(days=2)).strftime("%Y-%m-%d 00:00:00")),
-                                                    COMMON_DATE_TIME_FORMAT) ######################################################################################################################
-                processed_discharge_ts = process_fcst_ts_from_hechms_outputs(curw_fcst_pool=curw_fcst_pool,
-                                                                             fcst_start=existing_ts_end)
-
-            else:
-                continue  ## skip the current station and move to next iteration
-
-            if processed_discharge_ts is not None and len(processed_discharge_ts) > 0:
-                TS.insert_data(timeseries=processed_discharge_ts, tms_id=tms_id, upsert=True)
+                if processed_discharge_ts is not None and len(processed_discharge_ts) > 0:
+                    TS.insert_data(timeseries=processed_discharge_ts, tms_id=tms_id, upsert=True)
 
     except Exception as e:
         traceback.print_exc()
