@@ -156,8 +156,12 @@ if __name__=="__main__":
                     fcst_start = existing_ts_end + timedelta(hours=1)
 
                 if method in ('SF'): # process fcst ts from statistical forecasts
-                    timeseries = read_csv('{}/{}.csv'.format(INPUT_DIR, station_name))
-                    processed_discharge_ts = process_fcsts_from_csv(timeseries=timeseries, fcst_start=fcst_start)
+                    try:
+                        timeseries = read_csv('{}/{}.csv'.format(INPUT_DIR, station_name))
+                        processed_discharge_ts = process_fcsts_from_csv(timeseries=timeseries, fcst_start=fcst_start)
+                    except FileNotFoundError as fe:
+                        print("File not found: {}/{}.csv".format(INPUT_DIR,station_name))
+                        continue
 
                 elif method in ('MME'): # process fcst ts from model outputs
                     processed_discharge_ts = process_fcst_ts_from_hechms_outputs(curw_fcst_pool=curw_fcst_pool,
