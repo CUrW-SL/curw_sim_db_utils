@@ -78,14 +78,13 @@ def process_tide_fcsts_from_Mobile_Geographics(existing_ts_end, obs_end):
 
         hourly_ts_df = timeseries_df.resample('H').asfreq()
         hourly_ts_df.fillna(-99999.000)
-        hourly_ts_df = hourly_ts_df.reset_index()
+        hourly_ts_df = hourly_ts_df
 
         pd.set_option('display.max_rows', hourly_ts_df.shape[0] + 1)
         pd.set_option('display.max_columns', hourly_ts_df.shape[1] + 1)
-        hourly_ts_df = pd.to_datetime(hourly_ts_df['time'], format=COMMON_DATE_TIME_FORMAT)
 
         print(hourly_ts_df)
-        processed_timeseries = hourly_ts_df.values.tolist()
+        processed_timeseries = hourly_ts_df.reset_index().values.tolist()
         print(processed_timeseries)
 
         return processed_timeseries
