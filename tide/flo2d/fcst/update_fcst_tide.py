@@ -74,7 +74,7 @@ def process_tide_fcsts_from_Mobile_Geographics(existing_ts_end, obs_end):
         timeseries_df.set_index('time', inplace=True)
 
         hourly_ts_df = timeseries_df.resample('H').asfreq()
-        hourly_ts_df = hourly_ts_df['time' > fcst_start]
+        hourly_ts_df = hourly_ts_df.query('time >= {}'.format(fcst_start))
         processed_timeseries = hourly_ts_df.sort_index(inplace=True).reset_index().values.tolist()
 
         return processed_timeseries
