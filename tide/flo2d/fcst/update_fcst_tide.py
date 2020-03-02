@@ -70,11 +70,11 @@ def process_tide_fcsts_from_Mobile_Geographics(existing_ts_end, obs_end):
             fcst_start = obs_end.strftime(COMMON_DATE_TIME_FORMAT)
 
         timeseries_df = list_of_lists_to_df_first_row_as_columns(raw_timeseries)
+        timeseries_df = timeseries_df['time' >= fcst_start]
         timeseries_df['time'] = pd.to_datetime(timeseries_df['time'], format=COMMON_DATE_TIME_FORMAT)
         timeseries_df.set_index('time', inplace=True)
 
         hourly_ts_df = timeseries_df.resample('H').asfreq()
-        hourly_ts_df = hourly_ts_df.query('time >= %s' % fcst_start)
         processed_timeseries = hourly_ts_df.sort_index(inplace=True).reset_index().values.tolist()
 
         return processed_timeseries
