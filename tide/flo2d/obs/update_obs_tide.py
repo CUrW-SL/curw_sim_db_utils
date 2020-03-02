@@ -98,7 +98,8 @@ if __name__ == "__main__":
                     TS.insert_run(meta_data=meta_data)
                 else:
                     obs_end = TS.get_obs_end(tms_id)
-                    start_date = (obs_end - timedelta(days=1)).strftime('%Y-%m-%d %H:00:00')
+                    if obs_end is not None:
+                        start_date = (obs_end - timedelta(days=1)).strftime('%Y-%m-%d %H:00:00')
 
                 processed_tide_ts = prepare_obs_tide_ts(connection=connection, start_date=start_date, end_date=end_date,
                                                         extract_station=station_name)

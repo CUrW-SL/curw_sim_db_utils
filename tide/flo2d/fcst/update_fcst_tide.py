@@ -83,10 +83,7 @@ def process_tide_fcsts_from_Mobile_Geographics(existing_ts_end, obs_end):
         pd.set_option('display.max_rows', hourly_ts_df.shape[0] + 2)
         pd.set_option('display.max_columns', hourly_ts_df.shape[1] + 2)
 
-        print(hourly_ts_df)
         processed_timeseries = hourly_ts_df.reset_index().values.tolist()
-        print(processed_timeseries)
-
         return processed_timeseries
     else:
         return None
