@@ -33,6 +33,7 @@ def usage():
     -m  --flo2d_model   FLO2D model (e.g. flo2d_250, flo2d_150). Default is flo2d_250.
     -r  --run_time      Event simulation run time (e.g: "2019-06-05 23:30:00"). Default is 00:00:00, today.
     -f  --file_path     Corrected rain file path. e.g.: "/mnt/disks/wrf_nfs/wrf/corrected_rf.csv"
+    -s  --shape_file    Path to the shape file containing the whole area. Default is "PROJECT_ROOT/regions/kelani_basin_hec_wgs/kelani_basin_hec_wgs.shp"
     """
     print(usageText)
 
@@ -159,12 +160,13 @@ if __name__=="__main__":
         flo2d_model = "flo2d_250"
         run_time = (datetime.now()).strftime("%Y-%m-%d 00:00:00")
         file_path = None
+        shape_file_path = None
         file_path_part1 = '/mnt/disks/wrf_nfs/wrf/4.1.2/d0/18'
         file_path_part2 = 'rfields/wrf/d03_kelani_basin/corrected_rf.csv'
 
         try:
-            opts, args = getopt.getopt(sys.argv[1:], "h:m:r:f:",
-                    ["help", "flo2d_model=", "run_time=", "file_path="])
+            opts, args = getopt.getopt(sys.argv[1:], "h:m:r:f:s:",
+                    ["help", "flo2d_model=", "run_time=", "file_path=", "shape_file="])
         except getopt.GetoptError:
             usage()
             sys.exit(2)
@@ -178,6 +180,8 @@ if __name__=="__main__":
                 run_time = arg.strip()
             elif opt in ("-f", "--file_path"):
                 file_path = arg.strip()
+            elif opt in ("-s", "--shape_file"):
+                shape_file_path = arg.strip()
 
         if flo2d_model not in ("flo2d_250", "flo2d_150"):
             print("Flo2d model should be either \"flo2d_250\" or \"flo2d_150\"")
@@ -185,6 +189,9 @@ if __name__=="__main__":
 
         if file_path is None:
             file_path = os.path.join(file_path_part1, run_time.split(' ')[0], file_path_part2)
+
+        if shape_file_path is None:
+            shape_file_path = os.path.join(PROJECT_DIR, 'regions/kelani_basin_hec_wgs/kelani_basin_hec_wgs.shp')
 
         corrected_rf_df = pd.read_csv(file_path, delimiter=',')
         distinct_stations = corrected_rf_df.groupby(['longitude', 'latitude']).size()
@@ -201,11 +208,15 @@ if __name__=="__main__":
 
         points_dict = {}
         print('distinct_stations')
-        count=1000
+        count = 1000
         for index, row in distinct_stations.iteritems():
-            print(index[0], index[1])
+            points_dict['point_{}'.format(count)] = [index[0], index[1]]
+            count += 1
 
+        output_shape_file_path = os.path.join(PROJECT_DIR, 'regions/output', "{}_out_shp.shp".format((datetime.now()).strftime("%Y-%m-%d_%H-%M-%S")))
 
+        get_voronoi_polygons(points_dict=points_dict, shape_file=shape_file_path, shape_attribute=None,
+                             output_shape_file=output_shape_file_path, add_total_area=True)
 
     except Exception as e:
         traceback.print_exc()
