@@ -64,8 +64,6 @@ def process_tide_fcsts_from_Mobile_Geographics(existing_ts_end, obs_end):
             formatted_time = time.strftime(COMMON_DATE_TIME_FORMAT)
             raw_timeseries.append([formatted_time, data[i][3]])
 
-        print(raw_timeseries)
-
         if existing_ts_end is None or obs_end is None:
             fcst_start = ((datetime.now() - timedelta(days=30))).strftime("%Y-%m-%d 00:00:00")
         else:
@@ -76,6 +74,7 @@ def process_tide_fcsts_from_Mobile_Geographics(existing_ts_end, obs_end):
         timeseries_df.set_index('time', inplace=True)
 
         hourly_ts_df = timeseries_df.resample('H').asfreq()
+        print(fcst_start)
         hourly_ts_df = hourly_ts_df.query('time >= {}'.format(fcst_start))
         processed_timeseries = hourly_ts_df.sort_index(inplace=True).reset_index().values.tolist()
 
