@@ -62,7 +62,7 @@ if __name__=="__main__":
                                                                      extract_stations[obs_index][3]]
 
         for station_name in extract_stations_dict.keys():
-            fcst_station_name = 'colombo' ############################################################################################################################################
+            fcst_station_name = 'colombo' #temporary#
 
             meta_data = {
                 'latitude': float('%.6f' % float(extract_stations_dict.get(station_name)[0])),
