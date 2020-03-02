@@ -61,8 +61,6 @@ if __name__ == "__main__":
         curw_sim_pool = get_Pool(host=CURW_SIM_HOST, user=CURW_SIM_USERNAME, password=CURW_SIM_PASSWORD,
                                  port=CURW_SIM_PORT, db=CURW_SIM_DATABASE)
 
-        method = MethodEnum.getAbbreviation(MethodEnum.TSF)
-
         # [station_name,latitude,longitude,target]
         extract_stations = read_csv('grids/tide_stations/extract_stations.csv')
         extract_stations_dict = {}  # keys: station_name , value: [latitude, longitude, target_model]
@@ -72,43 +70,49 @@ if __name__ == "__main__":
                                                                      extract_stations[obs_index][2],
                                                                      extract_stations[obs_index][3]]
 
+        methods = []
+        methods.append(MethodEnum.getAbbreviation(MethodEnum.TSF))
+        methods.append(MethodEnum.getAbbreviation(MethodEnum.MGF))
+
         for station_name in extract_stations_dict.keys():
 
-            meta_data = {
-                'latitude': float('%.6f' % float(extract_stations_dict.get(station_name)[0])),
-                'longitude': float('%.6f' % float(extract_stations_dict.get(station_name)[1])),
-                'model': extract_stations_dict.get(station_name)[2], 'method': method,
-                'grid_id': 'tide_{}'.format(station_name)
-            }
+            for method in methods:
 
-            TS = Timeseries(pool=curw_sim_pool)
+                meta_data = {
+                    'latitude': float('%.6f' % float(extract_stations_dict.get(station_name)[0])),
+                    'longitude': float('%.6f' % float(extract_stations_dict.get(station_name)[1])),
+                    'model': extract_stations_dict.get(station_name)[2], 'method': method,
+                    'grid_id': 'tide_{}'.format(station_name)
+                }
 
-            tms_id = TS.get_timeseries_id_if_exists(meta_data=meta_data)
+                TS = Timeseries(pool=curw_sim_pool)
 
-            start_date = (datetime.now() - timedelta(days=10)).strftime('%Y-%m-%d %H:00:00')
-            end_date = (datetime.now() + timedelta(hours=5, minutes=30)).strftime('%Y-%m-%d %H:00:00')
+                tms_id = TS.get_timeseries_id_if_exists(meta_data=meta_data)
 
-            if tms_id is None:
-                tms_id = TS.generate_timeseries_id(meta_data=meta_data)
-                meta_data['id'] = tms_id
-                TS.insert_run(meta_data=meta_data)
-            else:
-                obs_end = TS.get_obs_end(tms_id)
-                start_date = (obs_end - timedelta(days=1)).strftime('%Y-%m-%d %H:00:00')
+                start_date = (datetime.now() - timedelta(days=10)).strftime('%Y-%m-%d %H:00:00')
+                end_date = (datetime.now() + timedelta(hours=5, minutes=30)).strftime('%Y-%m-%d %H:00:00')
 
-            processed_tide_ts = prepare_obs_tide_ts(connection=connection, start_date=start_date, end_date=end_date,
-                                                    extract_station=station_name)
+                if tms_id is None:
+                    tms_id = TS.generate_timeseries_id(meta_data=meta_data)
+                    meta_data['id'] = tms_id
+                    TS.insert_run(meta_data=meta_data)
+                else:
+                    obs_end = TS.get_obs_end(tms_id)
+                    start_date = (obs_end - timedelta(days=1)).strftime('%Y-%m-%d %H:00:00')
 
-            for i in range(len(processed_tide_ts)):
-                if len(processed_tide_ts[i]) < 2:
-                    processed_tide_ts.remove(processed_tide_ts[i])
+                processed_tide_ts = prepare_obs_tide_ts(connection=connection, start_date=start_date, end_date=end_date,
+                                                        extract_station=station_name)
 
-            final_tide_ts = fill_ts_missing_entries(start=start_date, end=end_date, timeseries=processed_tide_ts,
-                                                    interpolation_method='linear', timestep=60)
+                for i in range(len(processed_tide_ts)):
+                    if len(processed_tide_ts[i]) < 2:
+                        processed_tide_ts.remove(processed_tide_ts[i])
 
-            if final_tide_ts is not None and len(final_tide_ts) > 0:
-                TS.insert_data(timeseries=final_tide_ts, tms_id=tms_id, upsert=True)
-                TS.update_latest_obs(id_=tms_id, obs_end=final_tide_ts[-1][1])
+                final_tide_ts = fill_ts_missing_entries(start=start_date, end=end_date, timeseries=processed_tide_ts,
+                                                        interpolation_method='linear', timestep=60)
+
+                if final_tide_ts is not None and len(final_tide_ts) > 0:
+                    TS.insert_data(timeseries=final_tide_ts, tms_id=tms_id, upsert=True)
+                    TS.update_latest_obs(id_=tms_id, obs_end=final_tide_ts[-1][1])
 
     except Exception as e:
         traceback.print_exc()
