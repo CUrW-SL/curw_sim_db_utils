@@ -67,10 +67,11 @@ def process_tide_fcsts_from_Mobile_Geographics(existing_ts_end, obs_end):
         if existing_ts_end is None or obs_end is None:
             fcst_start = ((datetime.now() - timedelta(days=30))).strftime("%Y-%m-%d 00:00:00")
         else:
-            fcst_start = obs_end.strftime(COMMON_DATE_TIME_FORMAT)
+            fcst_start = (obs_end).strftime(COMMON_DATE_TIME_FORMAT)
+
+        raw_timeseries = extract_ts_from(fcst_start, raw_timeseries)
 
         timeseries_df = list_of_lists_to_df_first_row_as_columns(raw_timeseries)
-        timeseries_df = timeseries_df['time' >= fcst_start]
         timeseries_df['time'] = pd.to_datetime(timeseries_df['time'], format=COMMON_DATE_TIME_FORMAT)
         timeseries_df.set_index('time', inplace=True)
 
