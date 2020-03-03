@@ -110,8 +110,7 @@ if __name__ == "__main__":
 
                 final_tide_ts = fill_ts_missing_entries(start=start_date, end=end_date, timeseries=processed_tide_ts,
                                                         interpolation_method='linear', timestep=60)
-                print(station_name, methods, start_date)
-                print(final_tide_ts)
+
                 if final_tide_ts is not None and len(final_tide_ts) > 0:
                     TS.insert_data(timeseries=final_tide_ts, tms_id=tms_id, upsert=True)
                     TS.update_latest_obs(id_=tms_id, obs_end=final_tide_ts[-1][1])
