@@ -74,7 +74,7 @@ def process_tide_fcsts_from_Mobile_Geographics(existing_ts_end, obs_end):
 
         print(fcst_start)
         raw_timeseries = extract_ts_from(fcst_start, raw_timeseries)
-        print(raw_timeseries)
+        print(raw_timeseries[0])
 
         timeseries_df = list_of_lists_to_df_first_row_as_columns(raw_timeseries)
         timeseries_df['time'] = pd.to_datetime(timeseries_df['time'], format=COMMON_DATE_TIME_FORMAT)
