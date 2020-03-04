@@ -52,7 +52,7 @@ def round_to_nearest_hour(datetime_string, format=None):
 
 def process_tide_fcsts_from_Mobile_Geographics(existing_ts_end, obs_end):
     data = read_csv('{}/{}.csv'.format(INPUT_DIR, 'colombo_MGF'))
-    raw_timeseries = [['time', 'value']]
+    raw_timeseries = []
 
     expected_fcst_end = datetime.strptime((datetime.now() + timedelta(days=60)).strftime("%Y-%m-01 00:00:00"),
                                           COMMON_DATE_TIME_FORMAT)
@@ -74,7 +74,8 @@ def process_tide_fcsts_from_Mobile_Geographics(existing_ts_end, obs_end):
 
         print(fcst_start)
         raw_timeseries = extract_ts_from(fcst_start, raw_timeseries)
-        print(raw_timeseries[0])
+        raw_timeseries.insert(0, ['time', 'value'])
+        print(raw_timeseries[:5])
 
         timeseries_df = list_of_lists_to_df_first_row_as_columns(raw_timeseries)
         timeseries_df['time'] = pd.to_datetime(timeseries_df['time'], format=COMMON_DATE_TIME_FORMAT)
