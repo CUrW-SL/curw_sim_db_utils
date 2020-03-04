@@ -58,7 +58,6 @@ def process_tide_fcsts_from_Mobile_Geographics(existing_ts_end, obs_end):
                                           COMMON_DATE_TIME_FORMAT)
 
     if existing_ts_end is None or existing_ts_end < expected_fcst_end:
-        print(existing_ts_end, obs_end)
 
         for i in range(len(data)):
             time = datetime.strptime("{} {} {}".format(data[i][0], data[i][1], data[i][2]), "%m/%d/%Y %I:%M %p")
@@ -72,10 +71,8 @@ def process_tide_fcsts_from_Mobile_Geographics(existing_ts_end, obs_end):
         else:
             fcst_start = ((datetime.now() - timedelta(days=30))).strftime("%Y-%m-%d 00:00:00")
 
-        print(fcst_start)
         raw_timeseries = extract_ts_from(fcst_start, raw_timeseries)
         raw_timeseries.insert(0, ['time', 'value'])
-        print(raw_timeseries[:5])
 
         timeseries_df = list_of_lists_to_df_first_row_as_columns(raw_timeseries)
         timeseries_df['time'] = pd.to_datetime(timeseries_df['time'], format=COMMON_DATE_TIME_FORMAT)
