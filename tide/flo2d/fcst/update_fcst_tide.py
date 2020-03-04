@@ -72,6 +72,7 @@ def process_tide_fcsts_from_Mobile_Geographics(existing_ts_end, obs_end):
         else:
             fcst_start = ((datetime.now() - timedelta(days=30))).strftime("%Y-%m-%d 00:00:00")
 
+        print(fcst_start)
         raw_timeseries = extract_ts_from(fcst_start, raw_timeseries)
         print(raw_timeseries)
 
