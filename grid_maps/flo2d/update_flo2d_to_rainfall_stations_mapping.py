@@ -10,9 +10,9 @@ from db_adapter.constants import CURW_SIM_HOST, CURW_SIM_PORT, CURW_SIM_USERNAME
 from db_adapter.curw_sim.grids import add_flo2d_raincell_grid_mappings, \
     get_flo2d_cells_to_obs_grid_mappings, get_flo2d_cells_to_wrf_grid_mappings, \
     GridInterpolationEnum
-from db_adapter.curw_sim.constants import FLO2D_250, FLO2D_150, FLO2D_30
+from db_adapter.curw_sim.constants import FLO2D_250, FLO2D_150, FLO2D_30, FLO2D_150_V2
 
-flo2d_models_list = [FLO2D_250, FLO2D_150]
+flo2d_models_list = [FLO2D_250, FLO2D_150, FLO2D_150_V2]
 
 
 def create_csv(file_name, data):
