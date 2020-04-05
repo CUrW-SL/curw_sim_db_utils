@@ -60,7 +60,6 @@ def process_tide_fcsts_from_Mobile_Geographics(existing_ts_end, obs_end):
     if existing_ts_end is None or existing_ts_end < expected_fcst_end:
 
         for i in range(len(data)):
-            print("time:::", "{} {} {}".format(data[i][0], data[i][1], data[i][2]))
             time = datetime.strptime("{} {} {}".format(data[i][0], data[i][1], data[i][2]), "%m/%d/%Y %I:%M %p")
             formatted_time = time.strftime(COMMON_DATE_TIME_FORMAT)
             raw_timeseries.append([formatted_time, data[i][3]])
