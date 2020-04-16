@@ -40,7 +40,6 @@ def extract_active_curw_obs_rainfall_stations():
 
             for result in results:
                 if (result.get('station_id') != 100083):
-                    print(result.get('station_id'))
                     obs_stations.append([result.get('hash_id'), result.get('station_id'), result.get('station_name'),
                                      result.get('latitude'), result.get('longitude')])
 
