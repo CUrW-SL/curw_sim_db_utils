@@ -72,7 +72,7 @@ def find_nearest_d03_station_for_obs_grids(obs_stations_csv, d03_stations_csv):
 
         count = 0
         for key in sorted_distances.keys():
-            if count < 3 and sorted_distances.get(key) < 15:
+            if count < 4 and sorted_distances.get(key) < 15:
                 nearest_d03_station.extend([key, sorted_distances.get(key)])
                 count += 1
 
