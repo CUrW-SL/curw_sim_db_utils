@@ -41,7 +41,7 @@ def list_of_lists_to_df_first_row_as_columns(data):
     return pd.DataFrame.from_records(data[1:], columns=data[0])
 
 
-def process_fcst_ts_from_hechms_outputs(curw_fcst_pool, fcst_start):
+def process_fcst_ts_from_hechms_outputs(curw_fcst_pool, fcst_start, extract_stations, i):
 
     FCST_TS = Fcst_Timeseries(curw_fcst_pool)
 
@@ -123,6 +123,7 @@ if __name__=="__main__":
 
             if station_name in ('hanwella'):
                 methods = []
+                methods.append(MethodEnum.getAbbreviation(MethodEnum.MME))
                 methods.append(MethodEnum.getAbbreviation(MethodEnum.SF))
             elif station_name in ('glencourse'):
                 methods = []
@@ -165,7 +166,9 @@ if __name__=="__main__":
 
                 elif method in ('MME'): # process fcst ts from model outputs
                     processed_discharge_ts = process_fcst_ts_from_hechms_outputs(curw_fcst_pool=curw_fcst_pool,
-                                                                                 fcst_start=fcst_start)
+                                                                                 fcst_start=fcst_start,
+                                                                                 extract_stations=extract_stations,
+                                                                                 i=i)
                 else:
                     continue ## skip the current iteration and move to next iteration
 

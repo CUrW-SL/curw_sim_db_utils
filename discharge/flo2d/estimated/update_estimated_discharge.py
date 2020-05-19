@@ -64,6 +64,7 @@ if __name__=="__main__":
 
             if station_name in ('hanwella'):
                 method_list.append(MethodEnum.getAbbreviation(MethodEnum.SF))
+                method_list.append(MethodEnum.getAbbreviation(MethodEnum.MME))
             elif station_name in ('glencourse'):
                 method_list.append(MethodEnum.getAbbreviation(MethodEnum.SF))
                 method_list.append(MethodEnum.getAbbreviation(MethodEnum.MME))
