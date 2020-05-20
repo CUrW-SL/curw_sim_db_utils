@@ -42,6 +42,10 @@ then
       touch curw_sim_utils.log
   fi
 
+  # Update obs data in curw_sim for flo2d grids
+  echo "Running update_active_curw_rainfall_stations.py"
+  python grids/obs_stations/rainfall/update_active_curw_rainfall_stations.py >> grids/obs_stations/rainfall/curw_sim_update_active_curw_rainfall_stations.log 2>&1
+
   # Update fcst data in curw_sim for hechms grids
   echo "Running update_fcst_rainfall.py"
   python rain/hechms/fcst/update_fcst_rainfall.py >> rain/hechms/fcst/curw_sim_fcst_hechms.log 2>&1
