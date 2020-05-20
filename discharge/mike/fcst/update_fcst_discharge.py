@@ -65,7 +65,7 @@ def process_fcst_ts_from_flo2d_outputs(curw_fcst_pool, fcst_start):
         if (fcst_series is None) or (len(fcst_series)<1):
             return None
 
-        latest_fgt = FCST_TS.get_end_date(sim_tag, station_id, source_id, variable_id, unit_id)
+        latest_fgt = (FCST_TS.get_end_date(sim_tag, station_id, source_id, variable_id, unit_id)).strftime(COMMON_DATE_TIME_FORMAT)
 
         fcst_series.insert(0, ['time', 'value'])
         fcst_df = list_of_lists_to_df_first_row_as_columns(fcst_series)
