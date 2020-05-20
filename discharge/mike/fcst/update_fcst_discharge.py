@@ -45,6 +45,8 @@ def list_of_lists_to_df_first_row_as_columns(data):
 
 def process_fcst_ts_from_flo2d_outputs(curw_fcst_pool, fcst_start):
 
+    global latest_fgt
+
     FCST_TS = Fcst_Timeseries(curw_fcst_pool)
 
     try:
