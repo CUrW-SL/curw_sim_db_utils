@@ -2,5 +2,6 @@ station_name,latitude,longitude,target,method,model,version,sim_tag,station
 hanwella,6.909722222,80.08166667,flo2d_250,MME,HECHMS,distributed,hourly_run,1000001
 glencourse,6.978055556,80.20305556,flo2d_150,MME,HECHMS,distributed,hourly_run,1000001
 glencourse,6.978055556,80.20305556,flo2d_150,EM,HECHMS,event,hourly_run,1000001
+hanwella,6.909722222,80.08166667,flo2d_250,EM,HECHMS,event,hourly_run,1000001
 hanwella,6.909722222,80.08166667,flo2d_250,SF,,,,
 glencourse,6.978055556,80.20305556,flo2d_150,SF,,,,
