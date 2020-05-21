@@ -47,10 +47,10 @@ def process_fcst_ts_from_hechms_outputs(curw_fcst_pool, fcst_start, extract_stat
 
     try:
         # [station_name,latitude,longitude,target,model,version,sim_tag,station]
-        source_model = extract_stations[i][4]
-        version = extract_stations[i][5]
-        sim_tag = extract_stations[i][6]
-        station_id = extract_stations[i][7]
+        source_model = extract_stations[i][5]
+        version = extract_stations[i][6]
+        sim_tag = extract_stations[i][7]
+        station_id = extract_stations[i][8]
 
         variable_id = 3 # Discharge
         unit_id = 3 # m3/s | Instantaneous
@@ -120,60 +120,49 @@ if __name__=="__main__":
             latitude = extract_stations[i][1]
             longitude = extract_stations[i][2]
             target_model = extract_stations[i][3]
+            method = extract_stations[i][4]
 
-            if station_name in ('hanwella'):
-                methods = []
-                methods.append(MethodEnum.getAbbreviation(MethodEnum.MME))
-                methods.append(MethodEnum.getAbbreviation(MethodEnum.SF))
-            elif station_name in ('glencourse'):
-                methods = []
-                methods.append(MethodEnum.getAbbreviation(MethodEnum.MME))
-                methods.append(MethodEnum.getAbbreviation(MethodEnum.SF))
+            meta_data = {
+                'latitude': float('%.6f' % float(latitude)),
+                'longitude': float('%.6f' % float(longitude)),
+                'model': target_model, 'method': method,
+                'grid_id': 'discharge_{}'.format(station_name)
+            }
+
+            tms_id = TS.get_timeseries_id_if_exists(meta_data=meta_data)
+
+            if tms_id is None:
+                tms_id = TS.generate_timeseries_id(meta_data=meta_data)
+                meta_data['id'] = tms_id
+                TS.insert_run(meta_data=meta_data)
+
+            existing_ts_end = TS.get_obs_end(id_=tms_id)
+
+            processed_discharge_ts = []
+
+            if existing_ts_end is None:
+                fcst_start = datetime.now() - timedelta(days=10)
             else:
-                continue  ## skip the current station and move to next iteration
+                fcst_start = existing_ts_end + timedelta(hours=1)
 
-            for method in methods:
-                meta_data = {
-                    'latitude': float('%.6f' % float(latitude)),
-                    'longitude': float('%.6f' % float(longitude)),
-                    'model': target_model, 'method': method,
-                    'grid_id': 'discharge_{}'.format(station_name)
-                }
+            if method in ('SF'): # process fcst ts from statistical forecasts
+                try:
+                    timeseries = read_csv('{}/{}.csv'.format(INPUT_DIR, station_name))
+                    processed_discharge_ts = process_fcsts_from_csv(timeseries=timeseries, fcst_start=fcst_start)
+                except FileNotFoundError as fe:
+                    print("File not found: {}/{}.csv".format(INPUT_DIR, station_name))
+                    continue
 
-                tms_id = TS.get_timeseries_id_if_exists(meta_data=meta_data)
+            elif method in ('MME', 'EM'): # process fcst ts from model outputs
+                processed_discharge_ts = process_fcst_ts_from_hechms_outputs(curw_fcst_pool=curw_fcst_pool,
+                                                                             fcst_start=fcst_start,
+                                                                             extract_stations=extract_stations,
+                                                                             i=i)
+            else:
+                continue ## skip the current iteration and move to next iteration
 
-                if tms_id is None:
-                    tms_id = TS.generate_timeseries_id(meta_data=meta_data)
-                    meta_data['id'] = tms_id
-                    TS.insert_run(meta_data=meta_data)
-
-                existing_ts_end = TS.get_obs_end(id_=tms_id)
-
-                processed_discharge_ts = []
-
-                if existing_ts_end is None:
-                    fcst_start = datetime.now() - timedelta(days=10)
-                else:
-                    fcst_start = existing_ts_end + timedelta(hours=1)
-
-                if method in ('SF'): # process fcst ts from statistical forecasts
-                    try:
-                        timeseries = read_csv('{}/{}.csv'.format(INPUT_DIR, station_name))
-                        processed_discharge_ts = process_fcsts_from_csv(timeseries=timeseries, fcst_start=fcst_start)
-                    except FileNotFoundError as fe:
-                        print("File not found: {}/{}.csv".format(INPUT_DIR, station_name))
-                        continue
-
-                elif method in ('MME'): # process fcst ts from model outputs
-                    processed_discharge_ts = process_fcst_ts_from_hechms_outputs(curw_fcst_pool=curw_fcst_pool,
-                                                                                 fcst_start=fcst_start,
-                                                                                 extract_stations=extract_stations,
-                                                                                 i=i)
-                else:
-                    continue ## skip the current iteration and move to next iteration
-
-                if processed_discharge_ts is not None and len(processed_discharge_ts) > 0:
-                    TS.insert_data(timeseries=processed_discharge_ts, tms_id=tms_id, upsert=True)
+            if processed_discharge_ts is not None and len(processed_discharge_ts) > 0:
+                TS.insert_data(timeseries=processed_discharge_ts, tms_id=tms_id, upsert=True)
 
     except Exception as e:
         traceback.print_exc()
