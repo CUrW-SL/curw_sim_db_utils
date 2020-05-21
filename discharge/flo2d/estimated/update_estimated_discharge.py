@@ -51,29 +51,33 @@ if __name__=="__main__":
 
         # [station_name,latitude,longitude,target]
         extract_stations = read_csv('grids/discharge_stations/flo2d_stations.csv')
-        extract_stations_dict = { }  # keys: station_name , value: [latitude, longitude, target_model]
+        # extract_stations_dict = { }  # keys: station_name , value: [latitude, longitude, target_model]
 
-        for obs_index in range(len(extract_stations)):
-            extract_stations_dict[extract_stations[obs_index][0]] = [extract_stations[obs_index][1],
-                                                                     extract_stations[obs_index][2],
-                                                                     extract_stations[obs_index][3],
-                                                                     extract_stations[obs_index][4]]
+        # for obs_index in range(len(extract_stations)):
+        #     extract_stations_dict[extract_stations[obs_index][0]] = [extract_stations[obs_index][1],
+        #                                                              extract_stations[obs_index][2],
+        #                                                              extract_stations[obs_index][3],
+        #                                                              extract_stations[obs_index][4]]
 
-        for station_name in extract_stations_dict.keys():
+        for i in range(len(extract_stations)):
 
-            method = extract_stations_dict.get(station_name)[3]
+            station_name = extract_stations[i][0]
+            latitude = extract_stations[i][1]
+            longitude = extract_stations[i][2]
+            target_model = extract_stations[i][3]
+            method = extract_stations[i][4]
 
             meta_data = {
-                'latitude': float('%.6f' % float(extract_stations_dict.get(station_name)[0])),
-                'longitude': float('%.6f' % float(extract_stations_dict.get(station_name)[1])),
-                'model': extract_stations_dict.get(station_name)[2], 'method': method,
+                'latitude': float('%.6f' % float(latitude)),
+                'longitude': float('%.6f' % float(longitude)),
+                'model': target_model, 'method': method,
                 'grid_id': 'discharge_{}'.format(station_name)
             }
 
             wl_meta_data = {
-                'latitude': float('%.6f' % float(extract_stations_dict.get(station_name)[0])),
-                'longitude': float('%.6f' % float(extract_stations_dict.get(station_name)[1])),
-                'model': extract_stations_dict.get(station_name)[2], 'method': wl_method,
+                'latitude': float('%.6f' % float(latitude)),
+                'longitude': float('%.6f' % float(longitude)),
+                'model': target_model, 'method': wl_method,
                 'grid_id': 'waterlevel_{}'.format(station_name)
             }
 
