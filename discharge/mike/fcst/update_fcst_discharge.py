@@ -78,8 +78,8 @@ def process_fcst_ts_from_flo2d_outputs(curw_fcst_pool, fcst_start):
 
         processed_df = pd.merge(df, fcst_df, on='time', how='left')
 
-        processed_df.interpolate(method='linear', limit_direction='both')
-
+        # processed_df.interpolate(method='linear', limit_direction='both')
+        processed_df = processed_df.dropna()
         processed_df['time'] = processed_df['time'].dt.strftime(COMMON_DATE_TIME_FORMAT)
 
         return processed_df.values.tolist()
@@ -129,14 +129,14 @@ if __name__=="__main__":
                 meta_data['id'] = tms_id
                 TS.insert_run(meta_data=meta_data)
 
-            obs_end = TS.get_obs_end(id_=tms_id)
+            # obs_end = TS.get_obs_end(id_=tms_id)
 
             processed_discharge_ts = []
 
 
             if station_name in ('ambatale'):    # process fcst ts from model outputs
                 processed_discharge_ts = process_fcst_ts_from_flo2d_outputs(curw_fcst_pool=curw_fcst_pool,
-                                                                             fcst_start=obs_end)
+                                                                             fcst_start=None)
 
             else:
                 continue  ## skip the current station and move to next iteration
