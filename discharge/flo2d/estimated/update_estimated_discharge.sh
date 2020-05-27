@@ -32,7 +32,7 @@ fi
 
 
 # Update obs data in curw_sim for flo2d grids
-echo "Running update_obs_rainfall_flo2d_250.py"
+echo "Running update_estimated_discharge.py"
 python discharge/flo2d/estimated/update_estimated_discharge.py >> discharge/flo2d/estimated/curw_sim_estimated_discharge.log 2>&1
 
 # Deactivating virtual environment

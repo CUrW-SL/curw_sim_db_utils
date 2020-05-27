@@ -17,6 +17,8 @@ from db_adapter.logger import logger
 
 INPUT_DIR = "/mnt/disks/wrf_nfs/curw_sim_db_utils/discharge/mike/fcst"
 
+latest_fgt = None
+
 
 def round_to_nearest_hour(datetime_string, format=None):
 
@@ -43,6 +45,8 @@ def list_of_lists_to_df_first_row_as_columns(data):
 
 def process_fcst_ts_from_flo2d_outputs(curw_fcst_pool, fcst_start):
 
+    global latest_fgt
+
     FCST_TS = Fcst_Timeseries(curw_fcst_pool)
 
     try:
@@ -61,6 +65,8 @@ def process_fcst_ts_from_flo2d_outputs(curw_fcst_pool, fcst_start):
         if (fcst_series is None) or (len(fcst_series)<1):
             return None
 
+        latest_fgt = (FCST_TS.get_end_date(sim_tag, station_id, source_id, variable_id, unit_id)).strftime(COMMON_DATE_TIME_FORMAT)
+
         fcst_series.insert(0, ['time', 'value'])
         fcst_df = list_of_lists_to_df_first_row_as_columns(fcst_series)
 
@@ -72,8 +78,8 @@ def process_fcst_ts_from_flo2d_outputs(curw_fcst_pool, fcst_start):
 
         processed_df = pd.merge(df, fcst_df, on='time', how='left')
 
-        processed_df.interpolate(method='linear', limit_direction='both')
-
+        # processed_df.interpolate(method='linear', limit_direction='both')
+        processed_df = processed_df.dropna()
         processed_df['time'] = processed_df['time'].dt.strftime(COMMON_DATE_TIME_FORMAT)
 
         return processed_df.values.tolist()
@@ -123,20 +129,21 @@ if __name__=="__main__":
                 meta_data['id'] = tms_id
                 TS.insert_run(meta_data=meta_data)
 
-            existing_ts_end = TS.get_obs_end(id_=tms_id)
+            # obs_end = TS.get_obs_end(id_=tms_id)
 
             processed_discharge_ts = []
 
 
             if station_name in ('ambatale'):    # process fcst ts from model outputs
                 processed_discharge_ts = process_fcst_ts_from_flo2d_outputs(curw_fcst_pool=curw_fcst_pool,
-                                                                             fcst_start=existing_ts_end)
+                                                                             fcst_start=None)
 
             else:
                 continue  ## skip the current station and move to next iteration
 
             if processed_discharge_ts is not None and len(processed_discharge_ts) > 0:
                 TS.insert_data(timeseries=processed_discharge_ts, tms_id=tms_id, upsert=True)
+                TS.update_latest_obs(id_=tms_id, obs_end=latest_fgt)
 
     except Exception as e:
         traceback.print_exc()

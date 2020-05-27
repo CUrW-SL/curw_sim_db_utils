@@ -51,77 +51,71 @@ if __name__=="__main__":
 
         # [station_name,latitude,longitude,target]
         extract_stations = read_csv('grids/discharge_stations/flo2d_stations.csv')
-        extract_stations_dict = { }  # keys: station_name , value: [latitude, longitude, target_model]
+        # extract_stations_dict = { }  # keys: station_name , value: [latitude, longitude, target_model]
 
-        for obs_index in range(len(extract_stations)):
-            extract_stations_dict[extract_stations[obs_index][0]] = [extract_stations[obs_index][1],
-                                                                     extract_stations[obs_index][2],
-                                                                     extract_stations[obs_index][3]]
+        # for obs_index in range(len(extract_stations)):
+        #     extract_stations_dict[extract_stations[obs_index][0]] = [extract_stations[obs_index][1],
+        #                                                              extract_stations[obs_index][2],
+        #                                                              extract_stations[obs_index][3],
+        #                                                              extract_stations[obs_index][4]]
 
-        for station_name in extract_stations_dict.keys():
+        for i in range(len(extract_stations)):
 
-            method_list = []
+            station_name = extract_stations[i][0]
+            latitude = extract_stations[i][1]
+            longitude = extract_stations[i][2]
+            target_model = extract_stations[i][3]
+            method = extract_stations[i][4]
 
-            if station_name in ('hanwella'):
-                method_list.append(MethodEnum.getAbbreviation(MethodEnum.SF))
-                method_list.append(MethodEnum.getAbbreviation(MethodEnum.MME))
-            elif station_name in ('glencourse'):
-                method_list.append(MethodEnum.getAbbreviation(MethodEnum.SF))
-                method_list.append(MethodEnum.getAbbreviation(MethodEnum.MME))
-            else:
+            meta_data = {
+                'latitude': float('%.6f' % float(latitude)),
+                'longitude': float('%.6f' % float(longitude)),
+                'model': target_model, 'method': method,
+                'grid_id': 'discharge_{}'.format(station_name)
+            }
+
+            wl_meta_data = {
+                'latitude': float('%.6f' % float(latitude)),
+                'longitude': float('%.6f' % float(longitude)),
+                'model': target_model, 'method': wl_method,
+                'grid_id': 'waterlevel_{}'.format(station_name)
+            }
+
+            tms_id = discharge_TS.get_timeseries_id_if_exists(meta_data=meta_data)
+            wl_tms_id = waterlevel_TS.get_timeseries_id_if_exists(meta_data=wl_meta_data)
+
+            if wl_tms_id is None:
+                print("Warning!!! {} waterlevel timeseries doesn't exist.".format(station_name))
                 continue
 
-            for method in method_list:
+            end_time = (datetime.now() + timedelta(hours=5, minutes=30)).strftime(COMMON_DATE_TIME_FORMAT)
 
-                meta_data = {
-                    'latitude': float('%.6f' % float(extract_stations_dict.get(station_name)[0])),
-                    'longitude': float('%.6f' % float(extract_stations_dict.get(station_name)[1])),
-                    'model': extract_stations_dict.get(station_name)[2], 'method': method,
-                    'grid_id': 'discharge_{}'.format(station_name)
-                }
+            timeseries = []
 
-                wl_meta_data = {
-                    'latitude': float('%.6f' % float(extract_stations_dict.get(station_name)[0])),
-                    'longitude': float('%.6f' % float(extract_stations_dict.get(station_name)[1])),
-                    'model': extract_stations_dict.get(station_name)[2], 'method': wl_method,
-                    'grid_id': 'waterlevel_{}'.format(station_name)
-                }
-
-                tms_id = discharge_TS.get_timeseries_id_if_exists(meta_data=meta_data)
-                wl_tms_id = waterlevel_TS.get_timeseries_id_if_exists(meta_data=wl_meta_data)
-
-                if wl_tms_id is None:
-                    print("Warning!!! {} waterlevel timeseries doesn't exist.".format(station_name))
-                    continue
-
-                end_time = (datetime.now() + timedelta(hours=5, minutes=30)).strftime(COMMON_DATE_TIME_FORMAT)
-
-                timeseries = []
-
-                if tms_id is None:
-                    tms_id = discharge_TS.generate_timeseries_id(meta_data=meta_data)
-                    meta_data['id'] = tms_id
-                    discharge_TS.insert_run(meta_data=meta_data)
+            if tms_id is None:
+                tms_id = discharge_TS.generate_timeseries_id(meta_data=meta_data)
+                meta_data['id'] = tms_id
+                discharge_TS.insert_run(meta_data=meta_data)
+                start = (datetime.now() - timedelta(days=10)).strftime(COMMON_DATE_TIME_FORMAT)
+            else:
+                obs_end = discharge_TS.get_obs_end(id_=tms_id)
+                if obs_end is None:
                     start = (datetime.now() - timedelta(days=10)).strftime(COMMON_DATE_TIME_FORMAT)
                 else:
-                    obs_end = discharge_TS.get_obs_end(id_=tms_id)
-                    if obs_end is None:
-                        start = (datetime.now() - timedelta(days=10)).strftime(COMMON_DATE_TIME_FORMAT)
-                    else:
-                        start = (obs_end - timedelta(days=1)).strftime(COMMON_DATE_TIME_FORMAT)
+                    start = (obs_end - timedelta(days=1)).strftime(COMMON_DATE_TIME_FORMAT)
 
-                wl_timeseries = waterlevel_TS.get_timeseries(id_=wl_tms_id, start_date=start, end_date=end_time)
+            wl_timeseries = waterlevel_TS.get_timeseries(id_=wl_tms_id, start_date=start, end_date=end_time)
 
-                estimated_discharge_ts = []
+            estimated_discharge_ts = []
 
-                if station_name == 'hanwella':
-                    estimated_discharge_ts = calculate_hanwella_discharge(wl_timeseries)
-                elif station_name == 'glencourse':
-                    estimated_discharge_ts = calculate_glencourse_discharge(wl_timeseries)
+            if station_name == 'hanwella':
+                estimated_discharge_ts = calculate_hanwella_discharge(wl_timeseries)
+            elif station_name == 'glencourse':
+                estimated_discharge_ts = calculate_glencourse_discharge(wl_timeseries)
 
-                if estimated_discharge_ts is not None and len(estimated_discharge_ts) > 0:
-                    discharge_TS.insert_data(timeseries=estimated_discharge_ts, tms_id=tms_id, upsert=True)
-                    discharge_TS.update_latest_obs(id_=tms_id, obs_end=estimated_discharge_ts[-1][1])
+            if estimated_discharge_ts is not None and len(estimated_discharge_ts) > 0:
+                discharge_TS.insert_data(timeseries=estimated_discharge_ts, tms_id=tms_id, upsert=True)
+                discharge_TS.update_latest_obs(id_=tms_id, obs_end=estimated_discharge_ts[-1][1])
 
     except Exception as e:
         traceback.print_exc()
