@@ -39,6 +39,11 @@
 00 1,3,5,7,9,11,13,15,17,19,21 * * * /home/uwcc-admin/curw_sim_db_utils/rain/flo2d_150/obs/update_obs_rainfall_flo2d_150.sh >> /home/uwcc-admin/curw_sim_db_utils/rain/flo2d_150/obs/curw_sim_obs_flo2d_150.log 2>&1
 #00 22 * * * /home/uwcc-admin/curw_sim_db_utils/rain/flo2d_150/fcst/update_fcst_rainfall_flo2d_150.sh >> /home/uwcc-admin/curw_sim_db_utils/rain/flo2d_150/fcst/curw_sim_fcst_flo2d_150.log 2>&1
 
+######### Rain - Flo2D 150 v2 ##########
+# update observed & forecasted precipitation timeseries for flo2d 150 v2
+00 1,3,5,7,9,11,13,15,17,19,21 * * * /home/uwcc-admin/curw_sim_db_utils/rain/flo2d_150_v2/obs/update_obs_rainfall_flo2d_150_v2.sh >> /home/uwcc-admin/curw_sim_db_utils/rain/flo2d_150_v2/obs/curw_sim_obs_flo2d_150_v2.log 2>&1
+#00 22 * * * /home/uwcc-admin/curw_sim_db_utils/rain/flo2d_150_v2/fcst/update_fcst_rainfall_flo2d_150_v2.sh >> /home/uwcc-admin/curw_sim_db_utils/rain/flo2d_150_v2/fcst/curw_sim_fcst_flo2d_150_v2.log 2>&1
+
 
 ######### Waterlevels ##########
 # update hanwella and glencourse estimated waterlevel
