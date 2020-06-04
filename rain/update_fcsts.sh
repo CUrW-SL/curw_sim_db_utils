@@ -54,9 +54,13 @@ then
   echo "Running update_fcst_rainfall_flo2d_250.py"
   python rain/flo2d_250/fcst/update_fcst_rainfall_flo2d_250.py >> rain/flo2d_250/fcst/curw_sim_fcst_flo2d_250.log 2>&1
 
-  # Update fcst data in curw_sim for flo2d grids
+  # Update fcst data in curw_sim for flo2d 150 grids
   echo "Running update_fcst_rainfall_flo2d_150.py"
   python rain/flo2d_150/fcst/update_fcst_rainfall_flo2d_150.py >> rain/flo2d_150/fcst/curw_sim_fcst_flo2d_150.log 2>&1
+
+  # Update fcst data in curw_sim for flo2d 150 grids
+  echo "Running update_fcst_rainfall_flo2d_150_v2.py"
+  python rain/flo2d_150_v2/fcst/update_fcst_rainfall_flo2d_150_v2.py >> rain/flo2d_150_v2/fcst/curw_sim_fcst_flo2d_150_v2.log 2>&1
 
   # Generate flo2d 250 rfields in fcst range
   echo "Running gen_flo2d_250_fcst_rfield.py"
