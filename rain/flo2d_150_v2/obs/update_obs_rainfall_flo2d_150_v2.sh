@@ -33,11 +33,11 @@ fi
 
 # Update obs data in curw_sim for flo2d grids
 echo "Running update_obs_rainfall_flo2d_250.py"
-python rain/flo2d_250/obs/update_obs_rainfall_flo2d_250.py >> rain/flo2d_250/obs/curw_sim_obs_flo2d_250.log 2>&1
+python rain/flo2d_150_v2/obs/update_obs_rainfall_flo2d_150_v2.py >> rain/flo2d_250/obs/curw_sim_obs_flo2d_150_v2.log 2>&1
 
 # Generate flo2d 250 rfields in obs range
-echo "Running gen_flo2d_250_obs_rfield.py"
-python rain/flo2d_250/obs/gen_flo2d_250_obs_rfield.py >> rain/flo2d_250/obs/curw_sim_rfield_obs_250.log 2>&1
+#echo "Running gen_flo2d_250_obs_rfield.py"
+#python rain/flo2d_150_v2/obs/gen_flo2d_150_v2_obs_rfield.py >> rain/flo2d_250/obs/curw_sim_rfield_obs_150_v2.log 2>&1
 
 # Deactivating virtual environment
 echo "Deactivating virtual environment"
