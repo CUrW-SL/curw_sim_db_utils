@@ -47,8 +47,6 @@ if __name__=="__main__":
         discharge_TS = DTimeseries(pool=curw_sim_pool)
         waterlevel_TS = WLTimeseries(pool=curw_sim_pool)
 
-        wl_method = MethodEnum.getAbbreviation(MethodEnum.SF)
-
         # [station_name,latitude,longitude,target]
         extract_stations = read_csv('grids/discharge_stations/flo2d_stations.csv')
         # extract_stations_dict = { }  # keys: station_name , value: [latitude, longitude, target_model]
@@ -66,6 +64,7 @@ if __name__=="__main__":
             longitude = extract_stations[i][2]
             target_model = extract_stations[i][3]
             method = extract_stations[i][4]
+            wl_method = extract_stations[i][9]
 
             meta_data = {
                 'latitude': float('%.6f' % float(latitude)),
@@ -77,7 +76,7 @@ if __name__=="__main__":
             wl_meta_data = {
                 'latitude': float('%.6f' % float(latitude)),
                 'longitude': float('%.6f' % float(longitude)),
-                'model': target_model, 'method': wl_method,
+                'model': 'flo2d', 'method': wl_method,
                 'grid_id': 'waterlevel_{}'.format(station_name)
             }
 
