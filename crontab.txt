@@ -9,6 +9,7 @@
 # fill 0 forecasts at 00 UTC+5:30 everyday until day after tomorrow 00:00 (UTC+5:30)
 30 17 * * * /home/uwcc-admin/curw_sim_db_utils/fill_missing_values/fill_missing_values.py -o FCST -m "flo2d_250" >> /home/uwcc-admin/curw_sim_db_utils/fill_missing_values/fill_missing_values_250.log
 30 17 * * * /home/uwcc-admin/curw_sim_db_utils/fill_missing_values/fill_missing_values.py -o FCST -m "flo2d_150" >> /home/uwcc-admin/curw_sim_db_utils/fill_missing_values/fill_missing_values_150.log
+30 17 * * * /home/uwcc-admin/curw_sim_db_utils/fill_missing_values/fill_missing_values.py -o FCST -m "flo2d_150_v2" >> /home/uwcc-admin/curw_sim_db_utils/fill_missing_values/fill_missing_values_150_v2.log
 
 
 # forecast rain config updation check & forecast rain updates initializer
