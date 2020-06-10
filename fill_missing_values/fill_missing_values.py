@@ -19,6 +19,7 @@ PORT = 3306
 
 FLO2D_250 = "flo2d_250"
 FLO2D_150 = "flo2d_150"
+FLO2D_150_v2 = "flo2d_150_v2"
 FLO2D_30 = "flo2d_30"
 HecHMS = "hechms"
 
@@ -40,6 +41,8 @@ def check_for_missing_values(start, end, model):
     elif model == HecHMS:
         timestep = 5
     elif model == FLO2D_30:
+        timestep = 15
+    elif model == FLO2D_150_v2:
         timestep = 15
 
     start = datetime.strptime(start, DATE_TIME_FORMAT)
@@ -93,6 +96,8 @@ def fill_missing_obs_with_0s(start, end, model):
     elif model == HecHMS:
         timestep = 5
     elif model == FLO2D_30:
+        timestep = 15
+    elif model == FLO2D_150_v2:
         timestep = 15
 
     start = datetime.strptime(start, DATE_TIME_FORMAT)
@@ -155,6 +160,8 @@ def fill_missing_fcsts(end, model):
     elif model == HecHMS:
         timestep = 5
     elif model == FLO2D_30:
+        timestep = 15
+    elif model == FLO2D_150_v2:
         timestep = 15
 
     end = datetime.strptime(end, DATE_TIME_FORMAT)
@@ -228,7 +235,7 @@ def check_time_format(time, model):
         if (model==FLO2D_250 or model==HecHMS) and time.strftime('%M') not in ('05', '10', '15', '20', '25', '30', '35', '40', '45', '50', '55', '00'):
             print("Minutes should be multiple of 5 fro flo2d_250 and hechms")
             exit(1)
-        if (model==FLO2D_150 or model==FLO2D_30) and time.strftime('%M') not in ('15', '30', '45', '00'):
+        if (model==FLO2D_150 or model==FLO2D_30 or model==FLO2D_150_v2) and time.strftime('%M') not in ('15', '30', '45', '00'):
             print("Minutes should be multiple of 15 for flo2d_150 and flo2d_30")
             exit(1)
 
@@ -279,8 +286,8 @@ if __name__=="__main__":
 
         if model is None:
             model = FLO2D_250
-        elif model not in (FLO2D_250, FLO2D_150, HecHMS, FLO2D_30):
-            print("Model should be one of theses; \"flo2d_250\", \"flo2d_150\", \"hechms\", \"flo2d_30\". ")
+        elif model not in (FLO2D_250, FLO2D_150, HecHMS, FLO2D_30, FLO2D_150_v2):
+            print("Model should be one of theses; \"flo2d_250\", \"flo2d_150\", \"hechms\", \"flo2d_30\", \"flo2d_150_v2\". ")
             exit(1)
 
         if end_time is None:
