@@ -85,7 +85,7 @@ def process_tide_fcsts_from_Mobile_Geographics(existing_ts_end, obs_end):
         # hourly_ts_df = hourly_ts_df.fillna(-99999.000)
         # hourly_ts_df.index = hourly_ts_df.index.map(str)
 
-        fcst_end = (timeseries_df['time'].max()).strftime(COMMON_DATE_TIME_FORMAT)
+        fcst_end = (timeseries_df['time'].max())
 
         df = (pd.date_range(start=fcst_start, end=fcst_end, freq='60min')).to_frame(name='time')
 
