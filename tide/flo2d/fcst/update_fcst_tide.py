@@ -75,8 +75,8 @@ def process_tide_fcsts_from_Mobile_Geographics(existing_ts_end, obs_end):
         raw_timeseries.insert(0, ['time', 'value'])
 
         timeseries_df = list_of_lists_to_df_first_row_as_columns(raw_timeseries)
-        # timeseries_df['time'] = pd.to_datetime(timeseries_df['time'], format=COMMON_DATE_TIME_FORMAT)
-        # timeseries_df['time'] = timeseries_df['time'].dt.round('h')
+        timeseries_df['time'] = pd.to_datetime(timeseries_df['time'], format=COMMON_DATE_TIME_FORMAT)
+        timeseries_df['time'] = timeseries_df['time'].dt.round('h')
         # timeseries_df.set_index('time', inplace=True)
         #
         # timeseries_df['value'] = pd.to_numeric(timeseries_df['value'])
