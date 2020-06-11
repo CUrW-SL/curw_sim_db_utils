@@ -75,15 +75,29 @@ def process_tide_fcsts_from_Mobile_Geographics(existing_ts_end, obs_end):
         raw_timeseries.insert(0, ['time', 'value'])
 
         timeseries_df = list_of_lists_to_df_first_row_as_columns(raw_timeseries)
-        timeseries_df['time'] = pd.to_datetime(timeseries_df['time'], format=COMMON_DATE_TIME_FORMAT)
-        timeseries_df['time'] = timeseries_df['time'].dt.round('h')
-        timeseries_df.set_index('time', inplace=True)
+        # timeseries_df['time'] = pd.to_datetime(timeseries_df['time'], format=COMMON_DATE_TIME_FORMAT)
+        # timeseries_df['time'] = timeseries_df['time'].dt.round('h')
+        # timeseries_df.set_index('time', inplace=True)
+        #
+        # timeseries_df['value'] = pd.to_numeric(timeseries_df['value'])
+        # hourly_ts_df = timeseries_df.resample('H').asfreq()
+        # hourly_ts_df = hourly_ts_df.interpolate(method='linear', limit_direction='both', limit=100) ####temp###
+        # hourly_ts_df = hourly_ts_df.fillna(-99999.000)
+        # hourly_ts_df.index = hourly_ts_df.index.map(str)
 
-        timeseries_df['value'] = pd.to_numeric(timeseries_df['value'])
-        hourly_ts_df = timeseries_df.resample('H').asfreq()
-        hourly_ts_df = hourly_ts_df.interpolate(method='linear', limit_direction='both', limit=100) ####temp###
-        hourly_ts_df = hourly_ts_df.fillna(-99999.000)
-        hourly_ts_df.index = hourly_ts_df.index.map(str)
+        fcst_end = (timeseries_df['time'].max()).strftime(COMMON_DATE_TIME_FORMAT)
+
+        df = (pd.date_range(start=fcst_start, end=fcst_end, freq='60min')).to_frame(name='time')
+
+        hourly_ts_df = pd.merge(df, timeseries_df, on='time', how='left')
+
+        hourly_ts_df.interpolate(method='linear', limit_direction='both', limit=100)
+        hourly_ts_df.fillna(inplace=True, value=0)
+
+        hourly_ts_df['time'] = hourly_ts_df['time'].dt.strftime(COMMON_DATE_TIME_FORMAT)
+
+        pd.set_option('display.max_rows', hourly_ts_df.shape[0] + 2)
+        pd.set_option('display.max_columns', hourly_ts_df.shape[1] + 2)
 
         processed_timeseries = hourly_ts_df.reset_index().values.tolist()
         return processed_timeseries
