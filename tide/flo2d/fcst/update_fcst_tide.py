@@ -66,7 +66,7 @@ def process_tide_fcsts_from_Mobile_Geographics(existing_ts_end, obs_end):
 
         if existing_ts_end is not None:
             fcst_start = (existing_ts_end).strftime(COMMON_DATE_TIME_FORMAT)
-        if obs_end is not None:
+        elif obs_end is not None:
             fcst_start = (obs_end).strftime(COMMON_DATE_TIME_FORMAT)
         else:
             fcst_start = ((datetime.now() - timedelta(days=30))).strftime("%Y-%m-%d 00:00:00")
