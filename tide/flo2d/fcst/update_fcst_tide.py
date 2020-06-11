@@ -80,6 +80,7 @@ def process_tide_fcsts_from_Mobile_Geographics(existing_ts_end, obs_end):
         timeseries_df.set_index('time', inplace=True)
 
         hourly_ts_df = timeseries_df.resample('H').asfreq()
+        hourly_ts_df = hourly_ts_df.interpolate(method='linear', limit_direction='both', limit=100)
         hourly_ts_df = hourly_ts_df.fillna(-99999.000)
         hourly_ts_df.index = hourly_ts_df.index.map(str)
 
