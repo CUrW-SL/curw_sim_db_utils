@@ -95,7 +95,12 @@
 
 
 
+######## CURW_SIM UPDATES - FLO2D Forecast Rainfall ###################
 
+# forecast rain config updation check & forecast rain updates initializer
+00 */6 * * * /home/uwcc-admin/curw_sim_db_utils/rain/update_fcsts.sh >> /home/uwcc-admin/curw_sim_db_utils/rain/curw_sim_update_fcsts.log
+
+######## end of curw sim updates#############
 
 
 
