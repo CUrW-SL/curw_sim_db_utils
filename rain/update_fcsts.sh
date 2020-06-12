@@ -10,7 +10,7 @@ DIFF=$(((CURRENT-FILE_MODIFIED_TIME)/60))
 echo $DIFF
 
 
-if [ $DIFF -lt 120 ]
+if [ $DIFF -lt 370 ]
 then
   echo "New fcst rain config !!!"
   echo "Changing into ~/curw_sim_db_utils"
