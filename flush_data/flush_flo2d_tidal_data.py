@@ -27,12 +27,11 @@ if __name__=="__main__":
         pool = get_Pool(host=con_params.CURW_SIM_HOST, port=con_params.CURW_SIM_PORT, user=con_params.CURW_SIM_USERNAME,
                         password=con_params.CURW_SIM_PASSWORD, db=con_params.CURW_SIM_DATABASE)
 
-        method = MethodEnum.getAbbreviation(MethodEnum.TSF)
         run_table = "tide_run"
         data_table = "tide_data"
         end = (datetime.now() - timedelta(days=51)).strftime("%Y-%m-%d %H:%M:00")
 
-        hash_ids = flush_common.get_curw_sim_hash_ids(pool=pool, run_table=run_table, model=FLO2D_250, method=method, obs_end_start=None,
+        hash_ids = flush_common.get_curw_sim_hash_ids(pool=pool, run_table=run_table, model="flo2d", method=None, obs_end_start=None,
                                          obs_end_end=None, grid_id=None)
 
         TS = flush_common.Timeseries(pool=pool, run_table=run_table, data_table=data_table)
