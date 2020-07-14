@@ -8,7 +8,7 @@ from db_adapter.constants import set_db_config_file_path
 from db_adapter.constants import connection as con_params
 # from db_adapter.constants import CURW_SIM_PASSWORD, CURW_SIM_DATABASE, CURW_SIM_USERNAME, CURW_SIM_PORT, CURW_SIM_HOST
 from db_adapter.constants import COMMON_DATE_TIME_FORMAT
-from db_adapter.curw_sim.constants import FLO2D_250
+from db_adapter.curw_sim.constants import MIKE, FLO2D_250, FLO2D_150, FLO2D_150_V2
 from db_adapter.curw_sim.timeseries import MethodEnum
 # from flush_data.flush_curw_sim_data_common import Timeseries, get_curw_sim_hash_ids
 
@@ -27,36 +27,37 @@ if __name__=="__main__":
         pool = get_Pool(host=con_params.CURW_SIM_HOST, port=con_params.CURW_SIM_PORT, user=con_params.CURW_SIM_USERNAME,
                         password=con_params.CURW_SIM_PASSWORD, db=con_params.CURW_SIM_DATABASE)
 
-        method1 = MethodEnum.getAbbreviation(MethodEnum.SF)
-        method2 = MethodEnum.getAbbreviation(MethodEnum.MME)
+        models = [MIKE, FLO2D_250, FLO2D_150, FLO2D_150_V2]
 
         run_table = "dis_run"
         data_table = "dis_data"
         end = (datetime.now() - timedelta(days=51)).strftime("%Y-%m-%d %H:%M:00")
 
-        hash_ids = flush_common.get_curw_sim_hash_ids(pool=pool, run_table=run_table, model=None, method=method1, obs_end_start=None,
-                                         obs_end_end=None, grid_id=None)
+        for model in models:
 
-        hash_ids.extend(flush_common.get_curw_sim_hash_ids(pool=pool, run_table=run_table, model=None, method=method2, obs_end_start=None,
-                                         obs_end_end=None, grid_id=None))
+            hash_ids = flush_common.get_curw_sim_hash_ids(pool=pool, run_table=run_table, model=model, method=None, obs_end_start=None,
+                                             obs_end_end=None, grid_id=None)
 
-        TS = flush_common.Timeseries(pool=pool, run_table=run_table, data_table=data_table)
+            # hash_ids.extend(flush_common.get_curw_sim_hash_ids(pool=pool, run_table=run_table, model=None, method=method2, obs_end_start=None,
+            #                                  obs_end_end=None, grid_id=None))
 
-        #####################################################################################################
-        # delete a specific timeseries defined by a given hash id from data table for specified time period #
-        #####################################################################################################
-        # count = 0
-        # for id in hash_ids:
-        #     TS.delete_timeseries(id_=id, end=end)
-        #     print(count, id)
-        #     count += 1
-        # print("{} of hash ids are deleted".format(len(hash_ids)))
+            TS = flush_common.Timeseries(pool=pool, run_table=run_table, data_table=data_table)
+
+            #####################################################################################################
+            # delete a specific timeseries defined by a given hash id from data table for specified time period #
+            #####################################################################################################
+            # count = 0
+            # for id in hash_ids:
+            #     TS.delete_timeseries(id_=id, end=end)
+            #     print(count, id)
+            #     count += 1
+            # print("{} of hash ids are deleted".format(len(hash_ids)))
 
 
-        ##########################################################################################################
-        # bulk delete a specific timeseries defined by a given hash id from data table for specified time period #
-        ##########################################################################################################
-        TS.bulk_delete_timeseries(ids=hash_ids, end=end)
+            ##########################################################################################################
+            # bulk delete a specific timeseries defined by a given hash id from data table for specified time period #
+            ##########################################################################################################
+            TS.bulk_delete_timeseries(ids=hash_ids, end=end)
 
     except Exception as e:
         print('An exception occurred.')
