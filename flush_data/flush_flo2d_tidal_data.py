@@ -8,7 +8,7 @@ from db_adapter.constants import set_db_config_file_path
 from db_adapter.constants import connection as con_params
 # from db_adapter.constants import CURW_SIM_PASSWORD, CURW_SIM_DATABASE, CURW_SIM_USERNAME, CURW_SIM_PORT, CURW_SIM_HOST
 from db_adapter.constants import COMMON_DATE_TIME_FORMAT
-from db_adapter.curw_sim.constants import FLO2D_250
+from db_adapter.curw_sim.constants import FLO2D
 from db_adapter.curw_sim.timeseries import MethodEnum
 # from flush_data.flush_curw_sim_data_common import Timeseries, get_curw_sim_hash_ids
 
@@ -31,7 +31,7 @@ if __name__=="__main__":
         data_table = "tide_data"
         end = (datetime.now() - timedelta(days=51)).strftime("%Y-%m-%d %H:%M:00")
 
-        hash_ids = flush_common.get_curw_sim_hash_ids(pool=pool, run_table=run_table, model="flo2d", method=None, obs_end_start=None,
+        hash_ids = flush_common.get_curw_sim_hash_ids(pool=pool, run_table=run_table, model=FLO2D, method=None, obs_end_start=None,
                                          obs_end_end=None, grid_id=None)
 
         TS = flush_common.Timeseries(pool=pool, run_table=run_table, data_table=data_table)

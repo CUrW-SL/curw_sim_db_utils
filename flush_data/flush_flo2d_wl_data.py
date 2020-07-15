@@ -27,31 +27,34 @@ if __name__=="__main__":
         pool = get_Pool(host=con_params.CURW_SIM_HOST, port=con_params.CURW_SIM_PORT, user=con_params.CURW_SIM_USERNAME,
                         password=con_params.CURW_SIM_PASSWORD, db=con_params.CURW_SIM_DATABASE)
 
-        method = MethodEnum.getAbbreviation(MethodEnum.SF)
+        models = [FLO2D, FLO2D_250, FLO2D_150, FLO2D_150_V2]
+
         run_table = "wl_run"
         data_table = "wl_data"
         end = (datetime.now() - timedelta(days=51)).strftime("%Y-%m-%d %H:%M:00")
 
-        hash_ids = flush_common.get_curw_sim_hash_ids(pool=pool, run_table=run_table, model=None, method=method, obs_end_start=None,
-                                         obs_end_end=None, grid_id=None)
+        for model in models:
 
-        TS = flush_common.Timeseries(pool=pool, run_table=run_table, data_table=data_table)
+            hash_ids = flush_common.get_curw_sim_hash_ids(pool=pool, run_table=run_table, model=None, method=method, obs_end_start=None,
+                                             obs_end_end=None, grid_id=None)
 
-        #####################################################################################################
-        # delete a specific timeseries defined by a given hash id from data table for specified time period #
-        #####################################################################################################
-        # count = 0
-        # for id in hash_ids:
-        #     TS.delete_timeseries(id_=id, end=end)
-        #     print(count, id)
-        #     count += 1
-        # print("{} of hash ids are deleted".format(len(hash_ids)))
+            TS = flush_common.Timeseries(pool=pool, run_table=run_table, data_table=data_table)
+
+            #####################################################################################################
+            # delete a specific timeseries defined by a given hash id from data table for specified time period #
+            #####################################################################################################
+            # count = 0
+            # for id in hash_ids:
+            #     TS.delete_timeseries(id_=id, end=end)
+            #     print(count, id)
+            #     count += 1
+            # print("{} of hash ids are deleted".format(len(hash_ids)))
 
 
-        ##########################################################################################################
-        # bulk delete a specific timeseries defined by a given hash id from data table for specified time period #
-        ##########################################################################################################
-        TS.bulk_delete_timeseries(ids=hash_ids, end=end)
+            ##########################################################################################################
+            # bulk delete a specific timeseries defined by a given hash id from data table for specified time period #
+            ##########################################################################################################
+            TS.bulk_delete_timeseries(ids=hash_ids, end=end)
 
     except Exception as e:
         print('An exception occurred.')
