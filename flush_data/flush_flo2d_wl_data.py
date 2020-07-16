@@ -35,7 +35,7 @@ if __name__=="__main__":
 
         for model in models:
 
-            hash_ids = flush_common.get_curw_sim_hash_ids(pool=pool, run_table=run_table, model=None, method=method, obs_end_start=None,
+            hash_ids = flush_common.get_curw_sim_hash_ids(pool=pool, run_table=run_table, model=model, method=None, obs_end_start=None,
                                              obs_end_end=None, grid_id=None)
 
             TS = flush_common.Timeseries(pool=pool, run_table=run_table, data_table=data_table)
