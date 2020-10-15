@@ -8,7 +8,7 @@ from db_adapter.constants import set_db_config_file_path
 from db_adapter.constants import connection as con_params
 # from db_adapter.constants import CURW_SIM_PASSWORD, CURW_SIM_DATABASE, CURW_SIM_USERNAME, CURW_SIM_PORT, CURW_SIM_HOST
 from db_adapter.constants import COMMON_DATE_TIME_FORMAT
-from db_adapter.curw_sim.constants import FLO2D_250
+from db_adapter.curw_sim.constants import FLO2D, FLO2D_150
 from db_adapter.curw_sim.timeseries import MethodEnum
 # from flush_data.flush_curw_sim_data_common import Timeseries, get_curw_sim_hash_ids
 
@@ -27,7 +27,7 @@ if __name__=="__main__":
         pool = get_Pool(host=con_params.CURW_SIM_HOST, port=con_params.CURW_SIM_PORT, user=con_params.CURW_SIM_USERNAME,
                         password=con_params.CURW_SIM_PASSWORD, db=con_params.CURW_SIM_DATABASE)
 
-        models = [FLO2D, FLO2D_250, FLO2D_150, FLO2D_150_V2]
+        models = [FLO2D]
 
         run_table = "wl_run"
         data_table = "wl_data"
